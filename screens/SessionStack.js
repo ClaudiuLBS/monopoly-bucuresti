@@ -6,7 +6,7 @@ import SessionGameScreen from './SessionGameScreen';
 import SessionHomeScreen from './SessionHomeScreen';
 import SessionLobbyScreen from './SessionLobbyScreen';
 
-const ProfileScreen = () => {
+const SessionStack = () => {
   const [gameSession, setGameSession] = useState(null);
   const [player, setPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -34,7 +34,7 @@ const ProfileScreen = () => {
       setPlayer(data.player);
       setLoading(false);
     });
-  }, [player]);
+  });
 
   if (loading) return <LoadingScreen />;
 
@@ -53,4 +53,4 @@ const ProfileScreen = () => {
   return <SessionHomeScreen createSession={handleCreateSession} joinSession={handleJoinSession} />;
 };
 
-export default ProfileScreen;
+export default SessionStack;

@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import MapView, { Polygon } from 'react-native-maps';
-import { cartiere } from '../constants/cartiere';
+import colors from '../constants/colors';
+import dimensions from '../constants/dimensions';
+
 import mapStyle from '../constants/mapStyle';
+import InitService from '../services/init.service';
+import MapApi from '../services/map.service';
+import LoadingScreen from './LoadingScreen';
 
 const MapScreen = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    InitService.handleStorageKeys().then((result) => {
+      if (result.gameSession)
+        MapApi.getPaths(result.gameSession.code).then((res) => {
+          setData(res);
+          setLoading(false);
+        });
+      else setLoading(false);
+    });
+  });
+  if (loading) return <LoadingScreen />;
+
   return (
     <View style={styles.container}>
       <MapView
@@ -16,13 +35,15 @@ const MapScreen = () => {
           longitudeDelta: 0.3,
         }}
         customMapStyle={mapStyle}
+        showsCompass={false}
       >
-        {cartiere.map((item) => (
+        {data.map((item) => (
           <Polygon
             key={item.name}
-            coordinates={item.coordinates}
-            fillColor={'#3aeb3444'}
-            strokeColor={'#f59ad8'}
+            coordinates={item.coords}
+            fillColor={item.color}
+            strokeColor={colors.landStroke}
+            strokeWidth={1}
           />
         ))}
       </MapView>
@@ -39,7 +60,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('window').height - dimensions.tabBarHeight,
   },
 });
 
