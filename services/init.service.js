@@ -7,15 +7,17 @@ const InitService = {
   async handleStorageKeys() {
     const player_id = await SecureStore.getItemAsync('player_id');
     const player = await RestApi.player.get(player_id);
+    if (!player)
+      return {
+        player: null,
+        gameSession: null,
+      };
     const gameSession = await RestApi.gameSession.get(player.game_session);
     return { player, gameSession };
   },
-  deleteAll() {
-    return new Promise((resolve, reject) => {
-      Promise.all([SecureStore.deleteItemAsync('player_id')])
-        .then(resolve)
-        .catch(reject);
-    });
+
+  async deletePlayer() {
+    await SecureStore.deleteItemAsync('player_id');
   },
 };
 export default InitService;

@@ -10,9 +10,20 @@ const ProfileScreen = () => {
   const [loading, setLoading] = useState(true);
 
   const handleCreateSession = async (name) => {
-    const data = await GameSessionApi.createSession('nigger');
+    const data = await GameSessionApi.createSession(name);
     setPlayer(data.player);
     setGameSession(data.gameSession);
+  };
+
+  const handleJoinSession = async (name, code) => {
+    const data = await GameSessionApi.joinSession(name, code);
+    setPlayer(data.player);
+    setGameSession(data.gameSession);
+  };
+
+  const handleStartSession = async (code) => {
+    const data = await GameSessionApi.startSession(code);
+    console.log(data);
   };
 
   useEffect(() => {
@@ -27,8 +38,10 @@ const ProfileScreen = () => {
 
   return (
     <View>
-      {true && <Text>{gameSession.code}</Text>}
-      <Button title="press me nigga" onPress={() => handleCreateSession('nigger')} />
+      {gameSession && <Text>{gameSession.code}</Text>}
+      <Button title="create nigga" onPress={() => handleCreateSession('nigger')} />
+      <Button title="join nigga" onPress={() => handleJoinSession('gigi', 3978)} />
+      <Button title="start nigga" onPress={() => handleStartSession(3978)} />
     </View>
   );
 };

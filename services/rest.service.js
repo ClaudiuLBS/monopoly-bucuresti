@@ -4,27 +4,17 @@ import { config } from '../config';
 
 const RestApi = {
   player: {
-    get(id) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(`${config.url}/players/${id}`)
-          .then((result) => {
-            resolve(result.data);
-          })
-          .catch((err) => resolve(null));
-      });
+    async get(id) {
+      const result = await axios.get(`${config.url}/players/${id}`).catch((e) => null);
+      if (result) return result.data;
+      else return null;
     },
   },
   gameSession: {
-    get(code) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(`${config.url}/game_sessions/${code}`)
-          .then((result) => {
-            resolve(result.data);
-          })
-          .catch((err) => resolve(null));
-      });
+    async get(code) {
+      const result = await axios.get(`${config.url}/game_sessions/${code}`).catch((e) => null);
+      if (result) return result.data;
+      else return null;
     },
   },
   neighbourhood: {},
