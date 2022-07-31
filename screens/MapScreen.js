@@ -18,7 +18,12 @@ const MapScreen = () => {
         customMapStyle={mapStyle}
       >
         {cartiere.map((item) => (
-          <Polygon key={item.name} coordinates={item.coordinates} fillColor={'#3aeb3444'} strokeColor={'#f59ad8'} />
+          <Polygon
+            key={item.name}
+            coordinates={item.coordinates}
+            fillColor={'#3aeb3444'}
+            strokeColor={'#f59ad8'}
+          />
         ))}
       </MapView>
     </View>
