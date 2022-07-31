@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Button, Text, TextInput, View } from 'react-native';
 import GameSessionApi from '../services/game_session.service';
 import InitService from '../services/init.service';
 import LoadingScreen from './LoadingScreen';
+import SessionGameScreen from './SessionGameScreen';
+import SessionHomeScreen from './SessionHomeScreen';
+import SessionLobbyScreen from './SessionLobbyScreen';
 
 const ProfileScreen = () => {
   const [gameSession, setGameSession] = useState(null);
@@ -23,7 +25,7 @@ const ProfileScreen = () => {
 
   const handleStartSession = async (code) => {
     const data = await GameSessionApi.startSession(code);
-    console.log(data);
+    // console.log(data);
   };
 
   useEffect(() => {
@@ -36,14 +38,19 @@ const ProfileScreen = () => {
 
   if (loading) return <LoadingScreen />;
 
-  return (
-    <View>
-      {gameSession && <Text>{gameSession.code}</Text>}
-      <Button title="create nigga" onPress={() => handleCreateSession('nigger')} />
-      <Button title="join nigga" onPress={() => handleJoinSession('gigi', 3978)} />
-      <Button title="start nigga" onPress={() => handleStartSession(3978)} />
-    </View>
-  );
+  if (gameSession)
+    if (gameSession.start_date)
+      return <SessionGameScreen player={player} gameSession={gameSession} />;
+    else
+      return (
+        <SessionLobbyScreen
+          owner={player.owner}
+          code={gameSession.code}
+          startSession={handleStartSession}
+        />
+      );
+
+  return <SessionHomeScreen createSession={handleCreateSession} joinSession={handleJoinSession} />;
 };
 
 export default ProfileScreen;
