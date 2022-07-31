@@ -1,12 +1,13 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import DefaultScreen from '../components/DefaultScreen';
 
 const SessionGameScreen = ({ player, gameSession }) => {
   return (
-    <View>
+    <DefaultScreen>
       <Text>{player.name}</Text>
-      <Text>{gameSession.code} started</Text>
-    </View>
+      <Text>{gameSession.code}</Text>
+    </DefaultScreen>
   );
 };
 

@@ -4,7 +4,7 @@ import config from '../config';
 import RestApi from './rest.service';
 
 const InitService = {
-  async handleStorageKeys() {
+  async checkPlayer() {
     const player_id = await SecureStore.getItemAsync('player_id');
     const player = await RestApi.player.get(player_id);
     if (!player)

@@ -14,7 +14,7 @@ export default function App() {
       <Tab.Navigator
         screenOptions={{ headerShown: false, tabBarStyle: { height: dimensions.tabBarHeight } }}
       >
-        <Tab.Screen name="Home" component={SessionStack} />
+        <Tab.Screen name="HomeStack" component={SessionStack} />
         <Tab.Screen name="Map" component={MapScreen} />
       </Tab.Navigator>
     </NavigationContainer>

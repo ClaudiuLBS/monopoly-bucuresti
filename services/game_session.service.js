@@ -16,8 +16,9 @@ const GameSessionApi = {
 
   async joinSession(name, code) {
     const result = await axios.post(`${config.url}/join-session/`, { name, code });
-    await SecureStore.setItemAsync('player_id', result.data.player_id.toString());
+    if (result.data.error) return result.data;
 
+    await SecureStore.setItemAsync('player_id', result.data.player_id.toString());
     const player = await RestApi.player.get(result.data.player_id);
     const gameSession = await RestApi.gameSession.get(player.game_session);
 
@@ -32,6 +33,11 @@ const GameSessionApi = {
   async endSession(code) {
     const result = await axios.post(`${config.url}/end-session/`, { code });
     return result;
+  },
+
+  async getPlayers(code) {
+    const result = await axios.get(`${config.url}/all-players/${code}`);
+    return result.data;
   },
 };
 export default GameSessionApi;

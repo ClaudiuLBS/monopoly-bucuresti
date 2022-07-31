@@ -12,8 +12,9 @@ import LoadingScreen from './LoadingScreen';
 const MapScreen = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [counter, setCounter] = useState(0);
   useEffect(() => {
-    InitService.handleStorageKeys().then((result) => {
+    InitService.checkPlayer().then((result) => {
       if (result.gameSession)
         MapApi.getPaths(result.gameSession.code).then((res) => {
           setData(res);
@@ -21,7 +22,10 @@ const MapScreen = () => {
         });
       else setLoading(false);
     });
-  });
+    setTimeout(() => {
+      setCounter(counter + 1);
+    }, 60000);
+  }, [counter]);
   if (loading) return <LoadingScreen />;
 
   return (
