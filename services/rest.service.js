@@ -9,6 +9,17 @@ const RestApi = {
       if (result) return result.data;
       else return null;
     },
+
+    async updateLocation(id, latitude, longitude) {
+      const result = await axios
+        .patch(`${config.url}/api/players/${id}/`, {
+          latitude,
+          longitude,
+        })
+        .catch((e) => null);
+      if (result) return result.data;
+      else return null;
+    },
   },
   gameSession: {
     async get(id) {

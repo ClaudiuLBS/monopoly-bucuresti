@@ -5,11 +5,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Icon } from '@rneui/base';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
+import * as TaskManager from 'expo-task-manager';
+import * as Location from 'expo-location';
 
 import HomeStack from './screens/Home/HomeStack';
 import MapScreen from './screens/MapScreen';
 import dimensions from './constants/dimensions';
 import colors from './constants/colors';
+import InitService from './services/init.service';
+import RestApi from './services/rest.service';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -19,11 +23,31 @@ Notifications.setNotificationHandler({
   }),
 });
 
+const LOCATION_TASK_NAME = 'background-location';
+
+const getLocation = async () => {
+  await Location.requestForegroundPermissionsAsync();
+  const { status } = await Location.requestBackgroundPermissionsAsync();
+  if (status != 'granted') return;
+
+  await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+    accuracy: Location.Accuracy.Balanced,
+    // timeInterval: 1000,
+  });
+
+  await Location.watchPositionAsync({
+    accuracy: Location.Accuracy.High,
+    distanceInterval: 5,
+    timeInterval: 10000,
+  });
+};
+
 const Tab = createBottomTabNavigator();
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
 
   useEffect(() => {
+    getLocation();
     registerForPushNotificationsAsync().then((token) => setExpoPushToken(token));
   }, []);
 
@@ -94,3 +118,25 @@ async function registerForPushNotificationsAsync() {
   }
   return token;
 }
+
+TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
+  if (error) {
+    // Error occurred - check `error.message` for more details.
+    console.log(error.message);
+    return;
+  }
+  if (data) {
+    const { locations } = data;
+    InitService.checkPlayer().then((res) => {
+      if (res.player)
+        RestApi.player
+          .updateLocation(
+            res.player.id,
+            locations[0].coords.latitude,
+            locations[0].coords.longitude
+          )
+          .then((res) => console.log(res));
+    });
+    // do something with the locations captured in the background
+  }
+});
