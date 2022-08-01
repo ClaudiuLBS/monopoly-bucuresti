@@ -47,7 +47,7 @@ const MapScreen = () => {
             coordinates={item.coords}
             fillColor={item.color}
             strokeColor={colors.landStroke}
-            strokeWidth={1}
+            strokeWidth={2}
           />
         ))}
       </MapView>
