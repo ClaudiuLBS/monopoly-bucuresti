@@ -5,8 +5,9 @@ import { config } from '../config';
 import RestApi from './rest.service';
 
 const GameSessionApi = {
-  async createSession(name) {
-    const result = await axios.post(`${config.url}/create-session/`, { name });
+  async createSession(name, color) {
+    console.log(color);
+    const result = await axios.post(`${config.url}/create-session/`, { name, color });
     await SecureStore.setItemAsync('player_id', result.data.player_id.toString());
     const player = await RestApi.player.get(result.data.player_id);
     const gameSession = await RestApi.gameSession.get(player.game_session);
@@ -14,8 +15,8 @@ const GameSessionApi = {
     return { player, gameSession };
   },
 
-  async joinSession(name, code) {
-    const result = await axios.post(`${config.url}/join-session/`, { name, code });
+  async joinSession(name, code, color) {
+    const result = await axios.post(`${config.url}/join-session/`, { name, code, color });
     if (result.data.error) return result.data;
 
     await SecureStore.setItemAsync('player_id', result.data.player_id.toString());

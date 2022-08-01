@@ -1,3 +1,3 @@
 export const config = {
-  url: 'https://e095-2a02-2f0b-9504-e400-1818-ed60-eae-8f8d.eu.ngrok.io/api',
+  url: 'https://c376-2a02-2f0b-9504-e400-32ff-c1ef-7264-5a82.eu.ngrok.io/api',
 };

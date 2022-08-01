@@ -6,6 +6,7 @@ const SessionGameScreen = ({ player, gameSession }) => {
   return (
     <DefaultScreen>
       <Text>{player.name}</Text>
+      <Text>{player.money}</Text>
       <Text>{gameSession.code}</Text>
     </DefaultScreen>
   );

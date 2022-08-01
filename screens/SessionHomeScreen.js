@@ -1,23 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import CustomButton from '../components/CustomButton';
 import DefaultScreen from '../components/DefaultScreen';
 import CustomInput from '../components/CustomInput';
 
+const randomColor = () => {
+  const result = '#' + Math.floor(Math.random() * 16777215).toString(16);
+  return result;
+};
+
 const SessionHomeScreen = ({ createSession, joinSession, firstScreen }) => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
+  const [color, setColor] = useState(randomColor());
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleCreateSession = () => {
+  const handleCreateSession = async () => {
     if (!name) {
       setError('Enter a name yo fuckin nigger');
       return;
     }
-    createSession(name);
+    setLoading(true);
+    await createSession(name, color);
+    setLoading(false);
+    navigation.navigate('Lobby');
   };
 
   const handleJoinSession = async () => {
@@ -29,8 +39,28 @@ const SessionHomeScreen = ({ createSession, joinSession, firstScreen }) => {
       setError('Code must have 4 digits yo faggot');
       return;
     }
-    const error = await joinSession(name, code);
+    setLoading(true);
+    const error = await joinSession(name, code, color);
+    setLoading(false);
+
     if (error) setError(error);
+    else navigation.navigate('Lobby');
+  };
+
+  const renderColorPicker = () => {
+    return (
+      <TouchableOpacity
+        style={{
+          backgroundColor: color,
+          width: 30,
+          height: 30,
+          borderRadius: 50,
+          marginHorizontal: 10,
+        }}
+        activeOpacity={0.9}
+        onPress={() => setColor(randomColor())}
+      />
+    );
   };
 
   if (firstScreen != 'Home')
@@ -43,7 +73,13 @@ const SessionHomeScreen = ({ createSession, joinSession, firstScreen }) => {
 
   return (
     <DefaultScreen style={{ justifyContent: 'center' }}>
-      <CustomInput setText={setName}>name</CustomInput>
+      {loading ? <ActivityIndicator size={'large'} style={{ marginBottom: 10 }} /> : null}
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <CustomInput setText={setName} style={{ flex: 1 }}>
+          name
+        </CustomInput>
+        {renderColorPicker()}
+      </View>
       <CustomButton onPress={handleCreateSession}>Create Session</CustomButton>
       <View style={{ flexDirection: 'row', width: '100%' }}>
         <CustomInput setText={setCode} maxLength={4}>

@@ -11,8 +11,8 @@ const RestApi = {
     },
   },
   gameSession: {
-    async get(code) {
-      const result = await axios.get(`${config.url}/game_sessions/${code}`).catch((e) => null);
+    async get(id) {
+      const result = await axios.get(`${config.url}/game_sessions/${id}`).catch((e) => null);
       if (result) return result.data;
       else return null;
     },

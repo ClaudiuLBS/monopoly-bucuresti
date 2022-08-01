@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import CustomButton from '../components/CustomButton';
@@ -5,24 +6,39 @@ import CustomButton from '../components/CustomButton';
 import DefaultScreen from '../components/DefaultScreen';
 import colors from '../constants/colors';
 import GameSessionApi from '../services/game_session.service';
+import RestApi from '../services/rest.service';
 
 const SessionLobbyScreen = ({ code, owner, startSession }) => {
+  const navigation = useNavigation();
+
   const [players, setPlayers] = useState([]);
   const [counter, setCounter] = useState(0);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    GameSessionApi.getPlayers(code).then((res) => setPlayers(res));
-    setTimeout(() => {
-      setCounter(counter + 1);
-    }, 5000);
+    // GameSessionApi.getPlayers(code).then((res) => {
+    //   setPlayers(res);
+    //   RestApi.gameSession.get(res[0].game_session).then((res1) => {
+    //     if (res1 && res1.start_date) navigation.navigate('Game');
+    //   });
+    // });
+    // setTimeout(() => {
+    //   setCounter(counter + 1);
+    // }, 5000);
   }, [counter]);
 
   const handleStartSession = async () => {
     setMessage('Starting Game...');
     const data = await startSession(code);
-    if (data.error) setMessage(data.error);
-    if (data.message) setMessage(data.message);
+    if (data.error) {
+      setMessage(data.error);
+      return;
+    }
+    if (data.message) {
+      setMessage(data.message);
+      return;
+    }
+    navigation.navigate('Game');
   };
   return (
     <DefaultScreen>

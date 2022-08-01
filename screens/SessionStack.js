@@ -23,14 +23,14 @@ const SessionStack = () => {
     } else setScreen('Home');
   };
 
-  const handleCreateSession = async (name) => {
-    const data = await GameSessionApi.createSession(name);
+  const handleCreateSession = async (name, color) => {
+    const data = await GameSessionApi.createSession(name, color);
     setPlayer(data.player);
     setGameSession(data.gameSession);
   };
 
-  const handleJoinSession = async (name, code) => {
-    const data = await GameSessionApi.joinSession(name, code);
+  const handleJoinSession = async (name, code, color) => {
+    const data = await GameSessionApi.joinSession(name, code, color);
     if (data.error) return data.error;
 
     setPlayer(data.player);
