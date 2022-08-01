@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import colors from '../constants/colors';
 
-const CustomInput = ({ children, style, setText, color = colors.secodary, maxLength = 25 }) => {
+const CustomInput = ({ children, style, setText, color = colors.secondary, maxLength = 25 }) => {
   return (
     <TextInput
       style={[styles.textInput, style, { borderColor: color, color: color }]}

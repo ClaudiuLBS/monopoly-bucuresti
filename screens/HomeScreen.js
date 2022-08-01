@@ -11,7 +11,7 @@ const randomColor = () => {
   return result;
 };
 
-const SessionHomeScreen = ({ createSession, joinSession, firstScreen }) => {
+const HomeScreen = ({ createSession, joinSession, firstScreen }) => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
@@ -111,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SessionHomeScreen;
+export default HomeScreen;

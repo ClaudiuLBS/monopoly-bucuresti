@@ -4,13 +4,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import GameSessionApi from '../services/game_session.service';
 import InitService from '../services/init.service';
 import LoadingScreen from './LoadingScreen';
-import SessionGameScreen from './SessionGameScreen';
-import SessionHomeScreen from './SessionHomeScreen';
-import SessionLobbyScreen from './SessionLobbyScreen';
+import DashboardScreen from './DashboardScreen';
+import HomeScreen from './HomeScreen';
+import LobbyScreen from './LobbyScreen';
 
 const Stack = createStackNavigator();
 
-const SessionStack = () => {
+const HomeStack = () => {
   const [gameSession, setGameSession] = useState(null);
   const [player, setPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -58,7 +58,7 @@ const SessionStack = () => {
       <Stack.Screen
         name="Home"
         children={() => (
-          <SessionHomeScreen
+          <HomeScreen
             createSession={handleCreateSession}
             firstScreen={screen}
             joinSession={handleJoinSession}
@@ -68,7 +68,7 @@ const SessionStack = () => {
       <Stack.Screen
         name="Lobby"
         children={() => (
-          <SessionLobbyScreen
+          <LobbyScreen
             owner={player.owner}
             code={gameSession.code}
             startSession={handleStartSession}
@@ -77,10 +77,10 @@ const SessionStack = () => {
       />
       <Stack.Screen
         name="Game"
-        children={() => <SessionGameScreen player={player} gameSession={gameSession} />}
+        children={() => <DashboardScreen player={player} gameSession={gameSession} />}
       />
     </Stack.Navigator>
   );
 };
 
-export default SessionStack;
+export default HomeStack;
