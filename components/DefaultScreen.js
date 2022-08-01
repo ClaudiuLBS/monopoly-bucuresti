@@ -5,19 +5,19 @@ import colors from '../constants/colors';
 
 const DefaultScreen = ({ children, style }) => {
   return (
-    <View
-      style={[
-        {
-          paddingTop: Constants.statusBarHeight,
-          width: '90%',
-          alignSelf: 'center',
-          flex: 1,
-          backgroundColor: colors.background,
-        },
-        style,
-      ]}
-    >
-      {children}
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <View
+        style={[
+          {
+            width: '90%',
+            alignSelf: 'center',
+            flex: 1,
+          },
+          style,
+        ]}
+      >
+        {children}
+      </View>
     </View>
   );
 };

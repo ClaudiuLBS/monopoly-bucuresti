@@ -1,13 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Button, FlatList, StyleSheet, Text, View } from 'react-native';
-import CustomButton from '../components/CustomButton';
+import CustomButton from '../../components/CustomButton';
 
-import DefaultScreen from '../components/DefaultScreen';
-import LobbyPlayer from '../components/LobbyPlayer';
-import colors from '../constants/colors';
-import GameSessionApi from '../services/game_session.service';
-import RestApi from '../services/rest.service';
+import DefaultScreen from '../../components/DefaultScreen';
+import LobbyPlayer from '../../components/LobbyPlayer';
+import colors from '../../constants/colors';
+import GameSessionApi from '../../services/session.service';
+import RestApi from '../../services/rest.service';
 
 const LobbyScreen = ({ code, owner, startSession }) => {
   const navigation = useNavigation();
@@ -23,7 +23,7 @@ const LobbyScreen = ({ code, owner, startSession }) => {
         RestApi.gameSession.get(res[0].game_session).then((res1) => {
           setLoading(false);
           if (res1 && res1.start_date) {
-            navigation.navigate('Game');
+            navigation.navigate('Dashboard');
             clearInterval(refresh);
           }
         });
@@ -38,7 +38,7 @@ const LobbyScreen = ({ code, owner, startSession }) => {
       setError(data.error);
       return;
     }
-    navigation.navigate('Game');
+    navigation.navigate('Dashboard');
     setLoading(false);
   };
   return (
@@ -68,10 +68,12 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginTop: 20,
     padding: 10,
-    backgroundColor: colors.secondary,
-    borderRadius: 100,
-    color: '#fff',
+    backgroundColor: colors.primary,
+    borderRadius: 20,
+    color: colors.white,
     fontWeight: 'bold',
+    borderWidth: 2,
+    borderColor: colors.white + '10',
   },
   error: {
     fontSize: 22,

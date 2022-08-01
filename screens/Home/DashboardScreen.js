@@ -1,11 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
-import Constants from 'expo-constants';
 
-import DefaultScreen from '../components/DefaultScreen';
-import colors from '../constants/colors';
-import { Icon } from '@rneui/base';
+import DefaultScreen from '../../components/DefaultScreen';
+import colors from '../../constants/colors';
 
 const DashboardScreen = ({ player, gameSession }) => {
   const navigation = useNavigation();
@@ -17,13 +15,12 @@ const DashboardScreen = ({ player, gameSession }) => {
 
   return (
     <ScrollView style={styles.page}>
-      <StatusBar barStyle={'light-content'} translucent backgroundColor={'#ffffff00'} />
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <Text style={styles.headerText}>{player.name}</Text>
         </View>
       </View>
-      <DefaultScreen>
+      <DefaultScreen style={{ paddingTop: 20 }}>
         <View style={styles.section}>
           <Text style={styles.title}>Stats</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -70,7 +67,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
-    paddingTop: Constants.statusBarHeight,
     backgroundColor: colors.primary,
     borderBottomColor: '#00000040',
     borderBottomWidth: 4,
@@ -113,7 +109,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   circle: {
-    marginTop: 5,
+    marginTop: 7,
     marginLeft: 1,
     borderWidth: 1,
     borderColor: colors.white,

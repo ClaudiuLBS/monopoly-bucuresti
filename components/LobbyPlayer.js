@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
+import colors from '../constants/colors';
 
 const LobbyPlayer = ({ player }) => {
   return (
@@ -7,7 +8,7 @@ const LobbyPlayer = ({ player }) => {
       style={[
         styles.playerName,
         {
-          borderColor: player.owner ? '#ffc800' : '#999999',
+          borderColor: player.owner ? colors.owner : colors.notOwner,
           borderTopColor: player.color,
         },
       ]}
@@ -20,7 +21,8 @@ const styles = StyleSheet.create({
   playerName: {
     marginTop: 10,
     fontSize: 16,
-    paddingVertical: 5,
+    paddingBottom: 5,
+    paddingTop: 10,
     fontWeight: 'bold',
     borderRadius: 20,
     borderLeftWidth: 10,
@@ -29,6 +31,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 5,
     textAlign: 'center',
     alignItems: 'center',
+    backgroundColor: colors.blueGray,
+    color: colors.primary,
   },
 });
 

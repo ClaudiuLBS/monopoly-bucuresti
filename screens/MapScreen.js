@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, StatusBar, SafeAreaView } from 'react-native';
 import MapView, { Polygon } from 'react-native-maps';
 import colors from '../constants/colors';
 import dimensions from '../constants/dimensions';
@@ -29,7 +29,7 @@ const MapScreen = () => {
   if (loading) return <LoadingScreen />;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <MapView
         style={styles.map}
         initialRegion={{
@@ -51,7 +51,7 @@ const MapScreen = () => {
           />
         ))}
       </MapView>
-    </View>
+    </SafeAreaView>
   );
 };
 

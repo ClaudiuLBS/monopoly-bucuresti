@@ -7,6 +7,7 @@ const CustomInput = ({ children, style, setText, color = colors.secondary, maxLe
     <TextInput
       style={[styles.textInput, style, { borderColor: color, color: color }]}
       placeholder={`${children}...`}
+      placeholderTextColor={colors.secondary + '70'}
       maxLength={maxLength}
       onChangeText={(text) => setText(text)}
     />

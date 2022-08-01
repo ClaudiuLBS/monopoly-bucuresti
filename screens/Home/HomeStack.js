@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import GameSessionApi from '../services/game_session.service';
-import InitService from '../services/init.service';
-import LoadingScreen from './LoadingScreen';
+import GameSessionApi from '../../services/session.service';
+import InitService from '../../services/init.service';
+import LoadingScreen from '../LoadingScreen';
 import DashboardScreen from './DashboardScreen';
-import HomeScreen from './HomeScreen';
+import MenuScreen from './MenuScreen';
 import LobbyScreen from './LobbyScreen';
 
 const Stack = createStackNavigator();
@@ -18,9 +18,9 @@ const HomeStack = () => {
 
   const pickScreen = (gameSession, player) => {
     if (gameSession && player) {
-      if (gameSession.start_date) setScreen('Game');
+      if (gameSession.start_date) setScreen('Dashboard');
       else setScreen('Lobby');
-    } else setScreen('Home');
+    } else setScreen('Menu');
   };
 
   const handleCreateSession = async (name, color) => {
@@ -56,9 +56,9 @@ const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
-        name="Home"
+        name="Menu"
         children={() => (
-          <HomeScreen
+          <MenuScreen
             createSession={handleCreateSession}
             firstScreen={screen}
             joinSession={handleJoinSession}
@@ -76,7 +76,7 @@ const HomeStack = () => {
         )}
       />
       <Stack.Screen
-        name="Game"
+        name="Dashboard"
         children={() => <DashboardScreen player={player} gameSession={gameSession} />}
       />
     </Stack.Navigator>

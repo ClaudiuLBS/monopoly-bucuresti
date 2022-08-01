@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import CustomButton from '../components/CustomButton';
-import DefaultScreen from '../components/DefaultScreen';
-import CustomInput from '../components/CustomInput';
+import CustomButton from '../../components/CustomButton';
+import DefaultScreen from '../../components/DefaultScreen';
+import CustomInput from '../../components/CustomInput';
+import colors from '../../constants/colors';
 
 const randomColor = () => {
   const result = '#' + Math.floor(Math.random() * 16777215).toString(16);
   return result;
 };
 
-const HomeScreen = ({ createSession, joinSession, firstScreen }) => {
+const MenuScreen = ({ createSession, joinSession, firstScreen }) => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
@@ -52,10 +53,12 @@ const HomeScreen = ({ createSession, joinSession, firstScreen }) => {
       <TouchableOpacity
         style={{
           backgroundColor: color,
-          width: 30,
-          height: 30,
+          width: 40,
+          height: 40,
           borderRadius: 50,
           marginHorizontal: 10,
+          borderWidth: 2,
+          borderColor: colors.white,
         }}
         activeOpacity={0.9}
         onPress={() => setColor(randomColor())}
@@ -63,10 +66,10 @@ const HomeScreen = ({ createSession, joinSession, firstScreen }) => {
     );
   };
 
-  if (firstScreen != 'Home')
+  if (firstScreen != 'Menu')
     return (
       <DefaultScreen>
-        <Text>Nigga finnish your fuckin game</Text>
+        <Text style={{ color: colors.blueGray }}>Nigga finnish your fuckin game</Text>
         <CustomButton onPress={() => navigation.navigate(firstScreen)}>Continue</CustomButton>
       </DefaultScreen>
     );
@@ -111,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default MenuScreen;

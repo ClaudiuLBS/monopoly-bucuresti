@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import colors from '../constants/colors';
 
-const CustomButton = ({ style, color = colors.primary, onPress, children }) => {
+const CustomButton = ({ style, color = colors.blueGray, onPress, children }) => {
   return (
     <TouchableOpacity
       activeOpacity={0.6}
