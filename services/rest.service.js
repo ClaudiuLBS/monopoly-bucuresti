@@ -5,14 +5,14 @@ import { config } from '../config';
 const RestApi = {
   player: {
     async get(id) {
-      const result = await axios.get(`${config.url}/players/${id}`).catch((e) => null);
+      const result = await axios.get(`${config.url}/api/players/${id}`).catch((e) => null);
       if (result) return result.data;
       else return null;
     },
   },
   gameSession: {
     async get(id) {
-      const result = await axios.get(`${config.url}/game_sessions/${id}`).catch((e) => null);
+      const result = await axios.get(`${config.url}/api/game_sessions/${id}`).catch((e) => null);
       if (result) return result.data;
       else return null;
     },

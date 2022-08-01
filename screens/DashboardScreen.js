@@ -26,10 +26,13 @@ const DashboardScreen = ({ player, gameSession }) => {
       <DefaultScreen>
         <View style={styles.section}>
           <Text style={styles.title}>Stats</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={styles.subtitle}>color: </Text>
+            <View style={[styles.circle, { backgroundColor: player.color }]} />
+          </View>
           <Text style={styles.subtitle}>money: {player.money}$</Text>
           <Text style={styles.subtitle}>properties: 23</Text>
           <Text style={styles.subtitle}>houses: 132</Text>
-          <Text style={styles.subtitle}>valoare: infinita</Text>
         </View>
         <View style={styles.section}>
           <Text style={styles.title}>Properties</Text>
@@ -108,6 +111,15 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: colors.primary,
     marginBottom: 20,
+  },
+  circle: {
+    marginTop: 5,
+    marginLeft: 1,
+    borderWidth: 1,
+    borderColor: colors.white,
+    width: 12,
+    height: 12,
+    borderRadius: 20,
   },
 });
 export default DashboardScreen;
