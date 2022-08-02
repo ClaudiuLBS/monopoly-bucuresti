@@ -32,7 +32,6 @@ const getLocation = async () => {
 
   await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
     accuracy: Location.Accuracy.Balanced,
-    // timeInterval: 1000,
   });
 
   await Location.watchPositionAsync({
