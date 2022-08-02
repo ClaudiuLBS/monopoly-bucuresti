@@ -12,6 +12,6 @@ export const store = configureStore({
       immutableCheck: {
         ignoredPaths: ['player', 'session'],
       },
-      serializableCheck: { ignoredPaths: ['some.nested.path'] },
+      serializableCheck: { ignoredPaths: ['player', 'session'] },
     }),
 });

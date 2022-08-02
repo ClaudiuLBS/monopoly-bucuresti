@@ -32,7 +32,8 @@
     "expo-notifications": "~0.15.4",
     "expo-device": "~4.2.0",
     "expo-task-manager": "~10.2.1",
-    "expo-location": "~14.2.2"
+    "expo-location": "~14.2.2",
+    "expo-font": "~10.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

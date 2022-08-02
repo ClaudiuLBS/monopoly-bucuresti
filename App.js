@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 import { Icon } from '@rneui/base';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
-import * as Location from 'expo-location';
 
 import HomeStack from './screens/Home/HomeStack';
 import MapScreen from './screens/MapScreen';
@@ -27,7 +26,6 @@ export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
 
   useEffect(() => {
-    getLocation();
     registerForPushNotificationsAsync().then((token) => setExpoPushToken(token));
   }, []);
 

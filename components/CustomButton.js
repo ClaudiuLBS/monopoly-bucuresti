@@ -2,14 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import colors from '../constants/colors';
 
-const CustomButton = ({ style, color = colors.blueGray, onPress, children }) => {
+const CustomButton = ({ style, color = colors.blueGray, onPress, children, active = true }) => {
   return (
     <TouchableOpacity
-      activeOpacity={0.6}
-      onPress={onPress}
-      style={[styles.button, style, { borderColor: color }]}
+      activeOpacity={active ? 0.6 : 1}
+      onPress={active ? onPress : null}
+      style={[styles.button, style, { borderColor: active ? color : color + '80' }]}
     >
-      <Text style={[styles.text, { color: color }]}>{children}</Text>
+      <Text style={[styles.text, { color: active ? color : color + '80' }]}>{children}</Text>
     </TouchableOpacity>
   );
 };

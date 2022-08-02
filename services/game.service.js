@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { config } from '../config';
 
 const GameService = {
   async findLocation(latitude, longitude, code) {
@@ -6,7 +7,9 @@ const GameService = {
       .post(`${config.url}/find-location/`, { latitude, longitude, code })
       .catch((e) => ({
         property: null,
+        name: null,
         price: null,
+        owner: null,
       }));
 
     return result.data;

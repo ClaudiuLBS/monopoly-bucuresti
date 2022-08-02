@@ -35,7 +35,13 @@ const RestApi = {
     },
   },
   neighbourhood: {},
-  property: {},
+  property: {
+    async get(id) {
+      const result = await axios.get(`${config.url}/api/properties/${id}`).catch((e) => null);
+      if (result) return result.data;
+      else return null;
+    },
+  },
 };
 
 export default RestApi;

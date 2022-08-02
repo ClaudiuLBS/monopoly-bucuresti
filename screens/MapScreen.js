@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Dimensions, SafeAreaView } from 'react-native';
+import { StyleSheet, Dimensions, SafeAreaView, View, Text } from 'react-native';
 import MapView, { Polygon } from 'react-native-maps';
+import * as Location from 'expo-location';
 
 import LoadingScreen from './LoadingScreen';
 import InitService from '../services/init.service';
@@ -9,21 +10,46 @@ import colors from '../constants/colors';
 import dimensions from '../constants/dimensions';
 import mapStyle from '../constants/mapStyle';
 import locations from '../constants/locations';
-
-const getLocation = async () => {
-  const { status } = await Location.requestForegroundPermissionsAsync();
-  if (status != 'granted') return;
-
-  await Location.watchPositionAsync({
-    accuracy: Location.Accuracy.High,
-    distanceInterval: 5,
-    timeInterval: 5000,
-  });
-};
+import GameService from '../services/game.service';
+import { useSelector } from 'react-redux';
+import LandLabel from '../components/LandLabel';
 
 const MapScreen = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [place, setPlace] = useState({ property: null });
+  const gameSession = useSelector((state) => state.session);
+
+  useEffect(() => {
+    getMapData();
+    const refresh = setInterval(() => {
+      getMapData();
+    }, 10000);
+    getLocation();
+    return () => clearInterval(refresh);
+  }, []);
+
+  const getLocation = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status != 'granted') return;
+
+    await Location.watchPositionAsync(
+      {
+        accuracy: Location.Accuracy.High,
+        distanceInterval: 5,
+        timeInterval: 5000,
+      },
+      (location) => {
+        if (location) {
+          GameService.findLocation(
+            location.coords.latitude,
+            location.coords.longitude,
+            gameSession.code
+          ).then((res) => setPlace(res));
+        }
+      }
+    );
+  };
 
   const getMapData = () => {
     InitService.checkPlayer().then((result) => {
@@ -36,14 +62,6 @@ const MapScreen = () => {
     });
   };
 
-  useEffect(() => {
-    getMapData();
-    const refresh = setInterval(() => {
-      getMapData();
-    }, 60000);
-    getLocation();
-    return () => clearInterval(refresh);
-  }, []);
   if (loading) return <LoadingScreen />;
 
   return (
@@ -65,6 +83,7 @@ const MapScreen = () => {
           />
         ))}
       </MapView>
+      <LandLabel place={place} />
     </SafeAreaView>
   );
 };
