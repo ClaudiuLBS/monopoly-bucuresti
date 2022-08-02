@@ -7,4 +7,11 @@ export const store = configureStore({
     player: playerSlice,
     session: sessionSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      immutableCheck: {
+        ignoredPaths: ['player', 'session'],
+      },
+      serializableCheck: { ignoredPaths: ['some.nested.path'] },
+    }),
 });
