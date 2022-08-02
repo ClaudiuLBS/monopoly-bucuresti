@@ -33,6 +33,7 @@ const LobbyScreen = () => {
   const refresh = async () => {
     GameSessionApi.getPlayers(gameSession.code).then((res) => {
       setPlayers(res);
+      console.log('here');
       RestApi.gameSession.get(res[0].game_session).then((res1) => {
         setLoading(false);
         if (res1 && res1.start_date) {
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: 20,
     color: colors.white,
-    fontWeight: 'bold',
+    fontFamily: 'bold',
     borderWidth: 2,
     borderColor: colors.white + '10',
   },
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 30,
     color: 'red',
-    fontWeight: 'bold',
+    fontFamily: 'bold',
   },
   loading: {
     marginTop: 10,

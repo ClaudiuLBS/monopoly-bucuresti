@@ -9,12 +9,25 @@ import GameService from '../services/game.service';
 import RestApi from '../services/rest.service';
 import CustomButton from './CustomButton';
 
-const LandLabel = ({ place }) => {
+const LandLabel = ({ placex }) => {
+  const place = {
+    name: 'Militari',
+    owner: 'Geani',
+    price: 100,
+    property: 427,
+  };
+
   if (!place || !place.property) return null;
 
   const dispatch = useDispatch();
   const [property, setProperty] = useState(null);
   const player = useSelector((state) => state.player);
+
+  const loadProperty = () => {
+    RestApi.property.get(place.property).then((res) => {
+      setProperty(res);
+    });
+  };
 
   useEffect(() => {
     RestApi.property.get(place.property).then((res) => {
@@ -33,6 +46,7 @@ const LandLabel = ({ place }) => {
       };
       dispatch(addProperty(newProperty));
       dispatch(removeMoney(place.price));
+      loadProperty();
     });
   };
 
@@ -80,7 +94,7 @@ const LandLabel = ({ place }) => {
         <Text style={styles.title}>{place.name}</Text>
         <View style={styles.specsContainer}>
           <Text style={styles.specsLabel}>Owner:</Text>
-          <Text style={styles.specsValue}>Geani</Text>
+          <Text style={styles.specsValue}>{place.owner}</Text>
         </View>
         <CustomButton color={colors.primary}>ATTACK</CustomButton>
       </View>
@@ -129,7 +143,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     color: colors.primary,
-    fontWeight: 'bold',
+    fontFamily: 'bold',
     marginBottom: 5,
     borderBottomWidth: 1,
     borderColor: colors.primary,
@@ -145,7 +159,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   specsLabel: {
-    fontWeight: 'bold',
+    fontFamily: 'bold',
   },
   specsValue: {
     marginHorizontal: 5,

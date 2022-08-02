@@ -24,7 +24,7 @@ const MapScreen = () => {
     getMapData();
     const refresh = setInterval(() => {
       getMapData();
-    }, 10000);
+    }, 60000);
     getLocation();
     return () => clearInterval(refresh);
   }, []);

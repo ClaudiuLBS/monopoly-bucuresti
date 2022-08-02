@@ -23,13 +23,13 @@ const DashboardScreen = () => {
 
   const renderProperties = () => {
     if (player.properties == null) return <ActivityIndicator size={'large'} color={colors.white} />;
-    else {
-      return player.properties.map((item, index) => (
-        <Text key={index} style={styles.subtitle}>
-          {item.name}
-        </Text>
-      ));
-    }
+    if (player.properties.length == 0) return <Text style={styles.subtitle}>No properties</Text>;
+
+    return player.properties.map((item, index) => (
+      <Text key={index} style={styles.subtitle}>
+        {item.name}
+      </Text>
+    ));
   };
 
   return (
@@ -95,13 +95,13 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontFamily: 'bold',
     fontSize: 22,
     paddingBottom: 5,
   },
   title: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontFamily: 'bold',
     fontSize: 20,
     backgroundColor: '#ffffff10',
     borderTopLeftRadius: 15,
@@ -112,10 +112,10 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontFamily: 'bold',
     marginTop: 5,
     marginLeft: 10,
-    fontSize: 16,
+    fontSize: 17,
   },
   section: {
     borderRadius: 20,

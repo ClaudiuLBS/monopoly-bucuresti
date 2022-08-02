@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     textAlign: 'center',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'bold',
     paddingHorizontal: 30,
   },
 });
