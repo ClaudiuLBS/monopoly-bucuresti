@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions, StatusBar, SafeAreaView } from 'react-native';
+import { StyleSheet, Dimensions, SafeAreaView } from 'react-native';
 import MapView, { Polygon } from 'react-native-maps';
 
+import LoadingScreen from './LoadingScreen';
+import InitService from '../services/init.service';
+import MapApi from '../services/map.service';
 import colors from '../constants/colors';
 import dimensions from '../constants/dimensions';
 import mapStyle from '../constants/mapStyle';
-import InitService from '../services/init.service';
-import MapApi from '../services/map.service';
-import LoadingScreen from './LoadingScreen';
 import locations from '../constants/locations';
 
 const MapScreen = () => {

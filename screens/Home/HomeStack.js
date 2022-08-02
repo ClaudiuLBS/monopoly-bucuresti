@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useDispatch } from 'react-redux';
 
-import GameSessionApi from '../../services/session.service';
 import InitService from '../../services/init.service';
 import LoadingScreen from '../LoadingScreen';
 import DashboardScreen from './DashboardScreen';
 import MenuScreen from './MenuScreen';
 import LobbyScreen from './LobbyScreen';
-import { useDispatch, useSelector } from 'react-redux';
 import { setPlayer } from '../../redux/playerSlice';
 import { setSession } from '../../redux/sessionSlice';
 

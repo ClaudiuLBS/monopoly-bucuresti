@@ -21,6 +21,15 @@ const LobbyScreen = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    refresh();
+    const handleRefresh = setInterval(() => {
+      refresh();
+    }, 5000);
+
+    return () => clearInterval(handleRefresh);
+  }, []);
+
   const refresh = async () => {
     GameSessionApi.getPlayers(gameSession.code).then((res) => {
       setPlayers(res);
@@ -33,14 +42,6 @@ const LobbyScreen = () => {
       });
     });
   };
-  useEffect(() => {
-    refresh();
-    const handleRefresh = setInterval(() => {
-      refresh();
-    }, 5000);
-
-    return () => clearInterval(handleRefresh);
-  }, []);
 
   const handleStartSession = async () => {
     const startSession = async (code) => {
@@ -58,6 +59,7 @@ const LobbyScreen = () => {
     navigation.navigate('Dashboard');
     setLoading(false);
   };
+
   return (
     <DefaultScreen>
       <Text style={styles.code}>{gameSession.code}</Text>
