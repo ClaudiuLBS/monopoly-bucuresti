@@ -20,6 +20,12 @@ const RestApi = {
       if (result) return result.data;
       else return null;
     },
+
+    async properties(id) {
+      const result = await axios.get(`${config.url}/properties-of/${id}`).catch((e) => []);
+      if (result) return result;
+      else return [];
+    },
   },
   gameSession: {
     async get(id) {

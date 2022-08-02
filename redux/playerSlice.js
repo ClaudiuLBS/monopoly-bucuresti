@@ -10,6 +10,7 @@ export const playerSlice = createSlice({
     money: null,
     soldiers: null,
     owner: null,
+    properties: null,
   },
   reducers: {
     setPlayer: (state, action) => {
@@ -35,10 +36,13 @@ export const playerSlice = createSlice({
     dropSoldiers: (state, action) => {
       state.soldiers -= action.payload;
     },
+    setProperties: (state, action) => {
+      state.properties = action.payload;
+    },
   },
 });
 
-export const { addMoney, bringSoldiers, dropSoldiers, removeMoney, setPlayer } =
+export const { addMoney, bringSoldiers, dropSoldiers, removeMoney, setPlayer, setProperties } =
   playerSlice.actions;
 
 export default playerSlice.reducer;

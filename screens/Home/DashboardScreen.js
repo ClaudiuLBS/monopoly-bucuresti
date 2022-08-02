@@ -1,10 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import DefaultScreen from '../../components/DefaultScreen';
+import RestApi from '../../services/rest.service';
 import colors from '../../constants/colors';
+import { setProperties } from '../../redux/playerSlice';
 
 const DashboardScreen = () => {
   const navigation = useNavigation();
@@ -16,7 +18,19 @@ const DashboardScreen = () => {
     navigation.addListener('beforeRemove', (e) => {
       e.preventDefault();
     });
+    RestApi.player.properties(player.id).then((res) => dispatch(setProperties(res.data)));
   }, []);
+
+  const renderProperties = () => {
+    if (player.properties == null) return <ActivityIndicator size={'large'} color={colors.white} />;
+    else {
+      return player.properties.map((item, index) => (
+        <Text key={index} style={styles.subtitle}>
+          {item.name}
+        </Text>
+      ));
+    }
+  };
 
   return (
     <ScrollView style={styles.page}>
@@ -34,32 +48,30 @@ const DashboardScreen = () => {
           </View>
           <Text style={styles.subtitle}>money: {player.money}$</Text>
           <Text style={styles.subtitle}>properties: 23</Text>
-          <Text style={styles.subtitle}>houses: 132</Text>
+          <Text style={styles.subtitle}>soldiers: {player.soldiers}</Text>
         </View>
         <View style={styles.section}>
           <Text style={styles.title}>Properties</Text>
-          <Text style={styles.subtitle}>Grozavesti</Text>
-          <Text style={styles.subtitle}>Crangasi</Text>
-          <Text style={styles.subtitle}>Militari</Text>
+          {renderProperties()}
         </View>
         <View style={styles.section}>
           <Text style={styles.title}>Game Log</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
-          <Text style={styles.subtitle}>Ion died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
+          <Text style={styles.subtitle}>Nigga died</Text>
         </View>
       </DefaultScreen>
     </ScrollView>

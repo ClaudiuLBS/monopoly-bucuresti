@@ -10,6 +10,17 @@ import dimensions from '../constants/dimensions';
 import mapStyle from '../constants/mapStyle';
 import locations from '../constants/locations';
 
+const getLocation = async () => {
+  const { status } = await Location.requestForegroundPermissionsAsync();
+  if (status != 'granted') return;
+
+  await Location.watchPositionAsync({
+    accuracy: Location.Accuracy.High,
+    distanceInterval: 5,
+    timeInterval: 5000,
+  });
+};
+
 const MapScreen = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +41,7 @@ const MapScreen = () => {
     const refresh = setInterval(() => {
       getMapData();
     }, 60000);
+    getLocation();
     return () => clearInterval(refresh);
   }, []);
   if (loading) return <LoadingScreen />;

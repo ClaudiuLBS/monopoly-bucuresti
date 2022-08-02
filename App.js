@@ -22,17 +22,6 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const getLocation = async () => {
-  const { status } = await Location.requestForegroundPermissionsAsync();
-  if (status != 'granted') return;
-
-  await Location.watchPositionAsync({
-    accuracy: Location.Accuracy.High,
-    distanceInterval: 5,
-    timeInterval: 5000,
-  });
-};
-
 const Tab = createBottomTabNavigator();
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');

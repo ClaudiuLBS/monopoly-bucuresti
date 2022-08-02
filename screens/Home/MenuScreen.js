@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import CustomButton from '../../components/CustomButton';
 import DefaultScreen from '../../components/DefaultScreen';
 import CustomInput from '../../components/CustomInput';
 import colors from '../../constants/colors';
-import { useDispatch, useSelector } from 'react-redux';
 import GameSessionApi from '../../services/session.service';
 import { setPlayer } from '../../redux/playerSlice';
 import { setSession } from '../../redux/sessionSlice';
