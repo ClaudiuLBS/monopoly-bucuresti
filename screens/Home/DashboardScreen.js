@@ -1,12 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import DefaultScreen from '../../components/DefaultScreen';
 import colors from '../../constants/colors';
 
-const DashboardScreen = ({ player, gameSession }) => {
+const DashboardScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const player = useSelector((state) => state.player);
+  const gameSession = useSelector((state) => state.session);
+
   useEffect(() => {
     navigation.addListener('beforeRemove', (e) => {
       e.preventDefault();

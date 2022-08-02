@@ -6,7 +6,6 @@ import RestApi from './rest.service';
 
 const GameSessionApi = {
   async createSession(name, color) {
-    console.log(color);
     const result = await axios.post(`${config.url}/create-session/`, { name, color });
     await SecureStore.setItemAsync('player_id', result.data.player_id.toString());
     const player = await RestApi.player.get(result.data.player_id);

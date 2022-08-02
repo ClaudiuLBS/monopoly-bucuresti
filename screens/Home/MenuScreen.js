@@ -6,14 +6,21 @@ import CustomButton from '../../components/CustomButton';
 import DefaultScreen from '../../components/DefaultScreen';
 import CustomInput from '../../components/CustomInput';
 import colors from '../../constants/colors';
+import { useDispatch, useSelector } from 'react-redux';
+import GameSessionApi from '../../services/session.service';
+import { setPlayer } from '../../redux/playerSlice';
+import { setSession } from '../../redux/sessionSlice';
 
 const randomColor = () => {
   const result = '#' + Math.floor(Math.random() * 16777215).toString(16);
   return result;
 };
 
-const MenuScreen = ({ createSession, joinSession, firstScreen }) => {
+const MenuScreen = ({ firstScreen }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const player = useSelector((state) => state.player);
+
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [color, setColor] = useState(randomColor());
@@ -21,6 +28,12 @@ const MenuScreen = ({ createSession, joinSession, firstScreen }) => {
   const [loading, setLoading] = useState(false);
 
   const handleCreateSession = async () => {
+    const createSession = async (name, color) => {
+      const data = await GameSessionApi.createSession(name, color);
+      dispatch(setPlayer(data.player));
+      dispatch(setSession(data.gameSession));
+    };
+
     if (!name) {
       setError('Enter a name yo fuckin nigger');
       return;
@@ -32,6 +45,14 @@ const MenuScreen = ({ createSession, joinSession, firstScreen }) => {
   };
 
   const handleJoinSession = async () => {
+    const joinSession = async (name, code, color) => {
+      const data = await GameSessionApi.joinSession(name, code, color);
+      if (data.error) return data.error;
+
+      dispatch(setPlayer(data.player));
+      dispatch(setSession(data.gameSession));
+    };
+
     if (!name) {
       setError('Enter a name yo fuckin nigger');
       return;
@@ -69,7 +90,7 @@ const MenuScreen = ({ createSession, joinSession, firstScreen }) => {
   if (firstScreen != 'Menu')
     return (
       <DefaultScreen>
-        <Text style={{ color: colors.blueGray }}>Nigga finnish your fuckin game</Text>
+        <Text style={{ color: colors.blueGray }}>{player.name} finnish your fuckin game</Text>
         <CustomButton onPress={() => navigation.navigate(firstScreen)}>Continue</CustomButton>
       </DefaultScreen>
     );
@@ -96,6 +117,7 @@ const MenuScreen = ({ createSession, joinSession, firstScreen }) => {
     </DefaultScreen>
   );
 };
+
 const styles = StyleSheet.create({
   joinSession: {
     flex: 1,

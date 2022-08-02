@@ -11,6 +11,8 @@ import HomeStack from './screens/Home/HomeStack';
 import MapScreen from './screens/MapScreen';
 import dimensions from './constants/dimensions';
 import colors from './constants/colors';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -19,8 +21,6 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
-
-const LOCATION_TASK_NAME = 'background-location';
 
 const getLocation = async () => {
   const { status } = await Location.requestForegroundPermissionsAsync();
@@ -43,41 +43,43 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer>
-      <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: {
-            height: dimensions.tabBarHeight,
-            backgroundColor: colors.primary,
-            paddingTop: 5,
-          },
-          tabBarActiveTintColor: colors.white,
-        }}
-      >
-        <Tab.Screen
-          name="Home"
-          component={HomeStack}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Icon name="home" type="entypo" size={size} color={color} />
-            ),
-            tabBarLabelStyle: { fontSize: 12, paddingBottom: 3 },
+    <Provider store={store}>
+      <NavigationContainer>
+        <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
+        <Tab.Navigator
+          screenOptions={{
+            headerShown: false,
+            tabBarStyle: {
+              height: dimensions.tabBarHeight,
+              backgroundColor: colors.primary,
+              paddingTop: 5,
+            },
+            tabBarActiveTintColor: colors.white,
           }}
-        />
-        <Tab.Screen
-          name="Map"
-          component={MapScreen}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Icon name="map-marked-alt" type="font-awesome-5" size={size} color={color} />
-            ),
-            tabBarLabelStyle: { fontSize: 12, paddingBottom: 3 },
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+        >
+          <Tab.Screen
+            name="Home"
+            component={HomeStack}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Icon name="home" type="entypo" size={size} color={color} />
+              ),
+              tabBarLabelStyle: { fontSize: 12, paddingBottom: 3 },
+            }}
+          />
+          <Tab.Screen
+            name="Map"
+            component={MapScreen}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Icon name="map-marked-alt" type="font-awesome-5" size={size} color={color} />
+              ),
+              tabBarLabelStyle: { fontSize: 12, paddingBottom: 3 },
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
@@ -109,4 +111,3 @@ async function registerForPushNotificationsAsync() {
   }
   return token;
 }
-
