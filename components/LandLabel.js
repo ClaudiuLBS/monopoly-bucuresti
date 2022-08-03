@@ -76,7 +76,7 @@ const LandLabel = ({ place, refresh }) => {
         setProperty(newProperty);
         dispatch(addProperty(newProperty));
         refresh();
-      } else if (res.lose) Alert.alert('You lost', 'Maybe next time');
+      } else Alert.alert('You lost', 'Maybe next time');
     });
   };
 

@@ -17,16 +17,7 @@ const Stack = createStackNavigator();
 
 const HomeStack = () => {
   const dispatch = useDispatch();
-
   const [loading, setLoading] = useState(true);
-  const [screen, setScreen] = useState('');
-
-  const pickScreen = (gameSession, player) => {
-    if (gameSession && player) {
-      if (gameSession.start_date) setScreen('Dashboard');
-      else setScreen('Lobby');
-    } else setScreen('Menu');
-  };
 
   useEffect(() => {
     Font.loadAsync({
@@ -34,7 +25,6 @@ const HomeStack = () => {
       bold: Ubuntu_500Medium,
     }).then(
       InitService.checkPlayer().then((data) => {
-        pickScreen(data.gameSession, data.player);
         dispatch(setSession(data.gameSession));
         dispatch(setPlayer(data.player));
         setCustomText({
@@ -51,9 +41,9 @@ const HomeStack = () => {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Menu" children={() => <MenuScreen firstScreen={screen} />} />
-      <Stack.Screen name="Lobby" component={LobbyScreen} />
-      <Stack.Screen name="Dashboard" component={DashboardScreen} />
+      <Stack.Screen name={'Menu'} component={MenuScreen} />
+      <Stack.Screen name={'Lobby'} component={LobbyScreen} />
+      <Stack.Screen name={'Dashboard'} component={DashboardScreen} />
     </Stack.Navigator>
   );
 };

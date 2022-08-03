@@ -10,16 +10,18 @@ import colors from '../../constants/colors';
 import GameSessionApi from '../../services/session.service';
 import { setPlayer } from '../../redux/playerSlice';
 import { setSession } from '../../redux/sessionSlice';
+import texts from '../../constants/texts';
 
 const randomColor = () => {
   const result = '#' + Math.floor(Math.random() * 16777215).toString(16);
   return result;
 };
 
-const MenuScreen = ({ firstScreen }) => {
+const MenuScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const player = useSelector((state) => state.player);
+  const gameSession = useSelector((state) => state.session);
 
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
@@ -27,9 +29,12 @@ const MenuScreen = ({ firstScreen }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    navigation.navigate(firstScreen);
-  }, [firstScreen]);
+  const pickScreen = () => {
+    if (gameSession && player) {
+      if (gameSession.start_date) navigation.navigate('Dashboard');
+      else navigation.navigate('Lobby');
+    }
+  };
 
   const handleCreateSession = async () => {
     const createSession = async (name, color) => {
@@ -100,15 +105,18 @@ const MenuScreen = ({ firstScreen }) => {
         </CustomInput>
         {renderColorPicker()}
       </View>
-      <CustomButton onPress={handleCreateSession}>Create Session</CustomButton>
+      <CustomButton active={!gameSession} onPress={handleCreateSession}>
+        {texts.createGame}
+      </CustomButton>
       <View style={{ flexDirection: 'row', width: '100%' }}>
         <CustomInput setText={setCode} maxLength={4}>
           code
         </CustomInput>
-        <CustomButton style={styles.joinSession} onPress={handleJoinSession}>
-          Join Session
+        <CustomButton active={!gameSession} style={styles.joinSession} onPress={handleJoinSession}>
+          {texts.joinGame}
         </CustomButton>
       </View>
+      <CustomButton onPress={pickScreen}>{texts.continueGame}</CustomButton>
       {error ? <Text style={styles.error}>Error - {error}</Text> : null}
     </DefaultScreen>
   );

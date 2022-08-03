@@ -47,7 +47,9 @@ const DashboardScreen = () => {
             <View style={[styles.circle, { backgroundColor: player.color }]} />
           </View>
           <Text style={styles.subtitle}>money: {player.money}$</Text>
-          <Text style={styles.subtitle}>properties: 23</Text>
+          <Text style={styles.subtitle}>
+            properties: {player.properties ? player.properties.length : 0}
+          </Text>
           <Text style={styles.subtitle}>soldiers: {player.soldiers}</Text>
         </View>
         <View style={styles.section}>
