@@ -5,13 +5,13 @@ import { setCustomText } from 'react-native-global-props';
 import { Ubuntu_400Regular, Ubuntu_500Medium, Ubuntu_700Bold } from '@expo-google-fonts/ubuntu';
 import * as Font from 'expo-font';
 
+import { setPlayer } from '../../redux/playerSlice';
+import { setSession } from '../../redux/sessionSlice';
 import InitService from '../../services/init.service';
 import LoadingScreen from '../LoadingScreen';
 import DashboardScreen from './DashboardScreen';
 import MenuScreen from './MenuScreen';
 import LobbyScreen from './LobbyScreen';
-import { setPlayer } from '../../redux/playerSlice';
-import { setSession } from '../../redux/sessionSlice';
 
 const Stack = createStackNavigator();
 

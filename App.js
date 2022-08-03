@@ -8,17 +8,17 @@ import * as Notifications from 'expo-notifications';
 import * as SecureStore from 'expo-secure-store';
 import * as Device from 'expo-device';
 
-import HomeStack from './screens/Home/HomeStack';
-import MapScreen from './screens/MapScreen';
+import HomeStack from './screens/home/HomeStack';
 import dimensions from './constants/dimensions';
 import colors from './constants/colors';
 import { store } from './redux/store';
 import { config } from './config';
+import MapStack from './screens/map/MapStack';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
-    shouldPlaySound: false,
+    shouldPlaySound: true,
     shouldSetBadge: false,
   }),
 });
@@ -47,22 +47,25 @@ export default function App() {
           }}
         >
           <Tab.Screen
-            name="Home"
+            name="HomeStack"
             component={HomeStack}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Icon name="home" type="entypo" size={size} color={color} />
               ),
+              tabBarLabel: 'Home',
               tabBarLabelStyle: { fontSize: 12, paddingBottom: 3 },
             }}
           />
+
           <Tab.Screen
-            name="Map"
-            component={MapScreen}
+            name="MapStack"
+            component={MapStack}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Icon name="map-marked-alt" type="font-awesome-5" size={size} color={color} />
               ),
+              tabBarLabel: 'Map',
               tabBarLabelStyle: { fontSize: 12, paddingBottom: 3 },
             }}
           />

@@ -3,16 +3,16 @@ import { StyleSheet, Dimensions, SafeAreaView, View, Text } from 'react-native';
 import MapView, { Polygon } from 'react-native-maps';
 import * as Location from 'expo-location';
 
-import LoadingScreen from './LoadingScreen';
-import InitService from '../services/init.service';
-import MapApi from '../services/map.service';
-import colors from '../constants/colors';
-import dimensions from '../constants/dimensions';
-import mapStyle from '../constants/mapStyle';
-import locations from '../constants/locations';
-import GameService from '../services/game.service';
+import LoadingScreen from '../LoadingScreen';
+import InitService from '../../services/init.service';
+import MapApi from '../../services/map.service';
+import colors from '../../constants/colors';
+import dimensions from '../../constants/dimensions';
+import mapStyle from '../../constants/mapStyle';
+import locations from '../../constants/locations';
+import GameService from '../../services/game.service';
 import { useSelector } from 'react-redux';
-import LandLabel from '../components/LandLabel';
+import LandLabel from '../../components/LandLabel';
 
 const MapScreen = () => {
   const [data, setData] = useState([]);
