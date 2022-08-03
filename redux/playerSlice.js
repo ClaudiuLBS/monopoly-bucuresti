@@ -40,7 +40,7 @@ export const playerSlice = createSlice({
       state.properties = action.payload;
     },
     addProperty: (state, action) => {
-      if (state.properties) state.properties = [];
+      if (!state.properties) state.properties = [];
       state.properties.push(action.payload);
     },
   },

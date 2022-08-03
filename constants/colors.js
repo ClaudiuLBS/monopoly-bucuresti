@@ -8,4 +8,6 @@ export default {
   blueGray: '#c0c9cf',
   owner: '#f5d678',
   notOwner: '#696868',
+  confirm: '#2c961a',
+  cancel: '#b52d39',
 };

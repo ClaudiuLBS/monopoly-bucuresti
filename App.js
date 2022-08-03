@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Platform, StatusBar } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import { Icon } from '@rneui/base';
 import * as Notifications from 'expo-notifications';
+import * as SecureStore from 'expo-secure-store';
 import * as Device from 'expo-device';
 
 import HomeStack from './screens/Home/HomeStack';
@@ -12,6 +13,7 @@ import MapScreen from './screens/MapScreen';
 import dimensions from './constants/dimensions';
 import colors from './constants/colors';
 import { store } from './redux/store';
+import { config } from './config';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -23,10 +25,10 @@ Notifications.setNotificationHandler({
 
 const Tab = createBottomTabNavigator();
 export default function App() {
-  const [expoPushToken, setExpoPushToken] = useState('');
-
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => setExpoPushToken(token));
+    registerForPushNotificationsAsync().then((token) =>
+      SecureStore.setItemAsync(config.push_token, token)
+    );
   }, []);
 
   return (

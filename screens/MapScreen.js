@@ -83,7 +83,7 @@ const MapScreen = () => {
           />
         ))}
       </MapView>
-      <LandLabel place={place} />
+      <LandLabel place={place} refresh={getMapData} />
     </SafeAreaView>
   );
 };

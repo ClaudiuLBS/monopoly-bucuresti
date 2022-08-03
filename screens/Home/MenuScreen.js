@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +26,10 @@ const MenuScreen = ({ firstScreen }) => {
   const [color, setColor] = useState(randomColor());
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    navigation.navigate(firstScreen);
+  }, [firstScreen]);
 
   const handleCreateSession = async () => {
     const createSession = async (name, color) => {
@@ -86,14 +90,6 @@ const MenuScreen = ({ firstScreen }) => {
       />
     );
   };
-
-  if (firstScreen != 'Menu')
-    return (
-      <DefaultScreen>
-        <Text style={{ color: colors.blueGray }}>{player.name} finnish your fuckin game</Text>
-        <CustomButton onPress={() => navigation.navigate(firstScreen)}>Continue</CustomButton>
-      </DefaultScreen>
-    );
 
   return (
     <DefaultScreen style={{ justifyContent: 'center' }}>
