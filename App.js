@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Platform, StatusBar } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import { Icon } from '@rneui/base';
 import * as Notifications from 'expo-notifications';
@@ -9,11 +9,11 @@ import * as SecureStore from 'expo-secure-store';
 import * as Device from 'expo-device';
 
 import HomeStack from './screens/home/HomeStack';
+import MapStack from './screens/map/MapStack';
 import dimensions from './constants/dimensions';
 import colors from './constants/colors';
 import { store } from './redux/store';
 import { config } from './config';
-import MapStack from './screens/map/MapStack';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -31,16 +31,24 @@ export default function App() {
     );
   }, []);
 
+  const MyTheme = {
+    ...DarkTheme,
+    colors: {
+      ...DarkTheme.colors,
+      background: colors.background,
+      card: colors.primary,
+    },
+  };
+
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer theme={MyTheme}>
         <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
         <Tab.Navigator
           screenOptions={{
             headerShown: false,
             tabBarStyle: {
               height: dimensions.tabBarHeight,
-              backgroundColor: colors.primary,
               paddingTop: 5,
             },
             tabBarActiveTintColor: colors.white,

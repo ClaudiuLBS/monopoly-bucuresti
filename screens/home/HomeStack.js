@@ -8,7 +8,7 @@ import * as Font from 'expo-font';
 import { setPlayer } from '../../redux/playerSlice';
 import { setSession } from '../../redux/sessionSlice';
 import InitService from '../../services/init.service';
-import LoadingScreen from '../LoadingScreen';
+import LoadingScreen from '../../components/LoadingScreen';
 import DashboardScreen from './DashboardScreen';
 import MenuScreen from './MenuScreen';
 import LobbyScreen from './LobbyScreen';

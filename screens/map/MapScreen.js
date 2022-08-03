@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Dimensions, SafeAreaView, View, Text } from 'react-native';
+import { StyleSheet, Dimensions, SafeAreaView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import MapView, { Polygon } from 'react-native-maps';
 import * as Location from 'expo-location';
 
-import LoadingScreen from '../LoadingScreen';
+import LoadingScreen from '../../components/LoadingScreen';
 import InitService from '../../services/init.service';
 import MapApi from '../../services/map.service';
 import colors from '../../constants/colors';
@@ -15,6 +16,7 @@ import { useSelector } from 'react-redux';
 import LandLabel from '../../components/LandLabel';
 
 const MapScreen = () => {
+  const navigation = useNavigation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [place, setPlace] = useState({ property: null });
@@ -80,6 +82,8 @@ const MapScreen = () => {
             fillColor={item.color}
             strokeColor={colors.landStroke}
             strokeWidth={2}
+            onPress={() => navigation.navigate('PropertyInfo', { property: item })}
+            tappable
           />
         ))}
       </MapView>
