@@ -10,9 +10,9 @@ export default {
   notOwner: '#696868',
   confirm: '#2c961a',
   cancel: '#b52d39',
-  green: '#72f542',
+  green: '#bff765',
   yellow: '#f5d142',
-  red: '#ff764d',
-  lightBlue: '#42ddf5',
-  pink: '#ff63fc',
+  red: '#cf4444',
+  lightBlue: '#7cdbe6',
+  pink: '#ff9166',
 };

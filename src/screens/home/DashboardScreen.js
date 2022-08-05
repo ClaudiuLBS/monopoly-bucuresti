@@ -115,17 +115,19 @@ const RenderProperties = ({ properties }) => {
       <View style={{ flexDirection: 'row', marginBottom: 10 }}>
         <View style={styles.propertyItemContainer}>
           <Icon name={'people'} type={'ionicon'} color={colors.yellow} size={22} />
-          <Text style={[styles.propertyItemText, { color: colors.yellow }]}>13122</Text>
+          <Text style={[styles.propertyItemText, { color: colors.yellow }]}>{item.population}</Text>
         </View>
 
         <View style={styles.propertyItemContainer}>
           <Icon name={'factory'} type={'material-community'} color={colors.pink} size={20} />
-          <Text style={[styles.propertyItemText, { color: colors.pink }]}>1312</Text>
+          <Text style={[styles.propertyItemText, { color: colors.pink }]}>{item.factories}</Text>
         </View>
 
         <View style={styles.propertyItemContainer}>
           <Icon name={'user-shield'} type={'font-awesome-5'} color={colors.lightBlue} size={15} />
-          <Text style={[styles.propertyItemText, { color: colors.lightBlue }]}>6542</Text>
+          <Text style={[styles.propertyItemText, { color: colors.lightBlue }]}>
+            {item.soldiers}
+          </Text>
         </View>
       </View>
     </View>

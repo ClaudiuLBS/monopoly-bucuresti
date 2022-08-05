@@ -81,7 +81,7 @@ const MapScreen = () => {
             coordinates={item.coords}
             fillColor={item.color}
             strokeColor={colors.landStroke}
-            strokeWidth={2}
+            strokeWidth={0.5}
             onPress={() => navigation.navigate('PropertyInfo', { property: item })}
             tappable
           />

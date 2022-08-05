@@ -27,7 +27,7 @@ function hslToHex(h, s, l) {
 
 const randomColor = () => {
   const hue = Math.floor(Math.random() * 361);
-  const result = hslToHex(hue, 100, 50);
+  const result = hslToHex(hue, 60, 55);
   return result;
 };
 
