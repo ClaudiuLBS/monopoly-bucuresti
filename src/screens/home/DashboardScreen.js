@@ -2,12 +2,12 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { Icon } from '@rneui/base';
 
 import DefaultScreen from '../../components/DefaultScreen';
 import RestApi from '../../services/rest.service';
 import colors from '../../constants/colors';
 import { setProperties } from '../../redux/playerSlice';
-import { Icon } from '@rneui/base';
 
 const DashboardScreen = () => {
   const navigation = useNavigation();
@@ -24,14 +24,7 @@ const DashboardScreen = () => {
 
   return (
     <ScrollView style={styles.page}>
-      <View style={styles.header}>
-        <View style={styles.headerTitle}>
-          <View style={[styles.circle, { backgroundColor: player.color }]} />
-          <Text style={styles.headerText}>{player.name}</Text>
-        </View>
-        <Icon name={'stats-chart'} type={'ionicon'} color={colors.white} />
-      </View>
-      <DefaultScreen style={{ paddingTop: 20 }}>
+      <DefaultScreen>
         <View style={styles.section}>
           <Text style={styles.title}>Stats</Text>
 
@@ -139,26 +132,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
-  header: {
-    backgroundColor: colors.primary,
-    borderBottomColor: '#00000040',
-    borderBottomWidth: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  headerTitle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerText: {
-    color: colors.white,
-    fontFamily: 'bold',
-    fontSize: 22,
-    paddingBottom: 5,
-  },
+
   title: {
     color: colors.white,
     fontFamily: 'bold',
@@ -169,6 +143,14 @@ const styles = StyleSheet.create({
     margin: -10,
     marginBottom: 0,
     padding: 10,
+  },
+  circle: {
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: colors.white,
+    width: 15,
+    height: 15,
+    borderRadius: 20,
   },
   subtitle: {
     color: colors.white,
@@ -201,14 +183,6 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: colors.primary,
     marginBottom: 20,
-  },
-  circle: {
-    marginRight: 10,
-    borderWidth: 1,
-    borderColor: colors.white,
-    width: 15,
-    height: 15,
-    borderRadius: 20,
   },
   propertyItemContainer: {
     // marginBottom: 10,
