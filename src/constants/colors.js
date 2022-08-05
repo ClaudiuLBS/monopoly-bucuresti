@@ -12,7 +12,7 @@ export default {
   cancel: '#b52d39',
   green: '#72f542',
   yellow: '#f5d142',
-  red: '#f55a42',
+  red: '#ff764d',
   lightBlue: '#42ddf5',
   pink: '#ff63fc',
 };

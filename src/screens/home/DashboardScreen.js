@@ -1,26 +1,31 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Icon } from '@rneui/base';
 
 import DefaultScreen from '../../components/DefaultScreen';
+import LoadingScreen from '../../components/LoadingScreen';
 import RestApi from '../../services/rest.service';
 import colors from '../../constants/colors';
-import { setProperties } from '../../redux/playerSlice';
 
 const DashboardScreen = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
   const player = useSelector((state) => state.player);
+  const [stats, setStats] = useState(null);
+  const [properties, setProperties] = useState(null);
+
   const gameSession = useSelector((state) => state.session);
 
   useEffect(() => {
     navigation.addListener('beforeRemove', (e) => {
       e.preventDefault();
     });
-    RestApi.player.properties(player.id).then((res) => dispatch(setProperties(res.data)));
+    RestApi.player.properties(player.id).then((res) => setProperties(res));
+    RestApi.player.stats(player.id).then((res) => setStats(res));
   }, []);
+
+  if (stats === null || properties === null) return <LoadingScreen />;
 
   return (
     <ScrollView style={styles.page}>
@@ -30,8 +35,8 @@ const DashboardScreen = () => {
 
           <StatsItem
             title={'Money'}
-            value1={1500}
-            value2={'100/day'}
+            value1={stats.money}
+            value2={stats.money_per_day}
             color={colors.green}
             iconName={'money-bill'}
             iconType={'font-awesome-5'}
@@ -40,8 +45,8 @@ const DashboardScreen = () => {
 
           <StatsItem
             title={'Population'}
-            value1={1500}
-            value2={'100/day'}
+            value1={stats.population}
+            value2={stats.population_per_day}
             color={colors.yellow}
             iconName={'people'}
             iconType={'ionicon'}
@@ -50,7 +55,7 @@ const DashboardScreen = () => {
 
           <StatsItem
             title={'Factories'}
-            value1={132}
+            value1={stats.factories}
             color={colors.pink}
             iconName={'factory'}
             iconType={'material-community'}
@@ -59,7 +64,7 @@ const DashboardScreen = () => {
 
           <StatsItem
             title={'Defense Soldiers'}
-            value1={12312}
+            value1={stats.defense_soldiers}
             color={colors.lightBlue}
             iconName={'user-shield'}
             iconType={'font-awesome-5'}
@@ -68,7 +73,7 @@ const DashboardScreen = () => {
 
           <StatsItem
             title={'Active Soldiers'}
-            value1={131}
+            value1={stats.active_soldiers}
             color={colors.red}
             iconName={'user-ninja'}
             iconType={'font-awesome-5'}
@@ -78,7 +83,7 @@ const DashboardScreen = () => {
 
         <View style={styles.section}>
           <Text style={styles.title}>Properties</Text>
-          <RenderProperties properties={player.properties} />
+          <RenderProperties properties={properties} />
         </View>
       </DefaultScreen>
     </ScrollView>
@@ -94,7 +99,7 @@ const StatsItem = ({ title, value1, value2, color, iconName, iconType, iconSize 
       </View>
       <View style={{ flexDirection: 'row' }}>
         <Text style={[styles.tableItem, { color }]}>{value1}</Text>
-        {value2 ? <Text style={[styles.tableItem, { color }]}>{value2}</Text> : null}
+        {value2 != undefined ? <Text style={[styles.tableItem, { color }]}>{value2}</Text> : null}
       </View>
     </View>
   );

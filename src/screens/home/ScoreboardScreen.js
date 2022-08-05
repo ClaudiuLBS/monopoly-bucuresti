@@ -1,44 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 import ColoredCircle from '../../components/ColoredCircle';
 
-import DefaultScreen from '../../components/DefaultScreen';
+import LoadingScreen from '../../components/LoadingScreen';
 import colors from '../../constants/colors';
-
-const players = [
-  {
-    name: 'Ion balamachea',
-    properties: 8,
-    color: 'red',
-  },
-  {
-    name: 'Gica Mahmu',
-    properties: 7,
-    color: 'blue',
-  },
-  {
-    name: 'Petrache Bulanaru',
-    properties: 6,
-    color: 'yellow',
-  },
-  {
-    name: 'Morcov Paraschiv',
-    properties: 5,
-    color: 'green',
-  },
-  {
-    name: 'Maraca Sandra',
-    properties: 4,
-    color: 'purple',
-  },
-  {
-    name: 'Hulm Capadastru',
-    properties: 3,
-    color: 'pink',
-  },
-];
+import RestApi from '../../services/rest.service';
 
 const ScoreboardScreen = () => {
+  const gameSession = useSelector((state) => state.session);
+  const [players, setPlayers] = useState(null);
+  useEffect(() => {
+    RestApi.gameSession.topPlayers(gameSession.code).then((res) => setPlayers(res));
+  }, []);
+
+  if (players === null) return <LoadingScreen />;
   return (
     <ScrollView style={{ paddingTop: 20 }}>
       {players.map((player, index) => {

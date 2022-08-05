@@ -23,13 +23,24 @@ const RestApi = {
 
     async properties(id) {
       const result = await axios.get(`${config.url}/properties-of/${id}`).catch((e) => []);
-      if (result) return result;
+      if (result) return result.data;
       else return [];
+    },
+
+    async stats(id) {
+      const result = await axios.get(`${config.url}/player-stats/${id}`).catch((e) => null);
+      if (result) return result.data;
+      else return null;
     },
   },
   gameSession: {
     async get(id) {
       const result = await axios.get(`${config.url}/api/game_sessions/${id}`).catch((e) => null);
+      if (result) return result.data;
+      else return null;
+    },
+    async topPlayers(code) {
+      const result = await axios.get(`${config.url}/top-players/${code}`).catch((e) => null);
       if (result) return result.data;
       else return null;
     },

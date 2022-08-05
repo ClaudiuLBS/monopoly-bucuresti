@@ -1,7 +1,5 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
-import Constants from 'expo-constants';
-import colors from '../constants/colors';
+import { View } from 'react-native';
 
 const DefaultScreen = ({ children, style }) => {
   return (
