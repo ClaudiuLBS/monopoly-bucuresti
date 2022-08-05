@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Platform, StatusBar } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { DarkTheme, NavigationContainer } from '@react-navigation/native';
-import { Ubuntu_400Regular, Ubuntu_500Medium, Ubuntu_700Bold } from '@expo-google-fonts/ubuntu';
+import { Ubuntu_400Regular, Ubuntu_500Medium } from '@expo-google-fonts/ubuntu';
 import { setCustomText } from 'react-native-global-props';
-import { Provider, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Icon } from '@rneui/base';
 import * as Notifications from 'expo-notifications';
 import * as SecureStore from 'expo-secure-store';
@@ -28,6 +28,15 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
+const MyTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    background: colors.background,
+    card: colors.primary,
+  },
+};
 
 const Tab = createBottomTabNavigator();
 
@@ -54,15 +63,6 @@ const Routes = () => {
       })
     );
   }, []);
-
-  const MyTheme = {
-    ...DarkTheme,
-    colors: {
-      ...DarkTheme.colors,
-      background: colors.background,
-      card: colors.primary,
-    },
-  };
 
   if (loading) return <LoadingScreen />;
 
@@ -107,7 +107,7 @@ const Routes = () => {
   );
 };
 
-async function registerForPushNotificationsAsync() {
+const registerForPushNotificationsAsync = async () => {
   let token;
   if (Device.isDevice) {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -134,6 +134,6 @@ async function registerForPushNotificationsAsync() {
     });
   }
   return token;
-}
+};
 
 export default Routes;

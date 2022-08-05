@@ -1,6 +1,6 @@
 export default {
   freeLandFill: '#00000044',
-  landStroke: '#525252',
+  landStroke: '#f0d759',
   primary: '#1B2430',
   secondary: '#d1caa5',
   background: '#2c3333',

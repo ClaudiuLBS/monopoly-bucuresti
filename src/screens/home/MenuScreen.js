@@ -12,8 +12,22 @@ import { setPlayer } from '../../redux/playerSlice';
 import { setSession } from '../../redux/sessionSlice';
 import texts from '../../constants/texts';
 
+function hslToHex(h, s, l) {
+  l /= 100;
+  const a = (s * Math.min(l, 1 - l)) / 100;
+  const f = (n) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color)
+      .toString(16)
+      .padStart(2, '0'); // convert to Hex and prefix "0" if needed
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+
 const randomColor = () => {
-  const result = '#' + Math.floor(Math.random() * 16777215).toString(16);
+  const hue = Math.floor(Math.random() * 361);
+  const result = hslToHex(hue, 100, 50);
   return result;
 };
 
@@ -105,18 +119,24 @@ const MenuScreen = () => {
         </CustomInput>
         {renderColorPicker()}
       </View>
-      <CustomButton active={!gameSession} onPress={handleCreateSession}>
+      <CustomButton active={!gameSession.id} onPress={handleCreateSession}>
         {texts.createGame}
       </CustomButton>
       <View style={{ flexDirection: 'row', width: '100%' }}>
         <CustomInput setText={setCode} maxLength={4}>
           code
         </CustomInput>
-        <CustomButton active={!gameSession} style={styles.joinSession} onPress={handleJoinSession}>
+        <CustomButton
+          active={!gameSession.id}
+          style={styles.joinSession}
+          onPress={handleJoinSession}
+        >
           {texts.joinGame}
         </CustomButton>
       </View>
-      <CustomButton onPress={pickScreen}>{texts.continueGame}</CustomButton>
+      {gameSession.id ? (
+        <CustomButton onPress={pickScreen}>{texts.continueGame}</CustomButton>
+      ) : null}
       {error ? <Text style={styles.error}>Error - {error}</Text> : null}
     </DefaultScreen>
   );
