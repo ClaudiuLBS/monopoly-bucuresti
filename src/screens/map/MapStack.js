@@ -3,8 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import MapScreen from './MapScreen';
 import PropertyInfoScreen from './PropertyInfoScreen';
-import colors from '../../constants/colors';
-import { View } from 'react-native';
 
 const Stack = createStackNavigator();
 
