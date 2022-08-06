@@ -6,4 +6,5 @@ export default {
   continueGame: 'Continue Last Game',
   trainSoldiers: 'Train Soldiers',
   buyFactory: (price) => `Buy Factory (${price}$)`,
+  buyProperty: (price) => `Buy Property (${price}$)`,
 };

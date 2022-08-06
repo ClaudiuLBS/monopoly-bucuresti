@@ -1,7 +1,7 @@
 import { Slider } from '@rneui/themed';
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import CustomButton from '../../components/CustomButton';
 import CustomSlider from '../../components/CustomSlider';
@@ -11,11 +11,15 @@ import PopUp from '../../components/PopUp';
 import TraitItem from '../../components/TraitItem';
 import colors from '../../constants/colors';
 import texts from '../../constants/texts';
+import { removeMoney } from '../../redux/playerSlice';
 import GameService from '../../services/game.service';
 import RestApi from '../../services/rest.service';
 
 const PropertyInfoScreen = ({ route }) => {
+  const dispatch = useDispatch();
   const property_id = route.params.property;
+  const buyable = route.params.buyable;
+
   const player = useSelector((state) => state.player);
   const [property, setProperty] = useState(null);
   const [populationToTrain, setPopulationToTrain] = useState(0);
@@ -28,7 +32,6 @@ const PropertyInfoScreen = ({ route }) => {
   const loadProperty = () => {
     RestApi.property.info(property_id).then((res) => {
       setProperty(res);
-      console.log(res);
     });
   };
 
@@ -36,8 +39,8 @@ const PropertyInfoScreen = ({ route }) => {
     GameService.buyFactory(player.id, property.id).then((res) => {
       if (!res) return;
       Alert.alert('Success');
-      loadProperty();
       setPopulationToTrain(0);
+      loadProperty();
     });
   };
 
@@ -50,9 +53,16 @@ const PropertyInfoScreen = ({ route }) => {
     });
   };
 
+  const handleBuyProperty = () => {
+    GameService.buyProperty(player.id, property.id).then((res) => {
+      loadProperty();
+      dispatch(removeMoney(property.price));
+    });
+  };
+
   if (!property) return <LoadingScreen />;
 
-  if (property.owner_id == player.id)
+  if (!property.owner_id || property.owner_id == player.id)
     return (
       <DefaultScreen>
         <TraitItem
@@ -73,7 +83,7 @@ const PropertyInfoScreen = ({ route }) => {
           iconSize={19}
         />
         <TraitItem
-          title={'Money'}
+          title={'Revenue'}
           value1={`${property.money_per_day}/day`}
           color={colors.green}
           iconName={'money-bill'}
@@ -88,29 +98,50 @@ const PropertyInfoScreen = ({ route }) => {
           iconType={'font-awesome-5'}
           iconSize={16}
         />
-        <CustomButton color={colors.pink} onPress={handleBuyFactory}>
-          {texts.buyFactory(property.factory_price)}
-        </CustomButton>
-        <CustomButton color={colors.lightBlue} onPress={() => setModalVisible(true)}>
-          {texts.trainSoldiers}
-        </CustomButton>
-        <PopUp
-          title={texts.trainSoldiers}
-          visible={modalVisible}
-          onConfirm={handleTrainSoldiers}
-          onCancel={() => {
-            setModalVisible(false);
-            setPopulationToTrain(0);
-          }}
-        >
-          <CustomSlider
-            min={0}
-            max={property.population - 20}
-            disabled={!(player.soldiers - 20)}
-            value={populationToTrain}
-            onChange={setPopulationToTrain}
-          />
-        </PopUp>
+        {property.owner_id == player.id ? (
+          <>
+            <CustomButton color={colors.pink} onPress={handleBuyFactory}>
+              {texts.buyFactory(property.factory_price)}
+            </CustomButton>
+            <CustomButton color={colors.lightBlue} onPress={() => setModalVisible(true)}>
+              {texts.trainSoldiers}
+            </CustomButton>
+            <PopUp
+              title={texts.trainSoldiers}
+              visible={modalVisible}
+              onConfirm={handleTrainSoldiers}
+              onCancel={() => {
+                setModalVisible(false);
+                setPopulationToTrain(0);
+              }}
+            >
+              <CustomSlider
+                min={0}
+                max={property.population - 20}
+                disabled={!(player.soldiers - 20)}
+                value={populationToTrain}
+                onChange={setPopulationToTrain}
+              />
+            </PopUp>
+          </>
+        ) : (
+          <>
+            <TraitItem
+              title={'Price'}
+              value1={property.price}
+              color={colors.red}
+              iconName={'price-tag'}
+              iconType={'entypo'}
+              iconSize={16}
+            />
+            <CustomButton
+              active={buyable && player.money >= property.price}
+              onPress={handleBuyProperty}
+            >
+              {texts.buyProperty(property.price)}
+            </CustomButton>
+          </>
+        )}
       </DefaultScreen>
     );
 

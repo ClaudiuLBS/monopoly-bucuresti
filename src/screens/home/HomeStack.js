@@ -17,6 +17,7 @@ const Stack = createStackNavigator();
 
 const HomeStack = () => {
   const player = useSelector((state) => state.player);
+  const gameSession = useSelector((state) => state.session);
   const navigation = useNavigation();
   return (
     <Stack.Navigator>
@@ -27,7 +28,11 @@ const HomeStack = () => {
         name={'Dashboard'}
         component={DashboardScreen}
       />
-      <Stack.Screen name={'Scoreboard'} component={ScoreboardScreen} />
+      <Stack.Screen
+        name={'Scoreboard'}
+        options={{ headerTitle: `Scoreboard - ${gameSession.code}` }}
+        component={ScoreboardScreen}
+      />
       <Stack.Screen
         options={propertyInfoOptions}
         name={'MyPropertyInfo'}
