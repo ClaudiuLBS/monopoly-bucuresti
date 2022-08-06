@@ -10,14 +10,14 @@ import PopUp from '../../components/PopUp';
 import TraitItem from '../../components/TraitItem';
 import colors from '../../constants/colors';
 import texts from '../../constants/texts';
-import { dropSoldiers, removeMoney } from '../../redux/playerSlice';
 import GameService from '../../services/game.service';
 import RestApi from '../../services/rest.service';
+import { dropSoldiers, removeMoney } from '../../redux/playerSlice';
 
 const PropertyInfoScreen = ({ route }) => {
   const dispatch = useDispatch();
   const property_id = route.params.property;
-  const buyable = route.params.buyable;
+  const inPlace = route.params.inPlace;
 
   const player = useSelector((state) => state.player);
   const [property, setProperty] = useState(null);
@@ -153,7 +153,7 @@ const PropertyInfoScreen = ({ route }) => {
             />
             <CustomButton
               style={{ marginTop: 20 }}
-              active={buyable && player.money >= property.price}
+              active={inPlace && player.money >= property.price}
               onPress={handleBuyProperty}
             >
               {texts.buyProperty(property.price)}
@@ -174,7 +174,7 @@ const PropertyInfoScreen = ({ route }) => {
         iconSize={17}
       />
       <CustomButton
-        active={player.soldiers}
+        active={inPlace && player.soldiers}
         onPress={handleAttack}
         style={{ marginTop: 20 }}
         color={colors.red}

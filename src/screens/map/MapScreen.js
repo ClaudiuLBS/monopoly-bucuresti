@@ -26,7 +26,7 @@ const MapScreen = () => {
     getMapData();
     const refresh = setInterval(() => {
       getMapData();
-    }, 60000);
+    }, 10000);
     getLocation();
     return () => clearInterval(refresh);
   }, []);
@@ -39,7 +39,7 @@ const MapScreen = () => {
       {
         accuracy: Location.Accuracy.High,
         distanceInterval: 5,
-        timeInterval: 5000,
+        timeInterval: 2000,
       },
       (location) => {
         if (location) {
@@ -86,7 +86,7 @@ const MapScreen = () => {
               navigation.navigate('PropertyInfo', {
                 property: item.id,
                 title: item.name,
-                buyable: place.property == item.id,
+                inPlace: place.property == item.id,
               })
             }
             tappable
