@@ -20,18 +20,20 @@ const CustomSlider = ({ min, max, disabled, value, onChange }) => {
             <Icon
               name="human-scooter"
               type="material-community"
-              color={colors.primary}
+              color={`hsl(${value % 360},60%,55%)`}
               size={30}
               style={{ flex: 1 }}
             />
-            <Text style={styles.text}>{value}</Text>
+            <Text style={[styles.text, { color: `hsl(${value % 360},60%,55%)` }]}>{value}</Text>
           </View>
         ),
       }}
       allowTouchTrack
       thumbStyle={styles.thumbStyle}
       trackStyle={styles.trackStyle}
-      style={{ marginTop: 10 }}
+      maximumTrackTintColor={colors.primary}
+      minimumTrackTintColor={`hsl(${value % 360},60%,55%)`}
+      style={{ marginVertical: 10 }}
     />
   );
 };
@@ -45,11 +47,15 @@ const styles = StyleSheet.create({
   },
   trackStyle: {
     width: '95%',
+    backgroundColor: 'red',
+    borderColor: 'red',
+    color: 'red',
   },
   text: {
     flex: 1,
     textAlign: 'center',
     fontFamily: 'bold',
+    color: colors.blueGray,
   },
   thumbContainer: {
     justifyContent: 'space-between',

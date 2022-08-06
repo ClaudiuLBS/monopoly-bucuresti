@@ -4,9 +4,9 @@ import { Icon } from '@rneui/base';
 
 import colors from '../constants/colors';
 
-const TraitItem = ({ title, value1, value2, color, iconName, iconType, iconSize }) => {
+const TraitItem = ({ title, value1, value2, color, iconName, iconType, iconSize, style }) => {
   return (
-    <View>
+    <View style={style}>
       <View style={styles.subtitleContainer}>
         <Icon name={iconName} type={iconType} color={color} size={iconSize} />
         <Text style={[styles.subtitle, { color }]}>{title}</Text>

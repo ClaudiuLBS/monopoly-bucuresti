@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
-    backgroundColor: colors.blueGray,
+    backgroundColor: colors.primary,
     padding: 10,
     borderRadius: 20,
     width: '90%',
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
     textAlign: 'center',
+    color: colors.white,
   },
   buttonsContainer: {
     flexDirection: 'row',

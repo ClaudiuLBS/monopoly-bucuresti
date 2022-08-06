@@ -173,7 +173,12 @@ const PropertyInfoScreen = ({ route }) => {
         iconType={'font-awesome-5'}
         iconSize={17}
       />
-      <CustomButton onPress={handleAttack} style={{ marginTop: 20 }}>
+      <CustomButton
+        active={player.soldiers}
+        onPress={handleAttack}
+        style={{ marginTop: 20 }}
+        color={colors.red}
+      >
         Attack
       </CustomButton>
     </DefaultScreen>
