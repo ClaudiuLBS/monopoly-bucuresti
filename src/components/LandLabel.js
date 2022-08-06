@@ -92,7 +92,13 @@ const LandLabel = ({ place, refresh }) => {
   // BUY PROPERTY
   if (!property.owner)
     return (
-      <View style={styles.container}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={styles.container}
+        onPress={() =>
+          navigation.navigate('PropertyInfo', { property: property.id, title: place.name })
+        }
+      >
         <Text style={styles.title}>{place.name}</Text>
         <View style={styles.specsContainer}>
           <TraitItem
@@ -136,7 +142,7 @@ const LandLabel = ({ place, refresh }) => {
           onConfirm={handleBuyProperty}
           onCancel={() => showModal(modals.null)}
         />
-      </View>
+      </TouchableOpacity>
     );
 
   //ATTACK PROPERTY
@@ -176,7 +182,13 @@ const LandLabel = ({ place, refresh }) => {
 
   //MY PROPERTY INFO
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={styles.container}
+      onPress={() =>
+        navigation.navigate('PropertyInfo', { property: property.id, title: place.name })
+      }
+    >
       <Text style={styles.title}>{place.name}</Text>
       <View style={styles.specsContainer}>
         <TraitItem
@@ -261,7 +273,7 @@ const LandLabel = ({ place, refresh }) => {
           onChange={setSoldiersCount}
         />
       </PopUp>
-    </View>
+    </TouchableOpacity>
   );
 };
 
