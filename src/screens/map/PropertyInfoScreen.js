@@ -50,6 +50,7 @@ const PropertyInfoScreen = ({ route }) => {
       Alert.alert('Success');
       loadProperty();
       setModalVisible(false);
+      setPopulationToTrain(0);
     });
   };
 
@@ -103,7 +104,11 @@ const PropertyInfoScreen = ({ route }) => {
             <CustomButton style={{ marginTop: 20 }} color={colors.pink} onPress={handleBuyFactory}>
               {texts.buyFactory(property.factory_price)}
             </CustomButton>
-            <CustomButton color={colors.lightBlue} onPress={() => setModalVisible(true)}>
+            <CustomButton
+              active={property.population > 20}
+              color={colors.lightBlue}
+              onPress={() => setModalVisible(true)}
+            >
               {texts.trainSoldiers}
             </CustomButton>
             <PopUp

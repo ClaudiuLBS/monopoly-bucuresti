@@ -40,6 +40,7 @@ const DashboardScreen = () => {
     return properties.map((item, index) => (
       <TouchableOpacity
         activeOpacity={0.7}
+        style={{ backgroundColor: '#ffffff05', marginTop: 10, borderRadius: 5 }}
         key={index}
         onPress={() =>
           navigation.navigate('MyPropertyInfo', { property: item.id, title: item.name })

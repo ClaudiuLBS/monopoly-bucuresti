@@ -89,7 +89,8 @@ const MenuScreen = () => {
     setLoading(false);
 
     if (error) setError(error);
-    else navigation.navigate('Lobby');
+    else if (!gameSession.start_date) navigation.navigate('Lobby');
+    else navigation.navigate('Dashboard');
   };
 
   const renderColorPicker = () => {
