@@ -1,6 +1,5 @@
-import { Slider } from '@rneui/themed';
 import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomButton from '../../components/CustomButton';
@@ -11,7 +10,7 @@ import PopUp from '../../components/PopUp';
 import TraitItem from '../../components/TraitItem';
 import colors from '../../constants/colors';
 import texts from '../../constants/texts';
-import { removeMoney } from '../../redux/playerSlice';
+import { dropSoldiers, removeMoney } from '../../redux/playerSlice';
 import GameService from '../../services/game.service';
 import RestApi from '../../services/rest.service';
 
@@ -58,6 +57,16 @@ const PropertyInfoScreen = ({ route }) => {
     GameService.buyProperty(player.id, property.id).then((res) => {
       loadProperty();
       dispatch(removeMoney(property.price));
+    });
+  };
+
+  const handleAttack = () => {
+    GameService.attack(player.id, property.id).then((res) => {
+      dispatch(dropSoldiers(player.soldiers));
+      if (res.win) {
+        Alert.alert('You won', `${res.soldiers} soldiers left`);
+        loadProperty();
+      } else Alert.alert('You lost', 'Maybe next time');
     });
   };
 
@@ -161,7 +170,9 @@ const PropertyInfoScreen = ({ route }) => {
         iconType={'font-awesome-5'}
         iconSize={17}
       />
-      <CustomButton style={{ marginTop: 20 }}>Attack</CustomButton>
+      <CustomButton onPress={handleAttack} style={{ marginTop: 20 }}>
+        Attack
+      </CustomButton>
     </DefaultScreen>
   );
 };

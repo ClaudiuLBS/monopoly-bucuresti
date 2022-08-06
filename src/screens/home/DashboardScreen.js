@@ -82,7 +82,7 @@ const DashboardScreen = () => {
           <TraitItem
             title={'Money'}
             value1={stats.money}
-            value2={stats.money_per_day}
+            value2={`${stats.money_per_day}/day`}
             color={colors.green}
             iconName={'money-bill'}
             iconType={'font-awesome-5'}
@@ -92,7 +92,7 @@ const DashboardScreen = () => {
           <TraitItem
             title={'Population'}
             value1={stats.population}
-            value2={stats.population_per_day}
+            value2={`${stats.population_per_day}/day`}
             color={colors.yellow}
             iconName={'people'}
             iconType={'ionicon'}
