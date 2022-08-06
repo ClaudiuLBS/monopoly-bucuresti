@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../constants/colors';
 import texts from '../constants/texts';
-import { addProperty, bringSoldiers, dropSoldiers, removeMoney } from '../redux/playerSlice';
+import { bringSoldiers, dropSoldiers, removeMoney } from '../redux/playerSlice';
 import GameService from '../services/game.service';
 import RestApi from '../services/rest.service';
 import CustomButton from './CustomButton';
@@ -37,23 +37,12 @@ const LandLabel = ({ place, refresh }) => {
   };
 
   useEffect(() => {
-    RestApi.property.get(place.property).then((res) => {
-      setProperty(res);
-    });
+    loadProperty();
   }, []);
 
   const handleBuyProperty = () => {
     GameService.buyProperty(player.id, place.property).then((res) => {
-      const newProperty = {
-        id: property.id,
-        name: place.name,
-        population: property.population,
-        soldiers: property.soldiers,
-        factories: property.factories,
-        owner: player.id,
-      };
-      setProperty(newProperty);
-      dispatch(addProperty(newProperty));
+      loadProperty();
       dispatch(removeMoney(place.price));
       showModal(modals.null);
       refresh();
@@ -62,20 +51,11 @@ const LandLabel = ({ place, refresh }) => {
 
   const handleAttack = () => {
     GameService.attack(player.id, place.property).then((res) => {
-      showModal(modals.null);
       dispatch(dropSoldiers(player.soldiers));
+      showModal(modals.null);
       if (res.win) {
         Alert.alert('You won', `${res.soldiers} soldiers left`);
-        const newProperty = {
-          id: property.id,
-          name: place.name,
-          population: property.population,
-          soldiers: res.soldiers,
-          factories: property.factories,
-          owner: player.id,
-        };
-        setProperty(newProperty);
-        dispatch(addProperty(newProperty));
+        loadProperty();
         refresh();
       } else Alert.alert('You lost', 'Maybe next time');
     });
@@ -83,14 +63,7 @@ const LandLabel = ({ place, refresh }) => {
 
   const handleBringSoldiers = () => {
     GameService.bringSoldiers(player.id, place.property, soldiersCount).then((res) => {
-      setProperty({
-        id: property.id,
-        name: property.name,
-        population: property.population,
-        soldiers: res.soldiers,
-        factories: property.factories,
-        owner: player.id,
-      });
+      loadProperty();
       dispatch(bringSoldiers(soldiersCount));
       setSoldiersCount(0);
       showModal(modals.null);
@@ -99,14 +72,7 @@ const LandLabel = ({ place, refresh }) => {
 
   const handleDropSoldiers = () => {
     GameService.dropSoldiers(player.id, place.property, soldiersCount).then((res) => {
-      setProperty({
-        id: property.id,
-        name: property.name,
-        population: property.population,
-        soldiers: res.soldiers,
-        factories: property.factories,
-        owner: player.id,
-      });
+      loadProperty();
       dispatch(dropSoldiers(soldiersCount));
       setSoldiersCount(0);
       showModal(modals.null);
