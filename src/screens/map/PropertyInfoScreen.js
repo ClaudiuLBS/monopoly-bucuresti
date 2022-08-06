@@ -100,7 +100,7 @@ const PropertyInfoScreen = ({ route }) => {
         />
         {property.owner_id == player.id ? (
           <>
-            <CustomButton color={colors.pink} onPress={handleBuyFactory}>
+            <CustomButton style={{ marginTop: 20 }} color={colors.pink} onPress={handleBuyFactory}>
               {texts.buyFactory(property.factory_price)}
             </CustomButton>
             <CustomButton color={colors.lightBlue} onPress={() => setModalVisible(true)}>
@@ -135,6 +135,7 @@ const PropertyInfoScreen = ({ route }) => {
               iconSize={16}
             />
             <CustomButton
+              style={{ marginTop: 20 }}
               active={buyable && player.money >= property.price}
               onPress={handleBuyProperty}
             >
@@ -147,22 +148,15 @@ const PropertyInfoScreen = ({ route }) => {
 
   return (
     <DefaultScreen>
-      <Text style={styles.text}>Owner: {property.owner_name}</Text>
-      <Text style={styles.text}>
-        Population: {property.owner != player.id ? '~' : ''}
-        {property.population}
-      </Text>
-      <Text style={styles.text}>
-        Soldiers: {property.owner != player.id ? '~' : ''}
-        {property.soldiers}
-      </Text>
-      <Text style={styles.text}>
-        Factories: {property.owner != player.id ? '~' : ''}
-        {property.factories}
-      </Text>
-      <Text style={styles.text}>
-        {property.owner ? `Bought for ${property.price}$` : `price: ${property.price}$`}
-      </Text>
+      <TraitItem
+        title={'Owner'}
+        value1={property.owner_name}
+        color={colors.white}
+        iconName={'user-tie'}
+        iconType={'font-awesome-5'}
+        iconSize={17}
+      />
+      <CustomButton style={{ marginTop: 20 }}>Attack</CustomButton>
     </DefaultScreen>
   );
 };
