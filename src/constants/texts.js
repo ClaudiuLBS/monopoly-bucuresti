@@ -4,4 +4,6 @@ export default {
   createGame: 'Create Game',
   joinGame: 'Join Game',
   continueGame: 'Continue Last Game',
+  trainSoldiers: 'Train Soldiers',
+  buyFactory: (price) => `Buy Factory (${price}$)`,
 };

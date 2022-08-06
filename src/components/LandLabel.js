@@ -10,6 +10,7 @@ import { addProperty, bringSoldiers, dropSoldiers, removeMoney } from '../redux/
 import GameService from '../services/game.service';
 import RestApi from '../services/rest.service';
 import CustomButton from './CustomButton';
+import CustomSlider from './CustomSlider';
 import PopUp from './PopUp';
 
 const modals = {
@@ -180,19 +181,6 @@ const LandLabel = ({ place, refresh }) => {
       </View>
     );
 
-  const renderSliderThumb = () => (
-    <View style={{ justifyContent: 'space-between', bottom: 6, right: 12 }}>
-      <Icon
-        name="human-scooter"
-        type="material-community"
-        color={colors.primary}
-        size={30}
-        style={{ flex: 1 }}
-      />
-      <Text style={{ flex: 1, textAlign: 'center', fontFamily: 'bold' }}>{soldiersCount}</Text>
-    </View>
-  );
-
   //MY PROPERTY INFO
   return (
     <View style={styles.container}>
@@ -238,20 +226,12 @@ const LandLabel = ({ place, refresh }) => {
           setSoldiersCount(0);
         }}
       >
-        <Slider
-          minimumValue={0}
-          maximumValue={property.soldiers}
+        <CustomSlider
+          min={0}
+          max={property.soldiers}
           disabled={!property.soldiers}
-          step={1}
           value={soldiersCount}
-          onValueChange={setSoldiersCount}
-          thumbProps={{
-            children: renderSliderThumb(),
-          }}
-          allowTouchTrack
-          thumbStyle={styles.thumbStyle}
-          trackStyle={styles.trackStyle}
-          style={{ marginTop: 10 }}
+          onChange={setSoldiersCount}
         />
       </PopUp>
 
@@ -265,19 +245,12 @@ const LandLabel = ({ place, refresh }) => {
           setSoldiersCount(0);
         }}
       >
-        <Slider
-          minimumValue={0}
-          maximumValue={player.soldiers}
+        <CustomSlider
+          min={0}
+          max={player.soldiers}
           disabled={!player.soldiers}
-          step={1}
           value={soldiersCount}
-          onValueChange={setSoldiersCount}
-          thumbProps={{
-            children: renderSliderThumb(),
-          }}
-          allowTouchTrack
-          thumbStyle={styles.thumbStyle}
-          trackStyle={styles.trackStyle}
+          onChange={setSoldiersCount}
         />
       </PopUp>
     </View>
@@ -321,15 +294,6 @@ const styles = StyleSheet.create({
   soldierButton: {
     flex: 1,
     marginHorizontal: 10,
-  },
-  thumbStyle: {
-    justifyContent: 'flex-start',
-    backgroundColor: '#ffffff00',
-    width: 'auto',
-    height: 'auto',
-  },
-  trackStyle: {
-    width: '95%',
   },
 });
 

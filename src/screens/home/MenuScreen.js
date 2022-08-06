@@ -96,7 +96,7 @@ const MenuScreen = () => {
     return (
       <TouchableOpacity
         style={{
-          backgroundColor: player ? player.color : color,
+          backgroundColor: player.color ? player.color : color,
           width: 40,
           height: 40,
           borderRadius: 50,

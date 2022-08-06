@@ -32,7 +32,7 @@ const LobbyScreen = () => {
   }, []);
 
   const refresh = async () => {
-    GameSessionApi.getPlayers(gameSession.code).then((res) => {
+    RestApi.gameSession.topPlayers(gameSession.code).then((res) => {
       setPlayers(res);
       RestApi.gameSession.get(res[0].game_session).then((res1) => {
         setLoading(false);

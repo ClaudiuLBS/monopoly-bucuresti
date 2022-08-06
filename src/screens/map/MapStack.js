@@ -11,12 +11,13 @@ const MapStack = () => {
     <Stack.Navigator>
       <Stack.Screen options={{ headerShown: false }} name={'Map'} component={MapScreen} />
       <Stack.Screen
-        options={({ route }) => ({ headerTitle: route.params.property.name })}
+        options={propertyInfoOptions}
         name={'PropertyInfo'}
         component={PropertyInfoScreen}
       />
     </Stack.Navigator>
   );
 };
+const propertyInfoOptions = ({ route }) => ({ headerTitle: route.params.title });
 
 export default MapStack;

@@ -1,6 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useSelector } from 'react-redux';
 import { Icon } from '@rneui/base';
 
@@ -8,6 +15,7 @@ import DefaultScreen from '../../components/DefaultScreen';
 import LoadingScreen from '../../components/LoadingScreen';
 import RestApi from '../../services/rest.service';
 import colors from '../../constants/colors';
+import TraitItem from '../../components/TraitItem';
 
 const DashboardScreen = () => {
   const navigation = useNavigation();
@@ -25,6 +33,43 @@ const DashboardScreen = () => {
     RestApi.player.stats(player.id).then((res) => setStats(res));
   }, []);
 
+  const RenderProperties = ({ properties }) => {
+    if (properties == null) return <ActivityIndicator size={'large'} color={colors.white} />;
+    if (properties.length == 0) return <Text style={styles.subtitle}>No properties</Text>;
+
+    return properties.map((item, index) => (
+      <TouchableOpacity
+        activeOpacity={0.7}
+        key={index}
+        onPress={() =>
+          navigation.navigate('MyPropertyInfo', { property: item.id, title: item.name })
+        }
+      >
+        <Text style={styles.subtitle}>{item.name}</Text>
+        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+          <View style={styles.propertyItemContainer}>
+            <Icon name={'people'} type={'ionicon'} color={colors.yellow} size={22} />
+            <Text style={[styles.propertyItemText, { color: colors.yellow }]}>
+              {item.population}
+            </Text>
+          </View>
+
+          <View style={styles.propertyItemContainer}>
+            <Icon name={'factory'} type={'material-community'} color={colors.pink} size={20} />
+            <Text style={[styles.propertyItemText, { color: colors.pink }]}>{item.factories}</Text>
+          </View>
+
+          <View style={styles.propertyItemContainer}>
+            <Icon name={'user-shield'} type={'font-awesome-5'} color={colors.lightBlue} size={15} />
+            <Text style={[styles.propertyItemText, { color: colors.lightBlue }]}>
+              {item.soldiers}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    ));
+  };
+
   if (stats === null || properties === null) return <LoadingScreen />;
 
   return (
@@ -33,7 +78,7 @@ const DashboardScreen = () => {
         <View style={styles.section}>
           <Text style={styles.title}>Stats</Text>
 
-          <StatsItem
+          <TraitItem
             title={'Money'}
             value1={stats.money}
             value2={stats.money_per_day}
@@ -43,7 +88,7 @@ const DashboardScreen = () => {
             iconSize={15}
           />
 
-          <StatsItem
+          <TraitItem
             title={'Population'}
             value1={stats.population}
             value2={stats.population_per_day}
@@ -53,7 +98,7 @@ const DashboardScreen = () => {
             iconSize={22}
           />
 
-          <StatsItem
+          <TraitItem
             title={'Factories'}
             value1={stats.factories}
             color={colors.pink}
@@ -62,7 +107,7 @@ const DashboardScreen = () => {
             iconSize={19}
           />
 
-          <StatsItem
+          <TraitItem
             title={'Defense Soldiers'}
             value1={stats.defense_soldiers}
             color={colors.lightBlue}
@@ -71,7 +116,7 @@ const DashboardScreen = () => {
             iconSize={16}
           />
 
-          <StatsItem
+          <TraitItem
             title={'Active Soldiers'}
             value1={stats.active_soldiers}
             color={colors.red}
@@ -90,56 +135,11 @@ const DashboardScreen = () => {
   );
 };
 
-const StatsItem = ({ title, value1, value2, color, iconName, iconType, iconSize }) => {
-  return (
-    <View>
-      <View style={styles.subtitleContainer}>
-        <Icon name={iconName} type={iconType} color={color} size={iconSize} />
-        <Text style={[styles.subtitle, { color }]}>{title}</Text>
-      </View>
-      <View style={{ flexDirection: 'row' }}>
-        <Text style={[styles.tableItem, { color }]}>{value1}</Text>
-        {value2 != undefined ? <Text style={[styles.tableItem, { color }]}>{value2}</Text> : null}
-      </View>
-    </View>
-  );
-};
-
-const RenderProperties = ({ properties }) => {
-  if (properties == null) return <ActivityIndicator size={'large'} color={colors.white} />;
-  if (properties.length == 0) return <Text style={styles.subtitle}>No properties</Text>;
-
-  return properties.map((item, index) => (
-    <View key={index}>
-      <Text style={styles.subtitle}>{item.name}</Text>
-      <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-        <View style={styles.propertyItemContainer}>
-          <Icon name={'people'} type={'ionicon'} color={colors.yellow} size={22} />
-          <Text style={[styles.propertyItemText, { color: colors.yellow }]}>{item.population}</Text>
-        </View>
-
-        <View style={styles.propertyItemContainer}>
-          <Icon name={'factory'} type={'material-community'} color={colors.pink} size={20} />
-          <Text style={[styles.propertyItemText, { color: colors.pink }]}>{item.factories}</Text>
-        </View>
-
-        <View style={styles.propertyItemContainer}>
-          <Icon name={'user-shield'} type={'font-awesome-5'} color={colors.lightBlue} size={15} />
-          <Text style={[styles.propertyItemText, { color: colors.lightBlue }]}>
-            {item.soldiers}
-          </Text>
-        </View>
-      </View>
-    </View>
-  ));
-};
-
 const styles = StyleSheet.create({
   page: {
     flex: 1,
     backgroundColor: colors.background,
   },
-
   title: {
     color: colors.white,
     fontFamily: 'bold',
@@ -151,14 +151,6 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     padding: 10,
   },
-  circle: {
-    marginRight: 10,
-    borderWidth: 1,
-    borderColor: colors.white,
-    width: 15,
-    height: 15,
-    borderRadius: 20,
-  },
   subtitle: {
     color: colors.white,
     fontFamily: 'bold',
@@ -166,22 +158,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontSize: 16,
     alignSelf: 'center',
-  },
-  subtitleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  tableItem: {
-    marginBottom: 10,
-    marginHorizontal: 5,
-    fontSize: 17,
-    flex: 1,
-    textAlign: 'center',
-    backgroundColor: '#ffffff10',
-    borderRadius: 5,
-    paddingVertical: 5,
-    flexDirection: 'row',
   },
   section: {
     borderRadius: 5,

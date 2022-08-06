@@ -8,8 +8,7 @@ const LobbyPlayer = ({ player }) => {
       style={[
         styles.playerName,
         {
-          borderColor: player.owner ? colors.owner : colors.notOwner,
-          borderTopColor: player.color,
+          borderColor: player.color,
         },
       ]}
     >

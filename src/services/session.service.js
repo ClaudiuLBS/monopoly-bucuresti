@@ -36,10 +36,5 @@ const GameSessionApi = {
     const result = await axios.post(`${config.url}/end-session/`, { code });
     return result;
   },
-
-  async getPlayers(code) {
-    const result = await axios.get(`${config.url}/all-players/${code}`);
-    return result.data;
-  },
 };
 export default GameSessionApi;

@@ -11,6 +11,7 @@ import colors from '../../constants/colors';
 import { Icon } from '@rneui/base';
 import { useNavigation } from '@react-navigation/native';
 import ColoredCircle from '../../components/ColoredCircle';
+import PropertyInfoScreen from '../map/PropertyInfoScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,40 +19,43 @@ const HomeStack = () => {
   const player = useSelector((state) => state.player);
   const navigation = useNavigation();
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name={'Menu'} component={MenuScreen} />
-      <Stack.Screen name={'Lobby'} component={LobbyScreen} />
+    <Stack.Navigator>
+      <Stack.Screen options={{ headerShown: false }} name={'Menu'} component={MenuScreen} />
+      <Stack.Screen options={{ headerShown: false }} name={'Lobby'} component={LobbyScreen} />
       <Stack.Screen
-        options={{
-          headerShown: true,
-          headerTitle: '',
-          headerLeft: () => (
-            <View style={styles.headerTitle}>
-              <ColoredCircle color={player.color} />
-              <Text style={styles.headerText}>{player.name}</Text>
-            </View>
-          ),
-          headerRight: () => (
-            <Icon
-              name={'stats-chart'}
-              type={'ionicon'}
-              color={colors.white}
-              onPress={() => navigation.navigate('Scoreboard')}
-              style={{ marginRight: 20 }}
-            />
-          ),
-        }}
+        options={dashboardOptions(player, navigation)}
         name={'Dashboard'}
         component={DashboardScreen}
       />
+      <Stack.Screen name={'Scoreboard'} component={ScoreboardScreen} />
       <Stack.Screen
-        options={{ headerShown: true }}
-        name={'Scoreboard'}
-        component={ScoreboardScreen}
+        options={propertyInfoOptions}
+        name={'MyPropertyInfo'}
+        component={PropertyInfoScreen}
       />
     </Stack.Navigator>
   );
 };
+
+const dashboardOptions = (player, navigation) => ({
+  headerTitle: '',
+  headerLeft: () => (
+    <View style={styles.headerTitle}>
+      <ColoredCircle color={player.color} />
+      <Text style={styles.headerText}>{player.name}</Text>
+    </View>
+  ),
+  headerRight: () => (
+    <Icon
+      name={'stats-chart'}
+      type={'ionicon'}
+      color={colors.white}
+      onPress={() => navigation.navigate('Scoreboard')}
+      style={{ marginRight: 20 }}
+    />
+  ),
+});
+const propertyInfoOptions = ({ route }) => ({ headerTitle: route.params.title });
 
 const styles = StyleSheet.create({
   headerTitle: {
