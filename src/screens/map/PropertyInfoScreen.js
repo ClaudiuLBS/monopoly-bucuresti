@@ -37,8 +37,11 @@ const PropertyInfoScreen = ({ route }) => {
   const handleBuyFactory = () => {
     GameService.buyFactory(player.id, property.id).then((res) => {
       if (!res) return;
-      Alert.alert('Success');
+      if (res.error) {
+        Alert.alert('Failed', res.error);
+      }
       setPopulationToTrain(0);
+      dispatch(removeMoney(property.factory_price));
       loadProperty();
     });
   };

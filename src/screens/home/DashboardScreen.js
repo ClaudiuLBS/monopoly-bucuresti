@@ -29,9 +29,21 @@ const DashboardScreen = () => {
     navigation.addListener('beforeRemove', (e) => {
       e.preventDefault();
     });
+    refresh();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      refresh();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const refresh = () => {
     RestApi.player.properties(player.id).then((res) => setProperties(res));
     RestApi.player.stats(player.id).then((res) => setStats(res));
-  }, []);
+  };
 
   const RenderProperties = ({ properties }) => {
     if (properties == null) return <ActivityIndicator size={'large'} color={colors.white} />;
