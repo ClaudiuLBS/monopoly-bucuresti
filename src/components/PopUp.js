@@ -11,20 +11,31 @@ const PopUp = ({
   children,
   confirmText = 'Confirm',
   cancelText = 'Cancel',
+  info = '',
+  onlyInformative = false,
 }) => {
   return (
     <Modal animationType="fade" transparent={true} visible={visible}>
       <View style={styles.background}>
         <View style={styles.container}>
           <Text style={styles.title}>{title}</Text>
+          <Text style={styles.info}>{info}</Text>
           {children}
           <View style={styles.buttonsContainer}>
-            <CustomButton style={styles.button} color={colors.confirm} onPress={onConfirm}>
-              {confirmText}
-            </CustomButton>
-            <CustomButton style={styles.button} color={colors.cancel} onPress={onCancel}>
-              {cancelText}
-            </CustomButton>
+            {onlyInformative ? (
+              <CustomButton style={styles.button} color={colors.white} onPress={onCancel}>
+                Close
+              </CustomButton>
+            ) : (
+              <>
+                <CustomButton style={styles.button} color={colors.confirm} onPress={onConfirm}>
+                  {confirmText}
+                </CustomButton>
+                <CustomButton style={styles.button} color={colors.cancel} onPress={onCancel}>
+                  {cancelText}
+                </CustomButton>
+              </>
+            )}
           </View>
         </View>
       </View>
@@ -58,6 +69,12 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     marginHorizontal: 10,
+  },
+  info: {
+    fontSize: 15,
+    textAlign: 'center',
+    color: colors.blueGray,
+    marginBottom: 10,
   },
 });
 

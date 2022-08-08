@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '@rneui/base';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../constants/colors';
@@ -29,6 +29,7 @@ const LandLabel = ({ place, refresh }) => {
   const dispatch = useDispatch();
   const [property, setProperty] = useState(null);
   const [modalVisible, showModal] = useState(0);
+  const [alert, setAlert] = useState({ visible: false, title: '', subtitle: '' });
   const [soldiersCount, setSoldiersCount] = useState(0);
   const player = useSelector((state) => state.player);
 
@@ -47,6 +48,11 @@ const LandLabel = ({ place, refresh }) => {
       loadProperty();
       dispatch(removeMoney(place.price));
       showModal(modals.null);
+      setAlert({
+        visible: true,
+        title: 'Successfully bought property',
+        subtitle: '+1000 population etc some text',
+      });
       refresh();
     });
   };
@@ -56,28 +62,38 @@ const LandLabel = ({ place, refresh }) => {
       dispatch(dropSoldiers(player.soldiers));
       showModal(modals.null);
       if (res.win) {
-        Alert.alert('You won', `${res.soldiers} soldiers left`);
+        setAlert({ visible: true, title: 'You Won', subtitle: `${res.soldiers} soldiers left` });
         loadProperty();
         refresh();
-      } else Alert.alert('You lost', 'Maybe next time');
+      } else setAlert({ visible: true, title: 'You Lost', subtitle: 'Maybe next time' });
     });
   };
 
   const handleBringSoldiers = () => {
     GameService.bringSoldiers(player.id, place.property, soldiersCount).then((res) => {
       loadProperty();
+      showModal(modals.null);
+      setAlert({
+        visible: true,
+        title: `You brought ${soldiersCount} soldiers`,
+        subtitle: `Now you have ${player.soldiers + soldiersCount} soldiers`,
+      });
       dispatch(bringSoldiers(soldiersCount));
       setSoldiersCount(0);
-      showModal(modals.null);
     });
   };
 
   const handleDropSoldiers = () => {
     GameService.dropSoldiers(player.id, place.property, soldiersCount).then((res) => {
       loadProperty();
+      showModal(modals.null);
+      setAlert({
+        visible: true,
+        title: `You droped ${soldiersCount} soldiers`,
+        subtitle: `Now you have ${player.soldiers - soldiersCount} soldiers`,
+      });
       dispatch(dropSoldiers(soldiersCount));
       setSoldiersCount(0);
-      showModal(modals.null);
     });
   };
 
@@ -138,9 +154,17 @@ const LandLabel = ({ place, refresh }) => {
         </CustomButton>
         <PopUp
           title={`Buy ${place.name} for ${place.price}$`}
+          info={texts.buyPropertyInfo}
           visible={modalVisible == modals.buy}
           onConfirm={handleBuyProperty}
           onCancel={() => showModal(modals.null)}
+        />
+        <PopUp
+          title={alert.title}
+          info={alert.subtitle}
+          onlyInformative={true}
+          visible={alert.visible}
+          onCancel={() => setAlert({ visible: false, title: '', subtitle: '' })}
         />
       </TouchableOpacity>
     );
@@ -173,9 +197,17 @@ const LandLabel = ({ place, refresh }) => {
         </CustomButton>
         <PopUp
           title={`Attack ${place.name} with ${player.soldiers} soldiers?`}
+          info={texts.attackInfo}
           visible={modalVisible == modals.attack}
           onConfirm={handleAttack}
           onCancel={() => showModal(modals.null)}
+        />
+        <PopUp
+          title={alert.title}
+          info={alert.subtitle}
+          onlyInformative={true}
+          visible={alert.visible}
+          onCancel={() => setAlert({ visible: false, title: '', subtitle: '' })}
         />
       </TouchableOpacity>
     );
@@ -240,6 +272,7 @@ const LandLabel = ({ place, refresh }) => {
       <PopUp
         title={texts.bringSoldiers}
         visible={modalVisible == modals.bring}
+        info={texts.bringSoldiersInfo}
         onConfirm={handleBringSoldiers}
         onCancel={() => {
           showModal(modals.null);
@@ -258,6 +291,7 @@ const LandLabel = ({ place, refresh }) => {
       {/* DROP SOLDIERS */}
       <PopUp
         title={texts.dropSoldiers}
+        info={texts.dropSoldiersInfo}
         visible={modalVisible == modals.drop}
         onConfirm={handleDropSoldiers}
         onCancel={() => {
@@ -273,6 +307,13 @@ const LandLabel = ({ place, refresh }) => {
           onChange={setSoldiersCount}
         />
       </PopUp>
+      <PopUp
+        title={alert.title}
+        info={alert.subtitle}
+        onlyInformative={true}
+        visible={alert.visible}
+        onCancel={() => setAlert({ visible: false, title: '', subtitle: '' })}
+      />
     </TouchableOpacity>
   );
 };
