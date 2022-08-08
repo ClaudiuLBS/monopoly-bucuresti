@@ -1,11 +1,11 @@
 import * as SecureStore from 'expo-secure-store';
 
-import config from '../config';
+import { config } from '../config';
 import RestApi from './rest.service';
 
 const InitService = {
   async checkPlayer() {
-    const player_id = await SecureStore.getItemAsync('player_id');
+    const player_id = await SecureStore.getItemAsync(config.player_id);
     const player = await RestApi.player.get(player_id);
     if (!player)
       return {
@@ -17,7 +17,7 @@ const InitService = {
   },
 
   async deletePlayer() {
-    await SecureStore.deleteItemAsync('player_id');
+    await SecureStore.deleteItemAsync(config.player_id);
   },
 };
 export default InitService;

@@ -8,8 +8,7 @@ const LobbyPlayer = ({ player }) => {
       style={[
         styles.playerName,
         {
-          borderColor: player.owner ? colors.owner : colors.notOwner,
-          borderTopColor: player.color,
+          borderColor: player.color,
         },
       ]}
     >
@@ -23,8 +22,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingBottom: 5,
     paddingTop: 10,
-    fontWeight: 'bold',
-    borderRadius: 20,
+    fontFamily: 'bold',
+    borderRadius: 5,
     borderLeftWidth: 10,
     borderRightWidth: 10,
     borderBottomWidth: 8,

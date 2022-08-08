@@ -1,39 +1,58 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text } from 'react-native';
-import CustomButton from '../../components/CustomButton';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 
+import CustomButton from '../../components/CustomButton';
 import DefaultScreen from '../../components/DefaultScreen';
 import LobbyPlayer from '../../components/LobbyPlayer';
-import colors from '../../constants/colors';
 import GameSessionApi from '../../services/session.service';
 import RestApi from '../../services/rest.service';
+import colors from '../../constants/colors';
+import { setStartDate } from '../../redux/sessionSlice';
 
-const LobbyScreen = ({ code, owner, startSession }) => {
+const LobbyScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const player = useSelector((state) => state.player);
+  const gameSession = useSelector((state) => state.session);
 
   const [players, setPlayers] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  let handleRefresh;
   useEffect(() => {
-    const refresh = setInterval(() => {
-      GameSessionApi.getPlayers(code).then((res) => {
-        setPlayers(res);
-        RestApi.gameSession.get(res[0].game_session).then((res1) => {
-          setLoading(false);
-          if (res1 && res1.start_date) {
-            navigation.navigate('Dashboard');
-            clearInterval(refresh);
-          }
-        });
-      });
+    refresh();
+    handleRefresh = setInterval(() => {
+      refresh();
     }, 5000);
+
+    return () => clearInterval(handleRefresh);
   }, []);
 
+  const refresh = async () => {
+    RestApi.gameSession.topPlayers(gameSession.code).then((res) => {
+      setPlayers(res);
+      RestApi.gameSession.get(res[0].game_session).then((res1) => {
+        setLoading(false);
+        if (res1 && res1.start_date) {
+          clearInterval(handleRefresh);
+          navigation.navigate('Dashboard');
+        }
+      });
+    });
+  };
+
   const handleStartSession = async () => {
+    const startSession = async (code) => {
+      const data = await GameSessionApi.startSession(code);
+      if (data.start_date) dispatch(setStartDate(data.start_date));
+      return data;
+    };
+
     setLoading(true);
-    const data = await startSession(code);
+    const data = await startSession(gameSession.code);
     if (data.error) {
       setError(data.error);
       return;
@@ -41,10 +60,11 @@ const LobbyScreen = ({ code, owner, startSession }) => {
     navigation.navigate('Dashboard');
     setLoading(false);
   };
+
   return (
     <DefaultScreen>
-      <Text style={styles.code}>{code}</Text>
-      {owner && <CustomButton onPress={handleStartSession}>START</CustomButton>}
+      <Text style={styles.code}>{gameSession.code}</Text>
+      {player.owner && <CustomButton onPress={handleStartSession}>START</CustomButton>}
 
       <FlatList
         style={styles.playersList}
@@ -69,19 +89,19 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 10,
     backgroundColor: colors.primary,
-    borderRadius: 20,
     color: colors.white,
-    fontWeight: 'bold',
+    fontFamily: 'bold',
+    borderRadius: 5,
     borderWidth: 2,
     borderColor: colors.white + '10',
   },
   error: {
     fontSize: 22,
-    alignItems: 'center',
     textAlign: 'center',
-    marginTop: 30,
     color: 'red',
-    fontWeight: 'bold',
+    fontFamily: 'bold',
+    alignItems: 'center',
+    marginTop: 30,
   },
   loading: {
     marginTop: 10,

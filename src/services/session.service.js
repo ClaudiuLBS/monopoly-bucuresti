@@ -6,8 +6,8 @@ import RestApi from './rest.service';
 
 const GameSessionApi = {
   async createSession(name, color) {
-    console.log(color);
-    const result = await axios.post(`${config.url}/create-session/`, { name, color });
+    const token = await SecureStore.getItemAsync(config.push_token).catch((e) => null);
+    const result = await axios.post(`${config.url}/create-session/`, { name, color, token });
     await SecureStore.setItemAsync('player_id', result.data.player_id.toString());
     const player = await RestApi.player.get(result.data.player_id);
     const gameSession = await RestApi.gameSession.get(player.game_session);
@@ -16,7 +16,8 @@ const GameSessionApi = {
   },
 
   async joinSession(name, code, color) {
-    const result = await axios.post(`${config.url}/join-session/`, { name, code, color });
+    const token = await SecureStore.getItemAsync(config.push_token).catch((e) => null);
+    const result = await axios.post(`${config.url}/join-session/`, { name, code, color, token });
     if (result.data.error) return result.data;
 
     await SecureStore.setItemAsync('player_id', result.data.player_id.toString());
@@ -34,11 +35,6 @@ const GameSessionApi = {
   async endSession(code) {
     const result = await axios.post(`${config.url}/end-session/`, { code });
     return result;
-  },
-
-  async getPlayers(code) {
-    const result = await axios.get(`${config.url}/all-players/${code}`);
-    return result.data;
   },
 };
 export default GameSessionApi;
