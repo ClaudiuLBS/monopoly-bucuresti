@@ -68,29 +68,29 @@ const MenuScreen = () => {
   };
 
   const handleJoinSession = async () => {
+    let screen = 'Lobby';
     const joinSession = async (name, code, color) => {
       const data = await GameSessionApi.joinSession(name, code, color);
       if (data.error) return data.error;
-
+      if (data.gameSession.start_date) screen = 'Dashboard';
       dispatch(setPlayer(data.player));
       dispatch(setSession(data.gameSession));
     };
 
     if (!name) {
-      setError('Enter a name yo fuckin nigger');
+      setError(texts.enterName);
       return;
     }
     if (code.length != 4) {
-      setError('Code must have 4 digits yo faggot');
+      setError(texts.codeVerif);
       return;
     }
     setLoading(true);
     const error = await joinSession(name, code, color);
     setLoading(false);
-
+    console.log(gameSession);
     if (error) setError(error);
-    else if (!gameSession.start_date) navigation.navigate('Lobby');
-    else navigation.navigate('Dashboard');
+    else navigation.navigate(screen);
   };
 
   const renderColorPicker = () => {

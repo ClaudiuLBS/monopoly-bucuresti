@@ -8,7 +8,7 @@ const GameSessionApi = {
   async createSession(name, color) {
     const token = await SecureStore.getItemAsync(config.push_token).catch((e) => null);
     const result = await axios.post(`${config.url}/create-session/`, { name, color, token });
-    await SecureStore.setItemAsync('player_id', result.data.player_id.toString());
+    await SecureStore.setItemAsync(config.player_id, result.data.player_id.toString());
     const player = await RestApi.player.get(result.data.player_id);
     const gameSession = await RestApi.gameSession.get(player.game_session);
 
@@ -20,7 +20,7 @@ const GameSessionApi = {
     const result = await axios.post(`${config.url}/join-session/`, { name, code, color, token });
     if (result.data.error) return result.data;
 
-    await SecureStore.setItemAsync('player_id', result.data.player_id.toString());
+    await SecureStore.setItemAsync(config.player_id, result.data.player_id.toString());
     const player = await RestApi.player.get(result.data.player_id);
     const gameSession = await RestApi.gameSession.get(player.game_session);
 
