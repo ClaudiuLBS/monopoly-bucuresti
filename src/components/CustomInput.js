@@ -2,7 +2,14 @@ import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import colors from '../constants/colors';
 
-const CustomInput = ({ children, style, setText, color = colors.secondary, maxLength = 25 }) => {
+const CustomInput = ({
+  children,
+  style,
+  setText,
+  color = colors.secondary,
+  maxLength = 25,
+  editable = true,
+}) => {
   return (
     <TextInput
       style={[styles.textInput, style, { borderColor: color, color: color }]}
@@ -10,6 +17,7 @@ const CustomInput = ({ children, style, setText, color = colors.secondary, maxLe
       placeholderTextColor={colors.secondary + '70'}
       maxLength={maxLength}
       onChangeText={(text) => setText(text)}
+      editable={editable}
     />
   );
 };

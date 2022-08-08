@@ -115,7 +115,7 @@ const MenuScreen = () => {
     <DefaultScreen style={{ justifyContent: 'center' }}>
       {loading ? <ActivityIndicator size={'large'} style={{ marginBottom: 10 }} /> : null}
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <CustomInput setText={setName} style={{ flex: 1 }}>
+        <CustomInput setText={setName} style={{ flex: 1 }} editable={gameSession.id == null}>
           name
         </CustomInput>
         {renderColorPicker()}
@@ -124,7 +124,7 @@ const MenuScreen = () => {
         {texts.createGame}
       </CustomButton>
       <View style={{ flexDirection: 'row', width: '100%' }}>
-        <CustomInput setText={setCode} maxLength={4}>
+        <CustomInput setText={setCode} maxLength={4} editable={gameSession.id == null}>
           code
         </CustomInput>
         <CustomButton
