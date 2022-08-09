@@ -59,7 +59,7 @@ const PropertyInfoScreen = ({ route }) => {
       setAlert({
         visible: true,
         title: 'Success',
-        subtitle: 'Now you have more factories',
+        subtitle: texts.buyFactorySuccess,
       });
       loadProperty();
     });
@@ -72,7 +72,7 @@ const PropertyInfoScreen = ({ route }) => {
       setAlert({
         visible: true,
         title: 'Success',
-        subtitle: 'Now you have more soldiers',
+        subtitle: texts.trainSoldiersSuccess,
       });
       loadProperty();
       setPopulationToTrain(0);
@@ -87,7 +87,7 @@ const PropertyInfoScreen = ({ route }) => {
       setAlert({
         visible: true,
         title: 'Success',
-        subtitle: 'Now you have this property',
+        subtitle: texts.buyPropertySuccess,
       });
     });
   };
@@ -97,9 +97,9 @@ const PropertyInfoScreen = ({ route }) => {
       showModal(modals.null);
       dispatch(dropSoldiers(player.soldiers));
       if (res.win) {
-        setAlert({ visible: true, title: 'You Won', subtitle: `${res.soldiers} soldiers left` });
+        setAlert({ visible: true, title: 'You Won!', subtitle: texts.win(res.soldiers) });
         loadProperty();
-      } else setAlert({ visible: true, title: 'You Lost', subtitle: 'Maybe next time' });
+      } else setAlert({ visible: true, title: 'You Lost!', subtitle: texts.lose });
     });
   };
 

@@ -44,9 +44,9 @@ const Routes = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
-      SecureStore.setItemAsync(config.push_token, token)
-    );
+    registerForPushNotificationsAsync().then((token) => {
+      if (token) SecureStore.setItemAsync(config.push_token, token);
+    });
     Font.loadAsync({
       ubuntu: Ubuntu_400Regular,
       bold: Ubuntu_500Medium,

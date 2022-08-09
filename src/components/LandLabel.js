@@ -41,7 +41,7 @@ const LandLabel = ({ place, refresh }) => {
 
   useEffect(() => {
     loadProperty();
-  }, []);
+  }, [place]);
 
   const handleBuyProperty = () => {
     GameService.buyProperty(player.id, place.property).then((res) => {
@@ -50,8 +50,8 @@ const LandLabel = ({ place, refresh }) => {
       showModal(modals.null);
       setAlert({
         visible: true,
-        title: 'Successfully bought property',
-        subtitle: '+1000 population etc some text',
+        title: `Successfully bought property ${place.name}`,
+        subtitle: texts.buyPropertySuccess,
       });
       refresh();
     });
@@ -62,10 +62,10 @@ const LandLabel = ({ place, refresh }) => {
       dispatch(dropSoldiers(player.soldiers));
       showModal(modals.null);
       if (res.win) {
-        setAlert({ visible: true, title: 'You Won', subtitle: `${res.soldiers} soldiers left` });
+        setAlert({ visible: true, title: 'You Won!', subtitle: texts.win(res.soldiers) });
         loadProperty();
         refresh();
-      } else setAlert({ visible: true, title: 'You Lost', subtitle: 'Maybe next time' });
+      } else setAlert({ visible: true, title: 'You Lost!', subtitle: texts.lose });
     });
   };
 
@@ -76,7 +76,7 @@ const LandLabel = ({ place, refresh }) => {
       setAlert({
         visible: true,
         title: `You brought ${soldiersCount} soldiers`,
-        subtitle: `Now you have ${player.soldiers + soldiersCount} soldiers`,
+        subtitle: `Now you have ${player.soldiers + soldiersCount} active soldiers`,
       });
       dispatch(bringSoldiers(soldiersCount));
       setSoldiersCount(0);
@@ -90,7 +90,7 @@ const LandLabel = ({ place, refresh }) => {
       setAlert({
         visible: true,
         title: `You droped ${soldiersCount} soldiers`,
-        subtitle: `Now you have ${player.soldiers - soldiersCount} soldiers`,
+        subtitle: `Now you have ${player.soldiers - soldiersCount} active soldiers`,
       });
       dispatch(dropSoldiers(soldiersCount));
       setSoldiersCount(0);

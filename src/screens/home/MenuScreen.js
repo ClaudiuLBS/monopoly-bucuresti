@@ -88,7 +88,6 @@ const MenuScreen = () => {
     setLoading(true);
     const error = await joinSession(name, code, color);
     setLoading(false);
-    console.log(gameSession);
     if (error) setError(error);
     else navigation.navigate(screen);
   };

@@ -18,4 +18,9 @@ export default {
   buyFactoryInfo: (revenue) => `Be the wealthiest living soul. It generates ${revenue}$ per day`,
   buyFactory: (price) => `Buy Factory (${price}$)`,
   buyProperty: (price) => `Buy Property (${price}$)`,
+  buyPropertySuccess: "You're getting stronger",
+  lose: 'Your army is good of nothing, you fool!',
+  win: (soldiers) => `Very impresive! There are ${soldiers} worriors still alive`,
+  trainSoldiersSuccess: 'Your defence almost impenetrable',
+  buyFactorySuccess: 'Lemme see teh moneh',
 };
