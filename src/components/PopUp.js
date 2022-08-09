@@ -1,5 +1,5 @@
-import React from 'react';
-import { Modal, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Modal, StyleSheet, Text, View } from 'react-native';
 import colors from '../constants/colors';
 import CustomButton from './CustomButton';
 
@@ -14,6 +14,12 @@ const PopUp = ({
   info = '',
   onlyInformative = false,
 }) => {
+  const [pressed, setPressed] = useState(false);
+
+  useEffect(() => {
+    setPressed(false);
+  }, [visible]);
+
   return (
     <Modal animationType="fade" transparent={true} visible={visible}>
       <View style={styles.background}>
@@ -28,10 +34,26 @@ const PopUp = ({
               </CustomButton>
             ) : (
               <>
-                <CustomButton style={styles.button} color={colors.confirm} onPress={onConfirm}>
+                <CustomButton
+                  active={!pressed}
+                  style={styles.button}
+                  color={colors.confirm}
+                  onPress={() => {
+                    setPressed(true);
+                    onConfirm();
+                  }}
+                >
                   {confirmText}
                 </CustomButton>
-                <CustomButton style={styles.button} color={colors.cancel} onPress={onCancel}>
+                <CustomButton
+                  active={!pressed}
+                  style={styles.button}
+                  color={colors.cancel}
+                  onPress={() => {
+                    setPressed(true);
+                    onCancel();
+                  }}
+                >
                   {cancelText}
                 </CustomButton>
               </>

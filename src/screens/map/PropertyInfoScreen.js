@@ -45,15 +45,23 @@ const PropertyInfoScreen = ({ route }) => {
 
   const handleBuyFactory = () => {
     GameService.buyFactory(player.id, property.id).then((res) => {
-      if (!res) return;
+      showModal(modals.null);
+      if (!res) {
+        setAlert({
+          visible: true,
+          title: 'Failed',
+          subtitle: 'i donno why',
+        });
+        return;
+      }
       if (res.error) {
         setAlert({
           visible: true,
           title: 'Failed',
           subtitle: res.error,
         });
+        return;
       }
-      showModal(modals.null);
       setPopulationToTrain(0);
       dispatch(removeMoney(property.factory_price));
       setAlert({

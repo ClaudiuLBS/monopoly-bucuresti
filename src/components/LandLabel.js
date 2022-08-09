@@ -47,12 +47,12 @@ const LandLabel = ({ place, refresh }) => {
     GameService.buyProperty(player.id, place.property).then((res) => {
       loadProperty();
       dispatch(removeMoney(place.price));
-      showModal(modals.null);
       setAlert({
         visible: true,
         title: `Successfully bought property ${place.name}`,
         subtitle: texts.buyPropertySuccess,
       });
+      showModal(modals.null);
       refresh();
     });
   };
@@ -60,25 +60,25 @@ const LandLabel = ({ place, refresh }) => {
   const handleAttack = () => {
     GameService.attack(player.id, place.property).then((res) => {
       dispatch(dropSoldiers(player.soldiers));
-      showModal(modals.null);
       if (res.win) {
         setAlert({ visible: true, title: 'You Won!', subtitle: texts.win(res.soldiers) });
         loadProperty();
         refresh();
       } else setAlert({ visible: true, title: 'You Lost!', subtitle: texts.lose });
+      showModal(modals.null);
     });
   };
 
   const handleBringSoldiers = () => {
     GameService.bringSoldiers(player.id, place.property, soldiersCount).then((res) => {
       loadProperty();
-      showModal(modals.null);
       setAlert({
         visible: true,
         title: `You brought ${soldiersCount} soldiers`,
         subtitle: `Now you have ${player.soldiers + soldiersCount} active soldiers`,
       });
       dispatch(bringSoldiers(soldiersCount));
+      showModal(modals.null);
       setSoldiersCount(0);
     });
   };
@@ -86,13 +86,13 @@ const LandLabel = ({ place, refresh }) => {
   const handleDropSoldiers = () => {
     GameService.dropSoldiers(player.id, place.property, soldiersCount).then((res) => {
       loadProperty();
-      showModal(modals.null);
       setAlert({
         visible: true,
         title: `You droped ${soldiersCount} soldiers`,
         subtitle: `Now you have ${player.soldiers - soldiersCount} active soldiers`,
       });
       dispatch(dropSoldiers(soldiersCount));
+      showModal(modals.null);
       setSoldiersCount(0);
     });
   };
