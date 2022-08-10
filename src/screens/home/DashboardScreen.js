@@ -22,8 +22,7 @@ const DashboardScreen = () => {
   const player = useSelector((state) => state.player);
   const [stats, setStats] = useState(null);
   const [properties, setProperties] = useState(null);
-
-  const gameSession = useSelector((state) => state.session);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     navigation.addListener('beforeRemove', (e) => {
@@ -40,9 +39,15 @@ const DashboardScreen = () => {
     return unsubscribe;
   }, [navigation]);
 
-  const refresh = () => {
-    RestApi.player.properties(player.id).then((res) => setProperties(res));
-    RestApi.player.stats(player.id).then((res) => setStats(res));
+  const refresh = async () => {
+    setRefreshing(true);
+    RestApi.player.properties(player.id).then((res) => {
+      RestApi.player.stats(player.id).then((res1) => {
+        setProperties(res);
+        setStats(res1);
+        setRefreshing(false);
+      });
+    });
   };
 
   const RenderProperties = ({ properties }) => {
@@ -89,7 +94,10 @@ const DashboardScreen = () => {
     <ScrollView style={styles.page}>
       <DefaultScreen>
         <View style={styles.section}>
-          <Text style={styles.title}>Stats</Text>
+          <View style={[styles.title, { flexDirection: 'row', justifyContent: 'space-between' }]}>
+            <Text style={{ color: colors.white, fontFamily: 'bold', fontSize: 20 }}>Stats</Text>
+            {refreshing ? <ActivityIndicator /> : null}
+          </View>
 
           <TraitItem
             title={'Money'}
@@ -158,8 +166,8 @@ const styles = StyleSheet.create({
     fontFamily: 'bold',
     fontSize: 20,
     backgroundColor: '#ffffff10',
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
+    borderTopLeftRadius: 2,
+    borderTopRightRadius: 2,
     margin: -10,
     marginBottom: 0,
     padding: 10,
