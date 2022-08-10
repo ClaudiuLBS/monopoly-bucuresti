@@ -15,12 +15,17 @@ export const sessionSlice = createSlice({
         state.start_date = action.payload.start_date;
       }
     },
+    deleteSession: (state, action) => {
+      state.id = null;
+      state.code = null;
+      state.start_date = null;
+    },
     setStartDate: (state, action) => {
       state.start_date = action.payload;
     },
   },
 });
 
-export const { setSession, setStartDate } = sessionSlice.actions;
+export const { setSession, setStartDate, deleteSession } = sessionSlice.actions;
 
 export default sessionSlice.reducer;

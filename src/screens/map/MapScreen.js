@@ -27,6 +27,11 @@ const MapScreen = () => {
     const refresh = setInterval(() => {
       getMapData();
     }, 10000);
+
+    navigation.addListener('blur', (e) => {
+      clearInterval(refresh);
+    });
+
     getLocation();
     return () => clearInterval(refresh);
   }, []);

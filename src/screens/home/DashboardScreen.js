@@ -25,9 +25,6 @@ const DashboardScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    navigation.addListener('beforeRemove', (e) => {
-      e.preventDefault();
-    });
     refresh();
   }, []);
 

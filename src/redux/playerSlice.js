@@ -23,6 +23,18 @@ export const playerSlice = createSlice({
         state.owner = action.payload.owner;
       }
     },
+    deletePlayer: (state, action) => {
+      state.id = null;
+      state.name = null;
+      state.game_session = null;
+      state.color = null;
+      state.money = null;
+      state.soldiers = null;
+      state.owner = null;
+    },
+    setOwner: (state, action) => {
+      state.owner = true;
+    },
     addMoney: (state, action) => {
       state.money += action.payload;
     },
@@ -38,7 +50,14 @@ export const playerSlice = createSlice({
   },
 });
 
-export const { setPlayer, addMoney, bringSoldiers, dropSoldiers, removeMoney } =
-  playerSlice.actions;
+export const {
+  setPlayer,
+  deletePlayer,
+  addMoney,
+  bringSoldiers,
+  dropSoldiers,
+  removeMoney,
+  setOwner,
+} = playerSlice.actions;
 
 export default playerSlice.reducer;

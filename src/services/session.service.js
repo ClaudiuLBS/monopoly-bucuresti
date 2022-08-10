@@ -27,6 +27,13 @@ const GameSessionApi = {
     return { player, gameSession };
   },
 
+  async leaveSession(player) {
+    const result = await axios
+      .post(`${config.url}/leave-session/`, { player })
+      .catch((e) => ({ data: null }));
+    return result.data;
+  },
+
   async startSession(code) {
     const result = await axios.post(`${config.url}/start-session/`, { code });
     return result.data;
@@ -34,7 +41,7 @@ const GameSessionApi = {
 
   async endSession(code) {
     const result = await axios.post(`${config.url}/end-session/`, { code });
-    return result;
+    return result.data;
   },
 };
 export default GameSessionApi;

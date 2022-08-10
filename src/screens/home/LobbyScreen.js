@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
 
 import CustomButton from '../../components/CustomButton';
 import DefaultScreen from '../../components/DefaultScreen';
@@ -9,7 +10,10 @@ import LobbyPlayer from '../../components/LobbyPlayer';
 import GameSessionApi from '../../services/session.service';
 import RestApi from '../../services/rest.service';
 import colors from '../../constants/colors';
-import { setStartDate } from '../../redux/sessionSlice';
+import PopUp from '../../components/PopUp';
+import { deleteSession, setStartDate } from '../../redux/sessionSlice';
+import { config } from '../../config';
+import { deletePlayer, setOwner } from '../../redux/playerSlice';
 
 const LobbyScreen = () => {
   const navigation = useNavigation();
@@ -20,6 +24,7 @@ const LobbyScreen = () => {
   const [players, setPlayers] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, showModal] = useState(false);
 
   let handleRefresh;
   useEffect(() => {
@@ -28,13 +33,19 @@ const LobbyScreen = () => {
       refresh();
     }, 5000);
 
+    navigation.addListener('blur', (e) => {
+      clearInterval(handleRefresh);
+    });
+
     return () => clearInterval(handleRefresh);
   }, []);
 
   const refresh = async () => {
     RestApi.gameSession.topPlayers(gameSession.code).then((res) => {
+      if (res && res.filter((x) => x.id == player.id)[0].owner == true && player.owner == false)
+        dispatch(setOwner());
       setPlayers(res);
-      RestApi.gameSession.get(res[0].game_session).then((res1) => {
+      RestApi.gameSession.get(player.game_session).then((res1) => {
         setLoading(false);
         if (res1 && res1.start_date) {
           clearInterval(handleRefresh);
@@ -61,6 +72,20 @@ const LobbyScreen = () => {
     setLoading(false);
   };
 
+  const handleLeaveSession = async () => {
+    GameSessionApi.leaveSession(player.id).then((res) => {
+      showModal(false);
+      if (res.error.length > 0) setError(res.error);
+      else {
+        SecureStore.setItemAsync(config.player_id, '');
+        dispatch(deletePlayer());
+        dispatch(deleteSession());
+        clearInterval(handleRefresh);
+        navigation.navigate('Menu');
+      }
+    });
+  };
+
   return (
     <DefaultScreen>
       <Text style={styles.code}>{gameSession.code}</Text>
@@ -76,6 +101,16 @@ const LobbyScreen = () => {
         }
       />
       {error ? <Text style={styles.error}>{error}</Text> : null}
+      <CustomButton onPress={() => showModal(true)} color={colors.red}>
+        LEAVE
+      </CustomButton>
+      <PopUp
+        title="Are you sure you wanna leave?"
+        info="You can join back with the same code if there are any players left"
+        visible={modalVisible}
+        onCancel={() => showModal(false)}
+        onConfirm={handleLeaveSession}
+      />
     </DefaultScreen>
   );
 };
