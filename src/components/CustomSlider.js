@@ -5,7 +5,7 @@ import { Slider } from '@rneui/themed';
 
 import colors from '../constants/colors';
 
-const CustomSlider = ({ min, max, disabled, value, onChange }) => {
+const CustomSlider = ({ min = 0, max, disabled = false, value, onChange }) => {
   return (
     <Slider
       minimumValue={min}

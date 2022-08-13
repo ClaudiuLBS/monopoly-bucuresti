@@ -13,6 +13,7 @@ import texts from '../../constants/texts';
 import GameService from '../../services/game.service';
 import RestApi from '../../services/rest.service';
 import { dropSoldiers, removeMoney } from '../../redux/playerSlice';
+import PopUpLouncher from '../../components/PopUpLouncher';
 
 const modals = {
   null: 0,
@@ -111,89 +112,44 @@ const PropertyInfoScreen = ({ route }) => {
     });
   };
 
-  if (!property) return <LoadingScreen />;
-
-  if (!property.owner_id || property.owner_id == player.id)
-    return (
-      <DefaultScreen>
-        <TraitItem
-          title={'Population'}
-          value1={property.population}
-          value2={`${property.population_per_day}/day`}
-          color={colors.yellow}
-          iconName={'people'}
-          iconType={'ionicon'}
-          iconSize={22}
-        />
-        <TraitItem
-          title={'Factories'}
-          value1={property.factories}
-          color={colors.pink}
-          iconName={'factory'}
-          iconType={'material-community'}
-          iconSize={19}
-        />
-        <TraitItem
-          title={'Revenue'}
-          value1={`${property.money_per_day}/day`}
-          color={colors.green}
-          iconName={'money-bill'}
-          iconType={'font-awesome-5'}
-          iconSize={15}
-        />
-        <TraitItem
-          title={'Defense Soldiers'}
-          value1={property.soldiers}
-          color={colors.lightBlue}
-          iconName={'user-shield'}
-          iconType={'font-awesome-5'}
-          iconSize={16}
-        />
-        {property.owner_id == player.id ? (
-          <>
-            <CustomButton
-              style={{ marginTop: 20 }}
-              color={colors.pink}
-              onPress={() => showModal(modals.buyFactory)}
-              active={player.money >= property.factory_price}
-            >
-              {texts.buyFactory(property.factory_price)}
-            </CustomButton>
-            <PopUp
-              title={`Buy factory for ${property.factory_price}$`}
-              info={texts.buyFactoryInfo(property.money_per_day / property.factories)}
-              visible={modalVisible == modals.buyFactory}
-              onConfirm={handleBuyFactory}
-              onCancel={() => showModal(modals.null)}
-            />
-            <CustomButton
-              active={property.population > 20}
-              color={colors.lightBlue}
-              onPress={() => showModal(modals.trainSoldiers)}
-            >
-              {texts.trainSoldiers}
-            </CustomButton>
-            <PopUp
-              title={texts.trainSoldiers}
-              info={texts.trainSoldiersInfo}
-              visible={modalVisible == modals.trainSoldiers}
-              onConfirm={handleTrainSoldiers}
-              onCancel={() => {
-                showModal(modals.null);
-                setPopulationToTrain(0);
-              }}
-            >
-              <CustomSlider
-                min={0}
-                max={property.population - 20}
-                disabled={!(player.soldiers - 20)}
-                value={populationToTrain}
-                onChange={setPopulationToTrain}
-              />
-            </PopUp>
-          </>
-        ) : (
-          <>
+  const renderTraits = () => {
+    if (!property.owner_id || property.owner_id == player.id)
+      return (
+        <>
+          <TraitItem
+            title={'Population'}
+            value1={property.population}
+            value2={`${property.population_per_day}/day`}
+            color={colors.yellow}
+            iconName={'people'}
+            iconType={'ionicon'}
+            iconSize={22}
+          />
+          <TraitItem
+            title={'Factories'}
+            value1={property.factories}
+            color={colors.pink}
+            iconName={'factory'}
+            iconType={'material-community'}
+            iconSize={19}
+          />
+          <TraitItem
+            title={'Revenue'}
+            value1={`${property.money_per_day}/day`}
+            color={colors.green}
+            iconName={'money-bill'}
+            iconType={'font-awesome-5'}
+            iconSize={15}
+          />
+          <TraitItem
+            title={'Defense Soldiers'}
+            value1={property.soldiers}
+            color={colors.lightBlue}
+            iconName={'user-shield'}
+            iconType={'font-awesome-5'}
+            iconSize={16}
+          />
+          {!property.owner_id ? (
             <TraitItem
               title={'Price'}
               value1={property.price}
@@ -202,57 +158,85 @@ const PropertyInfoScreen = ({ route }) => {
               iconType={'entypo'}
               iconSize={16}
             />
-            <CustomButton
-              style={{ marginTop: 20 }}
-              active={inPlace && player.money >= property.price}
-              onPress={() => showModal(modals.buyProperty)}
-            >
-              {texts.buyProperty(property.price)}
-            </CustomButton>
-            <PopUp
-              title={`Buy ${property.name} for ${property.price}$`}
-              info={texts.buyPropertyInfo}
-              visible={modalVisible == modals.buyProperty}
-              onConfirm={handleBuyProperty}
-              onCancel={() => showModal(modals.null)}
-            />
-          </>
-        )}
-        <PopUp
-          title={alert.title}
-          info={alert.subtitle}
-          onlyInformative={true}
-          visible={alert.visible}
-          onCancel={() => setAlert({ visible: false, title: '', subtitle: '' })}
+          ) : null}
+        </>
+      );
+    else
+      return (
+        <TraitItem
+          title={'Owner'}
+          value1={property.owner_name}
+          color={colors.white}
+          iconName={'user-tie'}
+          iconType={'font-awesome-5'}
+          iconSize={17}
         />
-      </DefaultScreen>
-    );
+      );
+  };
+
+  const renderButtons = () => {
+    if (property.owner_id == player.id)
+      return (
+        <>
+          <PopUpLouncher
+            style={{ marginTop: 20 }}
+            color={colors.pink}
+            active={player.money >= property.factory_price}
+            buttonText={texts.buyFactory(property.factory_price)}
+            title={`Buy factory for ${property.factory_price}$`}
+            info={texts.buyFactoryInfo(property.money_per_day / property.factories)}
+            onConfirm={handleBuyFactory}
+          />
+          <PopUpLouncher
+            active={property.population > 20}
+            color={colors.lightBlue}
+            buttonText={texts.trainSoldiers}
+            title={texts.trainSoldiers}
+            info={texts.trainSoldiersInfo}
+            onConfirm={handleTrainSoldiers}
+            onCancel={() => setPopulationToTrain(0)}
+          >
+            <CustomSlider
+              max={property.population - 20}
+              disabled={!(player.soldiers - 20)}
+              value={populationToTrain}
+              onChange={setPopulationToTrain}
+            />
+          </PopUpLouncher>
+        </>
+      );
+    else if (!property.owner_id)
+      return (
+        <PopUpLouncher
+          style={{ marginTop: 20 }}
+          color={colors.green}
+          active={inPlace && player.money >= property.price}
+          buttonText={texts.buyProperty(property.price)}
+          title={`Buy ${property.name} for ${property.price}$`}
+          info={texts.buyPropertyInfo}
+          onConfirm={handleBuyProperty}
+        />
+      );
+    else
+      return (
+        <PopUpLouncher
+          active={inPlace && player.soldiers}
+          buttonText={'Attack'}
+          style={{ marginTop: 20 }}
+          color={colors.red}
+          title={`Attack ${property.name} with ${player.soldiers} soldiers?`}
+          info={texts.attackInfo}
+          onConfirm={handleAttack}
+        />
+      );
+  };
+
+  if (!property) return <LoadingScreen />;
 
   return (
     <DefaultScreen>
-      <TraitItem
-        title={'Owner'}
-        value1={property.owner_name}
-        color={colors.white}
-        iconName={'user-tie'}
-        iconType={'font-awesome-5'}
-        iconSize={17}
-      />
-      <CustomButton
-        active={inPlace && player.soldiers}
-        onPress={() => showModal(modals.attack)}
-        style={{ marginTop: 20 }}
-        color={colors.red}
-      >
-        Attack
-      </CustomButton>
-      <PopUp
-        title={`Attack ${property.name} with ${player.soldiers} soldiers?`}
-        info={texts.attackInfo}
-        visible={modalVisible == modals.attack}
-        onConfirm={handleAttack}
-        onCancel={() => showModal(modals.null)}
-      />
+      {renderTraits()}
+      {renderButtons()}
       <PopUp
         title={alert.title}
         info={alert.subtitle}
@@ -263,6 +247,7 @@ const PropertyInfoScreen = ({ route }) => {
     </DefaultScreen>
   );
 };
+
 const styles = StyleSheet.create({
   text: {
     color: colors.white,
