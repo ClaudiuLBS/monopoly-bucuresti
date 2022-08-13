@@ -12,8 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { deletePlayer } from '../../redux/playerSlice';
 import { deleteSession } from '../../redux/sessionSlice';
 import { config } from '../../config';
-import CustomButton from '../../components/CustomButton';
-import PopUp from '../../components/PopUp';
+import PopUpLouncher from '../../components/PopUpLouncher';
 
 const ScoreboardScreen = () => {
   const navigation = useNavigation();
@@ -23,7 +22,6 @@ const ScoreboardScreen = () => {
   const player = useSelector((state) => state.player);
 
   const [players, setPlayers] = useState(null);
-  const [modalVisible, showModal] = useState(null);
 
   useEffect(() => {
     RestApi.gameSession.topPlayers(gameSession.code).then((res) => setPlayers(res));
@@ -31,7 +29,6 @@ const ScoreboardScreen = () => {
 
   const handleLeaveSession = async () => {
     GameSessionApi.leaveSession(player.id).then((res) => {
-      showModal(false);
       SecureStore.setItemAsync(config.player_id, '');
       dispatch(deletePlayer());
       dispatch(deleteSession());
@@ -70,14 +67,11 @@ const ScoreboardScreen = () => {
           }
         })}
       </ScrollView>
-      <CustomButton onPress={() => showModal(true)} color={colors.red}>
-        LEAVE
-      </CustomButton>
-      <PopUp
+      <PopUpLouncher
+        buttonText={'LEAVE'}
+        color={colors.red}
         title="Are you sure you wanna leave?"
-        info="You can join back with the same code if there are any players left"
-        visible={modalVisible}
-        onCancel={() => showModal(false)}
+        info="You can join back with the same code if there are any players left, but you will lose all your proress"
         onConfirm={handleLeaveSession}
       />
     </>

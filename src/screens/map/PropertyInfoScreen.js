@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CustomButton from '../../components/CustomButton';
 import CustomSlider from '../../components/CustomSlider';
 import DefaultScreen from '../../components/DefaultScreen';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -15,14 +14,6 @@ import RestApi from '../../services/rest.service';
 import { dropSoldiers, removeMoney } from '../../redux/playerSlice';
 import PopUpLouncher from '../../components/PopUpLouncher';
 
-const modals = {
-  null: 0,
-  buyProperty: 1,
-  attack: 2,
-  buyFactory: 3,
-  trainSoldiers: 4,
-};
-
 const PropertyInfoScreen = ({ route }) => {
   const dispatch = useDispatch();
   const property_id = route.params.property;
@@ -32,7 +23,6 @@ const PropertyInfoScreen = ({ route }) => {
   const [property, setProperty] = useState(null);
   const [alert, setAlert] = useState({ visible: false, title: '', subtitle: '' });
   const [populationToTrain, setPopulationToTrain] = useState(0);
-  const [modalVisible, showModal] = useState(false);
 
   useEffect(() => {
     loadProperty();
@@ -46,7 +36,6 @@ const PropertyInfoScreen = ({ route }) => {
 
   const handleBuyFactory = () => {
     GameService.buyFactory(player.id, property.id).then((res) => {
-      showModal(modals.null);
       if (!res) {
         setAlert({
           visible: true,
@@ -77,7 +66,6 @@ const PropertyInfoScreen = ({ route }) => {
   const handleTrainSoldiers = () => {
     GameService.trainSoldiers(player.id, property.id, populationToTrain).then((res) => {
       if (!res) return;
-      showModal(modals.null);
       setAlert({
         visible: true,
         title: 'Success',
@@ -90,7 +78,6 @@ const PropertyInfoScreen = ({ route }) => {
 
   const handleBuyProperty = () => {
     GameService.buyProperty(player.id, property.id).then((res) => {
-      showModal(modals.null);
       loadProperty();
       dispatch(removeMoney(property.price));
       setAlert({
@@ -103,7 +90,6 @@ const PropertyInfoScreen = ({ route }) => {
 
   const handleAttack = () => {
     GameService.attack(player.id, property.id).then((res) => {
-      showModal(modals.null);
       dispatch(dropSoldiers(player.soldiers));
       if (res.win) {
         setAlert({ visible: true, title: 'You Won!', subtitle: texts.win(res.soldiers) });
