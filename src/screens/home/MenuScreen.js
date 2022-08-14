@@ -11,8 +11,10 @@ import GameSessionApi from '../../services/session.service';
 import { setPlayer } from '../../redux/playerSlice';
 import { setSession } from '../../redux/sessionSlice';
 import texts from '../../constants/texts';
+import { Slider } from '@rneui/themed';
+import ColoredCircle from '../../components/ColoredCircle';
 
-function hslToHex(h, s, l) {
+const hslToHex = (h, s, l) => {
   l /= 100;
   const a = (s * Math.min(l, 1 - l)) / 100;
   const f = (n) => {
@@ -23,10 +25,9 @@ function hslToHex(h, s, l) {
       .padStart(2, '0'); // convert to Hex and prefix "0" if needed
   };
   return `#${f(0)}${f(8)}${f(4)}`;
-}
+};
 
-const randomColor = () => {
-  const hue = Math.floor(Math.random() * 361);
+const hueToHex = (hue) => {
   const result = hslToHex(hue, 60, 55);
   return result;
 };
@@ -39,9 +40,9 @@ const MenuScreen = () => {
 
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
-  const [color, setColor] = useState(randomColor());
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [color, setColor] = useState(180);
 
   const pickScreen = () => {
     if (gameSession && player) {
@@ -52,7 +53,7 @@ const MenuScreen = () => {
 
   const handleCreateSession = async () => {
     const createSession = async (name, color) => {
-      const data = await GameSessionApi.createSession(name, color);
+      const data = await GameSessionApi.createSession(name, hueToHex(color));
       dispatch(setPlayer(data.player));
       dispatch(setSession(data.gameSession));
     };
@@ -70,7 +71,7 @@ const MenuScreen = () => {
   const handleJoinSession = async () => {
     let screen = 'Lobby';
     const joinSession = async (name, code, color) => {
-      const data = await GameSessionApi.joinSession(name, code, color);
+      const data = await GameSessionApi.joinSession(name, code, hueToHex(color));
       if (data.error) return data.error;
       if (data.gameSession.start_date) screen = 'Dashboard';
       dispatch(setPlayer(data.player));
@@ -94,18 +95,24 @@ const MenuScreen = () => {
 
   const renderColorPicker = () => {
     return (
-      <TouchableOpacity
-        style={{
-          backgroundColor: player.color ? player.color : color,
-          width: 40,
-          height: 40,
-          borderRadius: 50,
-          marginHorizontal: 10,
-          borderWidth: 2,
-          borderColor: colors.white,
+      <Slider
+        minimumValue={0}
+        maximumValue={360}
+        allowTouchTrack
+        step={1}
+        value={color}
+        onValueChange={setColor}
+        minimumTrackTintColor={`hsl(${color % 360},60%,55%)`}
+        maximumTrackTintColor={`hsl(${color % 360},60%,55%)`}
+        thumbProps={{
+          children: <ColoredCircle size={30} color={`hsl(${color % 360},60%,55%)`} />,
         }}
-        activeOpacity={0.9}
-        onPress={() => setColor(randomColor())}
+        thumbStyle={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: 'auto',
+          height: 'auto',
+        }}
       />
     );
   };
@@ -113,11 +120,12 @@ const MenuScreen = () => {
   return (
     <DefaultScreen style={{ justifyContent: 'center' }}>
       {loading ? <ActivityIndicator size={'large'} style={{ marginBottom: 10 }} /> : null}
+
+      {renderColorPicker()}
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <CustomInput setText={setName} style={{ flex: 1 }} editable={gameSession.id == null}>
           name
         </CustomInput>
-        {renderColorPicker()}
       </View>
       <CustomButton active={!gameSession.id} onPress={handleCreateSession}>
         {texts.createGame}
