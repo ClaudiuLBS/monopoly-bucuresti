@@ -80,11 +80,11 @@ const MenuScreen = () => {
     };
 
     if (!name) {
-      setError(texts.enterName);
+      setError(texts.enterNameError);
       return;
     }
     if (code.length != 4) {
-      setError(texts.codeVerif);
+      setError(texts.codeVerifError);
       return;
     }
     setLoading(true);
