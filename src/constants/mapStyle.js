@@ -8,6 +8,14 @@ const mapStyle = [
     ],
   },
   {
+    elementType: 'labels',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
     elementType: 'labels.text.fill',
     stylers: [
       {
@@ -25,7 +33,6 @@ const mapStyle = [
   },
   {
     featureType: 'administrative.land_parcel',
-    elementType: 'labels',
     stylers: [
       {
         visibility: 'off',
@@ -42,8 +49,7 @@ const mapStyle = [
     ],
   },
   {
-    featureType: 'poi',
-    elementType: 'labels.text',
+    featureType: 'administrative.neighborhood',
     stylers: [
       {
         visibility: 'off',
@@ -78,6 +84,15 @@ const mapStyle = [
   },
   {
     featureType: 'poi.park',
+    elementType: 'labels.text',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
+    featureType: 'poi.park',
     elementType: 'labels.text.fill',
     stylers: [
       {
@@ -100,15 +115,6 @@ const mapStyle = [
     stylers: [
       {
         color: '#212a37',
-      },
-    ],
-  },
-  {
-    featureType: 'road',
-    elementType: 'labels.icon',
-    stylers: [
-      {
-        visibility: 'off',
       },
     ],
   },
@@ -168,23 +174,6 @@ const mapStyle = [
   },
   {
     featureType: 'road.local',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'road.local',
-    elementType: 'labels',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'transit',
     stylers: [
       {
         visibility: 'off',

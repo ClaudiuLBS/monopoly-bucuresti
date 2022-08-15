@@ -5,7 +5,7 @@ const MapApi = {
   async getPaths(code) {
     const result = await axios
       .get(`${config.url}/lands-paths/${code}`)
-      .catch((e) => ({ data: [] }));
+      .catch((e) => ({ data: null }));
     return result.data;
   },
 };
