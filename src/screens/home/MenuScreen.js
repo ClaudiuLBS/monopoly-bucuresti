@@ -11,6 +11,7 @@ import GameSessionApi from '../../services/session.service';
 import { setPlayer } from '../../redux/playerSlice';
 import { setSession } from '../../redux/sessionSlice';
 import texts from '../../constants/texts';
+import ColoredCircle from '../../components/ColoredCircle';
 
 function hslToHex(h, s, l) {
   l /= 100;
@@ -96,23 +97,20 @@ const MenuScreen = () => {
     return (
       <TouchableOpacity
         style={{
-          backgroundColor: player.color ? player.color : color,
-          width: 40,
-          height: 40,
-          borderRadius: 50,
           marginHorizontal: 10,
-          borderWidth: 2,
-          borderColor: colors.white,
         }}
         activeOpacity={0.9}
         onPress={() => setColor(randomColor())}
-      />
+      >
+        <ColoredCircle color={player.color ? player.color : color} size={40} borderWidth={2}>
+          {loading ? <ActivityIndicator size={'large'} color={colors.white} /> : null}
+        </ColoredCircle>
+      </TouchableOpacity>
     );
   };
 
   return (
     <DefaultScreen style={{ justifyContent: 'center' }}>
-      {loading ? <ActivityIndicator size={'large'} style={{ marginBottom: 10 }} /> : null}
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <CustomInput setText={setName} style={{ flex: 1 }} editable={gameSession.id == null}>
           name
