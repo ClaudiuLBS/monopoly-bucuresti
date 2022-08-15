@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 
 import CustomButton from '../../components/CustomButton';
 import DefaultScreen from '../../components/DefaultScreen';
-import LobbyPlayer from '../../components/LobbyPlayer';
+import PlayerLabel from '../../components/PlayerLabel';
 import GameSessionApi from '../../services/session.service';
 import RestApi from '../../services/rest.service';
 import colors from '../../constants/colors';
 import { deleteSession, setStartDate } from '../../redux/sessionSlice';
 import { config } from '../../config';
 import { deletePlayer, setOwner } from '../../redux/playerSlice';
+import PopUpLouncher from '../../components/PopUpLouncher';
 
 const LobbyScreen = () => {
   const navigation = useNavigation();
@@ -85,17 +86,28 @@ const LobbyScreen = () => {
 
   return (
     <DefaultScreen>
-      <Text style={styles.code}>{gameSession.code}</Text>
-      {player.owner && <CustomButton onPress={handleStartSession}>START</CustomButton>}
+      <View style={{ justifyContent: 'center' }}>
+        <Text style={styles.code}>{gameSession.code}</Text>
+        {loading ? (
+          <ActivityIndicator
+            size={'large'}
+            color={colors.white}
+            style={{ position: 'absolute', right: 10 }}
+          />
+        ) : null}
+      </View>
+
+      {player.owner && (
+        <CustomButton color={colors.green} onPress={handleStartSession}>
+          START
+        </CustomButton>
+      )}
 
       <FlatList
         style={styles.playersList}
         data={players}
-        renderItem={({ item }) => <LobbyPlayer player={item} />}
+        renderItem={({ item }) => <PlayerLabel player={item} />}
         keyExtractor={(player, index) => index}
-        ListHeaderComponent={
-          loading ? <ActivityIndicator size={'large'} style={styles.loading} /> : null
-        }
       />
       {error ? <Text style={styles.error}>{error}</Text> : null}
       <PopUpLouncher
@@ -115,7 +127,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 36,
     marginVertical: 5,
-    marginTop: 20,
     padding: 10,
     backgroundColor: colors.primary,
     color: colors.white,
@@ -132,13 +143,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 30,
   },
-  loading: {
-    marginTop: 10,
-  },
   playersList: {
     borderTopWidth: 2,
-    borderTopColor: colors.secondary,
+    borderTopColor: colors.primary,
     marginTop: 10,
+    paddingTop: 10,
   },
 });
 export default LobbyScreen;
