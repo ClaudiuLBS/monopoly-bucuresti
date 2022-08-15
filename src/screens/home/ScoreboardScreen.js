@@ -61,7 +61,7 @@ const ScoreboardScreen = () => {
                 style={{ marginHorizontal }}
                 player={player}
                 score={player.properties}
-                size={circleSize}
+                circleSize={circleSize}
                 fontSize={fontSize}
               />
             );

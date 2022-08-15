@@ -21,7 +21,7 @@ const HomeStack = () => {
   const navigation = useNavigation();
 
   const pickFirstScreen = () => {
-    if (gameSession)
+    if (gameSession.code)
       if (gameSession.start_date) return 'Dashboard';
       else return 'Lobby';
     else return 'Menu';

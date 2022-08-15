@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Dimensions, SafeAreaView } from 'react-native';
+import { StyleSheet, Dimensions, SafeAreaView, View, Modal, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Polygon } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -14,6 +14,7 @@ import locations from '../../constants/locations';
 import GameService from '../../services/game.service';
 import { useSelector } from 'react-redux';
 import LandLabel from '../../components/LandLabel';
+import { Icon } from '@rneui/base';
 
 const MapScreen = () => {
   const navigation = useNavigation();
@@ -52,7 +53,9 @@ const MapScreen = () => {
             location.coords.latitude,
             location.coords.longitude,
             gameSession.code
-          ).then((res) => setPlace(res));
+          ).then((res) => {
+            if (res) setPlace(res);
+          });
         }
       }
     );
@@ -62,11 +65,27 @@ const MapScreen = () => {
     InitService.checkPlayer().then((result) => {
       if (result.gameSession)
         MapApi.getPaths(result.gameSession.code).then((res) => {
-          setData(res);
-          setLoading(false);
+          if (res) {
+            setData(res);
+            setLoading(false);
+          }
         });
       else setLoading(false);
     });
+  };
+
+  const renderOverlay = () => {
+    if (!gameSession.code || !gameSession.start_date)
+      return (
+        <View style={styles.overlay}>
+          <View style={styles.overlayContent}>
+            <Icon name="alert-triangle" type="feather" color={colors.secondary} />
+            <Text style={styles.overlayText}>
+              {!gameSession.code ? 'Enter a game to use the map' : "This game hasn't started yet"}
+            </Text>
+          </View>
+        </View>
+      );
   };
 
   if (loading) return <LoadingScreen />;
@@ -99,6 +118,7 @@ const MapScreen = () => {
         ))}
       </MapView>
       <LandLabel place={place} refresh={getMapData} />
+      {renderOverlay()}
     </SafeAreaView>
   );
 };
@@ -113,6 +133,24 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height - dimensions.tabBarHeight,
+  },
+  overlay: {
+    position: 'absolute',
+    width: '100%',
+    backgroundColor: '#000000d0',
+    height: Dimensions.get('window').height,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  overlayContent: {
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: '#ffffff20',
+    paddingVertical: 10,
+  },
+  overlayText: {
+    color: colors.secondary,
+    fontSize: 20,
   },
 });
 

@@ -10,7 +10,7 @@ const PlayerLabel = ({ player, score = null, fontSize = 20, circleSize = 15, sty
       <Text numberOfLines={1} style={[styles.name, { fontSize }]}>
         {player.name}
       </Text>
-      <Text style={styles.score}>{score}</Text>
+      <Text style={[styles.score, { fontSize }]}>{score}</Text>
     </View>
   );
 };
