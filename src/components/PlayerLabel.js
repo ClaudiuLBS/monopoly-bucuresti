@@ -3,21 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import colors from '../constants/colors';
 import ColoredCircle from './ColoredCircle';
 
-const LobbyPlayer = ({ player, score = null }) => {
+const PlayerLabel = ({ player, score = null, fontSize = 20, circleSize = 15, style }) => {
   return (
-    // <Text
-    //   style={[
-    //     styles.playerName,
-    //     {
-    //       borderColor: player.color,
-    //     },
-    //   ]}
-    // >
-    //   {player.name}
-    // </Text>
-    <View style={styles.container}>
-      <ColoredCircle color={player.color} />
-      <Text numberOfLines={1} style={styles.name}>
+    <View style={[styles.container, style]}>
+      <ColoredCircle color={player.color} size={circleSize} />
+      <Text numberOfLines={1} style={[styles.name, { fontSize }]}>
         {player.name}
       </Text>
       <Text style={styles.score}>{score}</Text>
@@ -41,6 +31,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     textAlign: 'center',
   },
+  score: {
+    color: colors.white,
+    fontSize: 20,
+  },
 });
 
-export default LobbyPlayer;
+export default PlayerLabel;

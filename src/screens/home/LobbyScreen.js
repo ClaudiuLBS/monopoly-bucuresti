@@ -98,7 +98,7 @@ const LobbyScreen = () => {
       </View>
 
       {player.owner && (
-        <CustomButton color={colors.green} onPress={handleStartSession}>
+        <CustomButton color={colors.white} onPress={handleStartSession}>
           START
         </CustomButton>
       )}

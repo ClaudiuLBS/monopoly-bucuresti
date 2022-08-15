@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
+import { useNavigation } from '@react-navigation/native';
 
 import ColoredCircle from '../../components/ColoredCircle';
 import LoadingScreen from '../../components/LoadingScreen';
-import colors from '../../constants/colors';
+import PopUpLouncher from '../../components/PopUpLouncher';
+import PlayerLabel from '../../components/PlayerLabel';
 import RestApi from '../../services/rest.service';
 import GameSessionApi from '../../services/session.service';
-import { useNavigation } from '@react-navigation/native';
 import { deletePlayer } from '../../redux/playerSlice';
 import { deleteSession } from '../../redux/sessionSlice';
+import colors from '../../constants/colors';
 import { config } from '../../config';
-import PopUpLouncher from '../../components/PopUpLouncher';
 
 const ScoreboardScreen = () => {
   const navigation = useNavigation();
@@ -43,26 +44,26 @@ const ScoreboardScreen = () => {
         {players.map((player, index) => {
           if (index > 2)
             return (
-              <View key={index} style={styles.container}>
-                <ColoredCircle color={player.color} />
-                <Text numberOfLines={1} style={styles.name}>
-                  {player.name}
-                </Text>
-                <Text style={styles.score}>{player.properties}</Text>
-              </View>
+              <PlayerLabel
+                key={index}
+                style={{ marginHorizontal: 30 }}
+                player={player}
+                score={player.properties}
+              />
             );
           else {
             const fontSize = 26 - index * 2;
             const circleSize = fontSize - 5;
             const marginHorizontal = 15 + index * 5;
             return (
-              <View key={index} style={[styles.container, { marginHorizontal }]}>
-                <ColoredCircle color={player.color} size={circleSize} />
-                <Text numberOfLines={1} style={[styles.name, { fontSize }]}>
-                  {player.name}
-                </Text>
-                <Text style={[styles.score, { fontSize }]}>{player.properties}</Text>
-              </View>
+              <PlayerLabel
+                key={index}
+                style={{ marginHorizontal }}
+                player={player}
+                score={player.properties}
+                size={circleSize}
+                fontSize={fontSize}
+              />
             );
           }
         })}

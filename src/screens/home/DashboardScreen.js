@@ -93,7 +93,7 @@ const DashboardScreen = () => {
         <View style={styles.section}>
           <View style={[styles.title, { flexDirection: 'row', justifyContent: 'space-between' }]}>
             <Text style={{ color: colors.white, fontFamily: 'bold', fontSize: 20 }}>Stats</Text>
-            {refreshing ? <ActivityIndicator /> : null}
+            {refreshing ? <ActivityIndicator color={colors.white} /> : null}
           </View>
 
           <TraitItem

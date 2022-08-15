@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import CustomButton from '../../components/CustomButton';
 import DefaultScreen from '../../components/DefaultScreen';
 import CustomInput from '../../components/CustomInput';
+import ColoredCircle from '../../components/ColoredCircle';
 import colors from '../../constants/colors';
 import GameSessionApi from '../../services/session.service';
 import { setPlayer } from '../../redux/playerSlice';
 import { setSession } from '../../redux/sessionSlice';
 import texts from '../../constants/texts';
-import ColoredCircle from '../../components/ColoredCircle';
 
 function hslToHex(h, s, l) {
   l /= 100;
@@ -45,6 +45,7 @@ const MenuScreen = () => {
   const [loading, setLoading] = useState(false);
 
   const pickScreen = () => {
+    setError('');
     if (gameSession && player) {
       if (gameSession.start_date) navigation.navigate('Dashboard');
       else navigation.navigate('Lobby');
@@ -117,9 +118,6 @@ const MenuScreen = () => {
         </CustomInput>
         {renderColorPicker()}
       </View>
-      <CustomButton active={!gameSession.id} onPress={handleCreateSession}>
-        {texts.createGame}
-      </CustomButton>
       <View style={{ flexDirection: 'row', width: '100%' }}>
         <CustomInput setText={setCode} maxLength={4} editable={gameSession.id == null}>
           code
@@ -132,8 +130,13 @@ const MenuScreen = () => {
           {texts.joinGame}
         </CustomButton>
       </View>
+      <CustomButton active={!gameSession.id} onPress={handleCreateSession}>
+        {texts.createGame}
+      </CustomButton>
       {gameSession.id ? (
-        <CustomButton onPress={pickScreen}>{texts.continueGame}</CustomButton>
+        <CustomButton color={colors.green} onPress={pickScreen}>
+          {texts.continueGame}
+        </CustomButton>
       ) : null}
       {error ? <Text style={styles.error}>Error - {error}</Text> : null}
     </DefaultScreen>
@@ -146,15 +149,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   error: {
-    color: 'red',
+    color: colors.red,
     fontSize: 16,
     textAlign: 'center',
     width: '100%',
-    borderTopWidth: 2,
-    borderTopColor: 'red',
+    borderTopWidth: 1,
+    borderTopColor: colors.red,
     marginTop: 5,
     borderRadius: 100,
-    fontFamily: 'bold',
   },
 });
 

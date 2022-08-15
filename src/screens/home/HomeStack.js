@@ -19,8 +19,16 @@ const HomeStack = () => {
   const player = useSelector((state) => state.player);
   const gameSession = useSelector((state) => state.session);
   const navigation = useNavigation();
+
+  const pickFirstScreen = () => {
+    if (gameSession)
+      if (gameSession.start_date) return 'Dashboard';
+      else return 'Lobby';
+    else return 'Menu';
+  };
+
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName={pickFirstScreen()}>
       <Stack.Screen options={{ headerShown: false }} name={'Menu'} component={MenuScreen} />
       <Stack.Screen options={{ headerShown: false }} name={'Lobby'} component={LobbyScreen} />
       <Stack.Screen
@@ -30,7 +38,7 @@ const HomeStack = () => {
       />
       <Stack.Screen
         name={'Scoreboard'}
-        options={{ headerTitle: `Scoreboard - ${gameSession.code}` }}
+        options={{ headerTitle: `Scoreboard ${gameSession.code}` }}
         component={ScoreboardScreen}
       />
       <Stack.Screen
