@@ -27,7 +27,7 @@ const MapScreen = () => {
     getMapData();
     const refresh = setInterval(() => {
       getMapData();
-    }, 5000);
+    }, 10000);
 
     navigation.addListener('blur', (e) => {
       clearInterval(refresh);
