@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomSlider from '../../components/CustomSlider';
@@ -11,8 +11,9 @@ import colors from '../../constants/colors';
 import texts from '../../constants/texts';
 import GameService from '../../services/game.service';
 import RestApi from '../../services/rest.service';
-import { dropSoldiers, removeMoney } from '../../redux/playerSlice';
+import { bringSoldiers, dropSoldiers, removeMoney } from '../../redux/playerSlice';
 import PopUpLouncher from '../../components/PopUpLouncher';
+import { Icon } from '@rneui/themed';
 
 const PropertyInfoScreen = ({ route }) => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const PropertyInfoScreen = ({ route }) => {
   const player = useSelector((state) => state.player);
   const [property, setProperty] = useState(null);
   const [alert, setAlert] = useState({ visible: false, title: '', subtitle: '' });
-  const [populationToTrain, setPopulationToTrain] = useState(0);
+  const [soldiersCount, setSoldiersCount] = useState(0);
 
   useEffect(() => {
     loadProperty();
@@ -52,7 +53,7 @@ const PropertyInfoScreen = ({ route }) => {
         });
         return;
       }
-      setPopulationToTrain(0);
+      setSoldiersCount(0);
       dispatch(removeMoney(property.factory_price));
       setAlert({
         visible: true,
@@ -64,7 +65,7 @@ const PropertyInfoScreen = ({ route }) => {
   };
 
   const handleTrainSoldiers = () => {
-    GameService.trainSoldiers(player.id, property.id, populationToTrain).then((res) => {
+    GameService.trainSoldiers(player.id, property.id, soldiersCount).then((res) => {
       if (!res) return;
       setAlert({
         visible: true,
@@ -72,7 +73,7 @@ const PropertyInfoScreen = ({ route }) => {
         subtitle: texts.trainSoldiersSuccess,
       });
       loadProperty();
-      setPopulationToTrain(0);
+      setSoldiersCount(0);
     });
   };
 
@@ -95,6 +96,32 @@ const PropertyInfoScreen = ({ route }) => {
         setAlert({ visible: true, title: 'You Won!', subtitle: texts.win(res.soldiers) });
         loadProperty();
       } else setAlert({ visible: true, title: 'You Lost!', subtitle: texts.lose });
+    });
+  };
+
+  const handleBringSoldiers = () => {
+    GameService.bringSoldiers(player.id, property.id, soldiersCount).then((res) => {
+      loadProperty();
+      setAlert({
+        visible: true,
+        title: `You brought ${soldiersCount} soldiers`,
+        subtitle: `Now you have ${player.soldiers + soldiersCount} active soldiers`,
+      });
+      dispatch(bringSoldiers(soldiersCount));
+      setSoldiersCount(0);
+    });
+  };
+
+  const handleDropSoldiers = () => {
+    GameService.dropSoldiers(player.id, property.id, soldiersCount).then((res) => {
+      loadProperty();
+      setAlert({
+        visible: true,
+        title: `You droped ${soldiersCount} soldiers`,
+        subtitle: `Now you have ${player.soldiers - soldiersCount} active soldiers`,
+      });
+      dispatch(dropSoldiers(soldiersCount));
+      setSoldiersCount(0);
     });
   };
 
@@ -173,22 +200,64 @@ const PropertyInfoScreen = ({ route }) => {
             info={texts.buyFactoryInfo(property.money_per_day / property.factories)}
             onConfirm={handleBuyFactory}
           />
+
           <PopUpLouncher
             active={property.population > 20}
-            color={colors.lightBlue}
+            color={colors.yellow}
             buttonText={texts.trainSoldiers}
             title={texts.trainSoldiers}
             info={texts.trainSoldiersInfo}
             onConfirm={handleTrainSoldiers}
-            onCancel={() => setPopulationToTrain(0)}
+            onCancel={() => setSoldiersCount(0)}
           >
             <CustomSlider
               max={property.population - 20}
               disabled={!(player.soldiers - 20)}
-              value={populationToTrain}
-              onChange={setPopulationToTrain}
+              value={soldiersCount}
+              onChange={setSoldiersCount}
             />
           </PopUpLouncher>
+
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+            <PopUpLouncher
+              buttonText={<Icon name="upload" type="material-community" color={colors.red} />}
+              style={styles.soldierButton}
+              color={colors.red}
+              active={property.soldiers > 0}
+              title={texts.bringSoldiers}
+              info={texts.bringSoldiersInfo}
+              onConfirm={handleBringSoldiers}
+              onCancel={() => setSoldiersCount(0)}
+            >
+              <CustomSlider
+                min={0}
+                max={property.soldiers}
+                disabled={!property.soldiers}
+                value={soldiersCount}
+                onChange={setSoldiersCount}
+              />
+            </PopUpLouncher>
+            <PopUpLouncher
+              buttonText={
+                <Icon name="download" type="material-community" color={colors.lightBlue} />
+              }
+              style={styles.soldierButton}
+              color={colors.lightBlue}
+              active={player.soldiers > 0}
+              title={texts.dropSoldiers}
+              info={texts.dropSoldiersInfo}
+              onConfirm={handleDropSoldiers}
+              onCancel={() => setSoldiersCount(0)}
+            >
+              <CustomSlider
+                min={0}
+                max={player.soldiers}
+                disabled={!player.soldiers}
+                value={soldiersCount}
+                onChange={setSoldiersCount}
+              />
+            </PopUpLouncher>
+          </View>
         </>
       );
     else if (!property.owner_id)
@@ -238,6 +307,10 @@ const styles = StyleSheet.create({
   text: {
     color: colors.white,
     fontSize: 19,
+  },
+  soldierButton: {
+    flex: 1,
+    marginHorizontal: 10,
   },
 });
 

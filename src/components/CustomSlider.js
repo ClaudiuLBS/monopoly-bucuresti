@@ -31,7 +31,7 @@ const CustomSlider = ({ min = 0, max, disabled = false, value, onChange }) => {
       allowTouchTrack
       thumbStyle={styles.thumbStyle}
       trackStyle={styles.trackStyle}
-      maximumTrackTintColor={colors.primary}
+      maximumTrackTintColor={`hsl(${value % 360},60%,55%)`}
       minimumTrackTintColor={`hsl(${value % 360},60%,55%)`}
       style={{ marginVertical: 10 }}
     />
