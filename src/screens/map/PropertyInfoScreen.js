@@ -31,6 +31,7 @@ const PropertyInfoScreen = ({ route }) => {
 
   const loadProperty = () => {
     RestApi.property.info(property_id).then((res) => {
+      console.log(property_id);
       setProperty(res);
     });
   };
@@ -238,9 +239,7 @@ const PropertyInfoScreen = ({ route }) => {
               />
             </PopUpLouncher>
             <PopUpLouncher
-              buttonText={
-                <Icon name="download" type="material-community" color={colors.lightBlue} />
-              }
+              buttonText={<Icon name="download" type="material-community" color={colors.lightBlue} />}
               style={styles.soldierButton}
               color={colors.lightBlue}
               active={player.soldiers > 0}

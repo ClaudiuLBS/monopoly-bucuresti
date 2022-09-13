@@ -7,7 +7,7 @@ const InitService = {
   async checkPlayer() {
     const player_id = await SecureStore.getItemAsync(config.player_id);
     const player = await RestApi.player.get(player_id);
-    if (!player)
+    if (!player_id || !player)
       return {
         player: null,
         gameSession: null,

@@ -31,6 +31,7 @@ const GameSessionApi = {
     const result = await axios
       .post(`${config.url}/leave-session/`, { player })
       .catch((e) => ({ data: null }));
+
     return result.data;
   },
 

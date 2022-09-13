@@ -1,13 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Icon } from '@rneui/base';
 
@@ -56,17 +49,13 @@ const DashboardScreen = () => {
         activeOpacity={0.7}
         style={{ backgroundColor: '#ffffff05', marginTop: 10, borderRadius: 5 }}
         key={index}
-        onPress={() =>
-          navigation.navigate('MyPropertyInfo', { property: item.id, title: item.name })
-        }
+        onPress={() => navigation.navigate('MyPropertyInfo', { property: item.id, title: item.name })}
       >
         <Text style={styles.subtitle}>{item.name}</Text>
         <View style={{ flexDirection: 'row', marginBottom: 10 }}>
           <View style={styles.propertyItemContainer}>
             <Icon name={'people'} type={'ionicon'} color={colors.yellow} size={22} />
-            <Text style={[styles.propertyItemText, { color: colors.yellow }]}>
-              {item.population}
-            </Text>
+            <Text style={[styles.propertyItemText, { color: colors.yellow }]}>{item.population}</Text>
           </View>
 
           <View style={styles.propertyItemContainer}>
@@ -76,9 +65,7 @@ const DashboardScreen = () => {
 
           <View style={styles.propertyItemContainer}>
             <Icon name={'user-shield'} type={'font-awesome-5'} color={colors.lightBlue} size={15} />
-            <Text style={[styles.propertyItemText, { color: colors.lightBlue }]}>
-              {item.soldiers}
-            </Text>
+            <Text style={[styles.propertyItemText, { color: colors.lightBlue }]}>{item.soldiers}</Text>
           </View>
         </View>
       </TouchableOpacity>

@@ -47,6 +47,7 @@ const LobbyScreen = () => {
       RestApi.gameSession.get(player.game_session).then((res1) => {
         setLoading(false);
         if (res1 && res1.start_date) {
+          dispatch(setStartDate(res.start_date));
           clearInterval(handleRefresh);
           navigation.navigate('Dashboard');
         }

@@ -48,7 +48,7 @@ const MapScreen = () => {
         timeInterval: 2000,
       },
       (location) => {
-        if (location) {
+        if (location && gameSession.code && gameSession.start_date) {
           GameService.findLocation(
             location.coords.latitude,
             location.coords.longitude,
@@ -106,6 +106,7 @@ const MapScreen = () => {
             fillColor={item.color}
             strokeColor={colors.landStroke}
             strokeWidth={0.5}
+            tappable
             onPress={() =>
               navigation.navigate('PropertyInfo', {
                 property: item.id,
@@ -113,7 +114,6 @@ const MapScreen = () => {
                 inPlace: place.property == item.id,
               })
             }
-            tappable
           />
         ))}
       </MapView>

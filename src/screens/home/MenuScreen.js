@@ -123,21 +123,21 @@ const MenuScreen = () => {
           code
         </CustomInput>
         <CustomButton
-          active={!gameSession.id}
+          active={!gameSession.id && !loading}
           style={styles.joinSession}
           onPress={handleJoinSession}
         >
           {texts.joinGame}
         </CustomButton>
       </View>
-      <CustomButton active={!gameSession.id} onPress={handleCreateSession}>
+      <CustomButton active={!gameSession.id && !loading} onPress={handleCreateSession}>
         {texts.createGame}
       </CustomButton>
-      {gameSession.id ? (
+      {!gameSession.id ? null : (
         <CustomButton color={colors.green} onPress={pickScreen}>
           {texts.continueGame}
         </CustomButton>
-      ) : null}
+      )}
       {error ? <Text style={styles.error}>Error - {error}</Text> : null}
     </DefaultScreen>
   );
