@@ -31,7 +31,6 @@ const PropertyInfoScreen = ({ route }) => {
 
   const loadProperty = () => {
     RestApi.property.info(property_id).then((res) => {
-      console.log(property_id);
       setProperty(res);
     });
   };

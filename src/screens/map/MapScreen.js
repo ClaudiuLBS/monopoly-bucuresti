@@ -27,7 +27,7 @@ const MapScreen = () => {
     getMapData();
     const refresh = setInterval(() => {
       getMapData();
-    }, 10000);
+    }, 60000);
 
     navigation.addListener('blur', (e) => {
       clearInterval(refresh);
@@ -45,7 +45,7 @@ const MapScreen = () => {
       {
         accuracy: Location.Accuracy.High,
         distanceInterval: 5,
-        timeInterval: 2000,
+        timeInterval: 5000,
       },
       (location) => {
         if (location && gameSession.code && gameSession.start_date) {
