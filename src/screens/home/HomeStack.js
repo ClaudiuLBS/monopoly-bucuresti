@@ -18,7 +18,6 @@ const Stack = createStackNavigator();
 const HomeStack = () => {
   const player = useSelector((state) => state.player);
   const gameSession = useSelector((state) => state.session);
-  const navigation = useNavigation();
 
   const pickFirstScreen = () => {
     if (gameSession.code)
@@ -28,24 +27,35 @@ const HomeStack = () => {
   };
 
   return (
-    <Stack.Navigator initialRouteName={pickFirstScreen()}>
+    <Stack.Navigator
+      initialRouteName={pickFirstScreen()}
+      screenOptions={({ navigation }) => ({
+        headerLeft: () => (
+          <Icon
+            name='chevron-back'
+            type='ionicon'
+            color={colors.white}
+            style={{ padding: 10 }}
+            onPress={() => navigation.goBack()}
+          />
+        ),
+      })}
+    >
       <Stack.Screen options={{ headerShown: false }} name={'Menu'} component={MenuScreen} />
       <Stack.Screen options={{ headerShown: false }} name={'Lobby'} component={LobbyScreen} />
-      <Stack.Screen
-        options={dashboardOptions(player, navigation)}
-        name={'Dashboard'}
-        component={DashboardScreen}
-      />
+      <Stack.Screen options={({navigation}) => dashboardOptions(player, navigation)} name={'Dashboard'} component={DashboardScreen} />
       <Stack.Screen
         name={'Scoreboard'}
-        options={{ headerTitle: `Scoreboard ${gameSession.code}` }}
+        options={{
+          headerTitle: () => (
+            <Text style={{ fontSize: 20, color: colors.white }}>
+              Scoreboard <Text style={{ fontFamily: 'bold', color: colors.owner }}>~{gameSession.code}</Text>
+            </Text>
+          ),
+        }}
         component={ScoreboardScreen}
       />
-      <Stack.Screen
-        options={propertyInfoOptions}
-        name={'MyPropertyInfo'}
-        component={PropertyInfoScreen}
-      />
+      <Stack.Screen options={propertyInfoOptions} name={'MyPropertyInfo'} component={PropertyInfoScreen} />
     </Stack.Navigator>
   );
 };

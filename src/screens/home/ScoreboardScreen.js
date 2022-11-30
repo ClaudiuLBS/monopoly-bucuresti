@@ -15,8 +15,7 @@ import { deleteSession } from '../../redux/sessionSlice';
 import colors from '../../constants/colors';
 import { config } from '../../config';
 
-const ScoreboardScreen = () => {
-  const navigation = useNavigation();
+const ScoreboardScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   const gameSession = useSelector((state) => state.session);

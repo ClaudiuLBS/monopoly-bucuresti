@@ -49,11 +49,10 @@ const MapScreen = () => {
       },
       (location) => {
         if (location && gameSession.code && gameSession.start_date) {
-          console.log(gameSession);
           GameService.findLocation(
             location.coords.latitude,
             location.coords.longitude,
-            gameSession.code
+            gameSession.codec
           ).then((res) => {
             if (res) setPlace(res);
           });

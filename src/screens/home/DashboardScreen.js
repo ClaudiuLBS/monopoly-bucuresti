@@ -10,8 +10,7 @@ import RestApi from '../../services/rest.service';
 import colors from '../../constants/colors';
 import TraitItem from '../../components/TraitItem';
 
-const DashboardScreen = () => {
-  const navigation = useNavigation();
+const DashboardScreen = ({navigation}) => {
   const player = useSelector((state) => state.player);
   const [stats, setStats] = useState(null);
   const [properties, setProperties] = useState(null);
