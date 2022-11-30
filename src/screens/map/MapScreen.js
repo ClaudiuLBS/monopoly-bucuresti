@@ -52,7 +52,7 @@ const MapScreen = () => {
           GameService.findLocation(
             location.coords.latitude,
             location.coords.longitude,
-            gameSession.codec
+            gameSession.code
           ).then((res) => {
             if (res) setPlace(res);
           });
