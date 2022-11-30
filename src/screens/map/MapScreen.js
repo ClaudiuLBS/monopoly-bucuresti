@@ -3,6 +3,8 @@ import { StyleSheet, Dimensions, SafeAreaView, View, Modal, Text } from 'react-n
 import { useNavigation } from '@react-navigation/native';
 import MapView, { Polygon } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { useSelector } from 'react-redux';
+import { Icon } from '@rneui/themed';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import InitService from '../../services/init.service';
@@ -12,9 +14,7 @@ import dimensions from '../../constants/dimensions';
 import mapStyle from '../../constants/mapStyle';
 import locations from '../../constants/locations';
 import GameService from '../../services/game.service';
-import { useSelector } from 'react-redux';
 import LandLabel from '../../components/LandLabel';
-import { Icon } from '@rneui/base';
 
 const MapScreen = () => {
   const navigation = useNavigation();
@@ -49,6 +49,7 @@ const MapScreen = () => {
       },
       (location) => {
         if (location && gameSession.code && gameSession.start_date) {
+          console.log(gameSession);
           GameService.findLocation(
             location.coords.latitude,
             location.coords.longitude,

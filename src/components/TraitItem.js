@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Icon } from '@rneui/base';
+import { Icon } from '@rneui/themed';
 
 import colors from '../constants/colors';
 

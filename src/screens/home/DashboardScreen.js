@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Icon } from '@rneui/base';
+import { Icon } from '@rneui/themed';
 
 import DefaultScreen from '../../components/DefaultScreen';
 import LoadingScreen from '../../components/LoadingScreen';

@@ -8,7 +8,7 @@ import DashboardScreen from './DashboardScreen';
 import ScoreboardScreen from './ScoreboardScreen';
 import { useSelector } from 'react-redux';
 import colors from '../../constants/colors';
-import { Icon } from '@rneui/base';
+import { Icon } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
 import ColoredCircle from '../../components/ColoredCircle';
 import PropertyInfoScreen from '../map/PropertyInfoScreen';
@@ -64,7 +64,7 @@ const dashboardOptions = (player, navigation) => ({
       type={'ionicon'}
       color={colors.white}
       onPress={() => navigation.navigate('Scoreboard')}
-      style={{ marginRight: 20 }}
+      style={{ padding: 10, marginRight: 10 }}
     />
   ),
 });

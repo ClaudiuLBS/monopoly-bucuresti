@@ -5,7 +5,7 @@ import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import { Ubuntu_400Regular, Ubuntu_500Medium } from '@expo-google-fonts/ubuntu';
 import { setCustomText } from 'react-native-global-props';
 import { useDispatch } from 'react-redux';
-import { Icon } from '@rneui/base';
+import { Icon } from '@rneui/themed';
 import * as Notifications from 'expo-notifications';
 import * as SecureStore from 'expo-secure-store';
 import * as Device from 'expo-device';
@@ -43,6 +43,7 @@ const Tab = createBottomTabNavigator();
 const Routes = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
       if (token) SecureStore.setItemAsync(config.push_token, token);
@@ -50,7 +51,7 @@ const Routes = () => {
     Font.loadAsync({
       ubuntu: Ubuntu_400Regular,
       bold: Ubuntu_500Medium,
-    }).then(
+    }).then(() => {
       InitService.checkPlayer().then((data) => {
         dispatch(setSession(data.gameSession));
         dispatch(setPlayer(data.player));
@@ -60,15 +61,15 @@ const Routes = () => {
           },
         });
         setLoading(false);
-      })
-    );
+      });
+    });
   }, []);
 
   if (loading) return <LoadingScreen />;
 
   return (
     <NavigationContainer theme={MyTheme}>
-      <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
+      <StatusBar backgroundColor={colors.primary} barStyle='light-content' />
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
@@ -80,23 +81,21 @@ const Routes = () => {
         }}
       >
         <Tab.Screen
-          name="HomeStack"
+          name='HomeStack'
           component={HomeStack}
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <Icon name="home" type="entypo" size={size} color={color} />
-            ),
+            tabBarIcon: ({ color, size }) => <Icon name='home' type='entypo' size={size} color={color} />,
             tabBarLabel: 'Home',
             tabBarLabelStyle: { fontSize: 12, paddingBottom: 3 },
           }}
         />
 
         <Tab.Screen
-          name="MapStack"
+          name='MapStack'
           component={MapStack}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Icon name="map-marked-alt" type="font-awesome-5" size={size} color={color} />
+              <Icon name='map-marked-alt' type='font-awesome-5' size={size} color={color} />
             ),
             tabBarLabel: 'Map',
             tabBarLabelStyle: { fontSize: 12, paddingBottom: 3 },

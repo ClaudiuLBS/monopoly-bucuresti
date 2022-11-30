@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Icon } from '@rneui/base';
+import { Icon } from '@rneui/themed';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
