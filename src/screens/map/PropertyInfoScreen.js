@@ -273,7 +273,7 @@ const PropertyInfoScreen = ({ route }) => {
     else
       return (
         <PopUpLouncher
-          active={inPlace && player.soldiers}
+          active={player.soldiers && inPlace}
           buttonText={'Attack'}
           style={{ marginTop: 20 }}
           color={colors.red}
