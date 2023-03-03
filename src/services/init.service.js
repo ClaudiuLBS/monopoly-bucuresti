@@ -5,7 +5,7 @@ import RestApi from './rest.service';
 
 const InitService = {
   async checkPlayer() {
-    const player_id = await SecureStore.getItemAsync(config.player_id);
+    const player_id = await SecureStore.getItemAsync(config.player_id).catch(() => this.deletePlayer());
     if (!player_id)
       return {
         player: null,
