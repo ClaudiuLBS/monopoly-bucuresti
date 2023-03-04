@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Dimensions, SafeAreaView, View, Modal, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import MapView, { Polygon } from 'react-native-maps';
+import MapView, { Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useSelector } from 'react-redux';
 import { Icon } from '@rneui/themed';
@@ -98,6 +98,7 @@ const MapScreen = () => {
         customMapStyle={mapStyle}
         showsCompass={false}
         showsUserLocation={true}
+        provider={PROVIDER_GOOGLE}
       >
         {data.map((item) => (
           <Polygon
