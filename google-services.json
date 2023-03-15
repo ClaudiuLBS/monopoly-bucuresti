@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "789743606846",
+    "project_id": "bucalewar-ba078",
+    "storage_bucket": "bucalewar-ba078.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789743606846:android:584c871343a03377cbc56f",
+        "android_client_info": {
+          "package_name": "com.echilateral.bucalewar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789743606846-r55lm1b2frabg6mf2ka3di78eje8p6ah.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.echilateral.bucalewar",
+            "certificate_hash": "0ea21bf8af9532fde645aa3447d480841bbab9fd"
+          }
+        },
+        {
+          "client_id": "789743606846-b68hrhddktbio0dt2ut6qrd1a371vkoe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFUSYatULpxuV9_KWjj7Z5T4esSV39kDg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "789743606846-b68hrhddktbio0dt2ut6qrd1a371vkoe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
