@@ -1,23 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Icon } from '@rneui/themed';
+import { useSelector } from 'react-redux';
 
 import MenuScreen from './MenuScreen';
 import LobbyScreen from './LobbyScreen';
 import DashboardScreen from './DashboardScreen';
 import ScoreboardScreen from './ScoreboardScreen';
-import { useSelector } from 'react-redux';
-import colors from '../../constants/colors';
-import { Icon } from '@rneui/themed';
-import { useNavigation } from '@react-navigation/native';
-import ColoredCircle from '../../components/ColoredCircle';
 import PropertyInfoScreen from '../map/PropertyInfoScreen';
+import ColoredCircle from '../../components/ColoredCircle';
+
+import RestApi from '../../services/rest.service';
+import colors from '../../constants/colors';
 
 const Stack = createStackNavigator();
 
 const HomeStack = () => {
   const player = useSelector((state) => state.player);
   const gameSession = useSelector((state) => state.session);
+
+  useEffect(() => {
+    RestApi.player.updatePushToken(player.id);
+  }, [])
 
   const pickFirstScreen = () => {
     if (gameSession.code)

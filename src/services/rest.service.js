@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 
 import { config } from '../config';
 
@@ -25,6 +26,11 @@ const RestApi = {
       const result = await axios.get(`${config.url}/player-stats/${id}`).catch((e) => ({ data: null }));
       return result.data;
     },
+    async updatePushToken(id) {
+      const pushToken = await SecureStore.getItemAsync(config.push_token).catch((e) => null);
+      const result = await axios.put(`${config.url}/api/players/${id}`, { pushToken }).catch((e) => ({ data: null }));
+      return result.data
+    }
   },
 
   gameSession: {

@@ -13,13 +13,16 @@ import * as Font from 'expo-font';
 
 import HomeStack from './screens/home/HomeStack';
 import MapStack from './screens/map/MapStack';
-import dimensions from './constants/dimensions';
-import colors from './constants/colors';
-import { config } from './config';
-import InitService from './services/init.service';
+import LoadingScreen from './components/LoadingScreen';
+
 import { setSession } from './redux/sessionSlice';
 import { setPlayer } from './redux/playerSlice';
-import LoadingScreen from './components/LoadingScreen';
+
+import InitService from './services/init.service';
+
+import { config } from './config';
+import dimensions from './constants/dimensions';
+import colors from './constants/colors';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
