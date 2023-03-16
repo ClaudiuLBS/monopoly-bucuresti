@@ -27,8 +27,8 @@ const RestApi = {
       return result.data;
     },
     async updatePushToken(id) {
-      const pushToken = await SecureStore.getItemAsync(config.push_token).catch((e) => null);
-      const result = await axios.put(`${config.url}/api/players/${id}`, { pushToken }).catch((e) => ({ data: null }));
+      const push_token = await SecureStore.getItemAsync(config.push_token).catch((e) => null);
+      const result = await axios.put(`${config.url}/api/players/${id}`, { push_token }).catch((e) => ({ data: null }));
       return result.data
     }
   },
