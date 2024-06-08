@@ -2,7 +2,7 @@
   "expo": {
     "name": "bucalewar",
     "slug": "bucalewar",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -21,7 +21,7 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 8,
+      "versionCode": 9,
       "package": "com.echilateral.bucalewar",
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
