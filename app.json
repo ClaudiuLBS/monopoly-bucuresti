@@ -39,22 +39,10 @@
     },
     "description": "",
     "plugins": [
-      "sentry-expo",
       "expo-font",
       "expo-secure-store"
     ],
-    "hooks": {
-      "postPublish": [
-        {
-          "file": "sentry-expo/upload-sourcemaps",
-          "config": {
-            "organization": "claudiulabus",
-            "project": "monopoly-buc",
-            "authToken": "88d423bd3ae34c27af2b651311723ed7df9a07d7cfc44dab87059d20005222ec"
-          }
-        }
-      ]
-    },
+    
     "extra": {
       "eas": {
         "projectId": "84947f55-7008-442a-8b5b-efbef72d87fa"
