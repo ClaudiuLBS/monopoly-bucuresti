@@ -60,7 +60,7 @@ const MenuScreen = () => {
     };
 
     if (!name) {
-      setError('Enter a name yo fuckin nigger');
+      setError('Please enter a name');
       return;
     }
     setLoading(true);

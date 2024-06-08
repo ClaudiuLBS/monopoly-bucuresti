@@ -11,7 +11,6 @@ const GameSessionApi = {
     await SecureStore.setItemAsync(config.player_id, result.data.player_id.toString());
     const player = await RestApi.player.get(result.data.player_id);
     const gameSession = await RestApi.gameSession.get(player.game_session);
-
     return { player, gameSession };
   },
 
