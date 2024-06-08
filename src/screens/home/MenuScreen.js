@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -118,6 +118,7 @@ const MenuScreen = () => {
         </CustomInput>
         {renderColorPicker()}
       </View>
+
       <View style={{ flexDirection: 'row', width: '100%' }}>
         <CustomInput setText={setCode} maxLength={4} editable={gameSession.id == null}>
           code
